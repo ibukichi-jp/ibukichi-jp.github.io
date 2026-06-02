@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-06-02T18:43:00.242097+00:00</updated>
+  <updated>2026-06-02T21:51:36.656118+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
   <entry>
@@ -116,5 +116,12 @@
     <updated>2026-06-02T14:37:20+00:00</updated>
     <link href="https://github.com/actions/checkout/releases/tag/v6.0.3"/>
     <summary>Action for checking out a repo</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/anchore/syft/releases/tag/v1.45.0</id>
+    <title>[anchore/syft] v1.45.0</title>
+    <updated>2026-06-02T20:33:18+00:00</updated>
+    <link href="https://github.com/anchore/syft/releases/tag/v1.45.0"/>
+    <summary>CLI tool and library for generating a Software Bill of Materials from container images and filesystems</summary>
   </entry>
 </feed>
