@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-06-02T23:49:26.825725+00:00</updated>
+  <updated>2026-06-03T04:39:59.287626+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
   <entry>
@@ -123,5 +123,12 @@
     <updated>2026-06-02T20:33:18+00:00</updated>
     <link href="https://github.com/anchore/syft/releases/tag/v1.45.0"/>
     <summary>CLI tool and library for generating a Software Bill of Materials from container images and filesystems</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.38</id>
+    <title>[vercel/next.js] v16.3.0-canary.38</title>
+    <updated>2026-06-03T00:14:25+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.38"/>
+    <summary>The React Framework</summary>
   </entry>
 </feed>
