@@ -28,7 +28,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
         run: |
-          uv run ./.src/rss_*.py
+          uv run ./.src/rss_github_notifications.py
+          uv run ./.src/rss_tech_books.py
 
       - name: Do Git push RSS files to GitHub
         env:
