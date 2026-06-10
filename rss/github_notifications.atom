@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-06-10T16:37:33.253797+00:00</updated>
+  <updated>2026-06-10T19:36:26.048418+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
   <entry>
@@ -25,5 +25,12 @@
     <updated>2026-06-10T14:15:29+00:00</updated>
     <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-preview.3"/>
     <summary>The React Framework</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/astral-sh/uv/releases/tag/0.11.20</id>
+    <title>[astral-sh/uv] 0.11.20</title>
+    <updated>2026-06-10T17:21:39+00:00</updated>
+    <link href="https://github.com/astral-sh/uv/releases/tag/0.11.20"/>
+    <summary>An extremely fast Python package and project manager, written in Rust.</summary>
   </entry>
 </feed>
