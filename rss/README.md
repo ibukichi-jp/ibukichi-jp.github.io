@@ -1,5 +1,0 @@
-# github_notifications.atomに関して
-
-情報収集を基本的にFeedlyで行っているので、Feedlyに読み込ませるためのatomファイルを毎時作成している。<br>
-キャッチアップしたいリポジトリはリリースノートをwatchしており更新があるとNotificationsにあがってくる。Notificationsの情報をAPIで取得してatomファイルにぶち込んでいる。
-
