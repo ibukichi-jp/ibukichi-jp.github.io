@@ -93,7 +93,7 @@ def haiku_bot_message() -> str:
 
         # 最後の行（最新の俳句）を取得
         latest_haiku = lines[-1]
-        return f"今日の一句\n{latest_haiku}\n（この俳句はさくらのAI Engineを使ってAIで生成したものを自動投稿しています。）"
+        return f"{latest_haiku}"
 
     except Exception as e:
         print(f"俳句データ取得中にエラーが発生しました: {e}", file=sys.stderr)
