@@ -13,12 +13,17 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
 
       - name: Set up uv
         uses: astral-sh/setup-uv@v7
+        with:
+          version: "latest"
+          enable-cache: true
 
       - name: Sync dependencies
-        run: uv sync
+        run: uv sync --frozen --no-dev
 
       - name: Run script for bot
         env:
