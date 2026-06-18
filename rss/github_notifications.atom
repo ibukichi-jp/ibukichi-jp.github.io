@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-06-18T12:57:42.088367+00:00</updated>
+  <updated>2026-06-18T16:40:04.209281+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
   <entry>
@@ -60,5 +60,19 @@
     <updated>2026-06-18T06:57:46+00:00</updated>
     <link href="https://github.com/fastapi/fastapi/releases/tag/0.137.2"/>
     <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/actions/checkout/releases/tag/v7.0.0</id>
+    <title>[actions/checkout] v7.0.0</title>
+    <updated>2026-06-18T13:53:25+00:00</updated>
+    <link href="https://github.com/actions/checkout/releases/tag/v7.0.0"/>
+    <summary>Action for checking out a repo</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.57</id>
+    <title>[vercel/next.js] v16.3.0-canary.57</title>
+    <updated>2026-06-18T16:35:58+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.57"/>
+    <summary>The React Framework</summary>
   </entry>
 </feed>
