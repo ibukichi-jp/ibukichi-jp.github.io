@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
   <id>https://github.com/notifications</id>
   <title>Tracking tech books</title>
-  <updated>2026-06-19T07:11:33.331333+00:00</updated>
+  <updated>2026-06-19T12:10:10.174520+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
   <entry>
@@ -717,13 +717,6 @@ Ruby技術者認定試験（Silver/Gold対応&amp;#8288;）&amp;#8288; 公式テ
     <summary>技術評論社</summary>
   </entry>
   <entry>
-    <id>https://www.shoeisha.co.jp/book/detail/9784798194004</id>
-    <title>AI用語図鑑  ビジネス・開発・試験対策に使える厳選キーワード256</title>
-    <updated>2026-02-13T02:56:22.171186+00:00</updated>
-    <link href="https://www.shoeisha.co.jp/book/detail/9784798194004"/>
-    <summary>翔泳社</summary>
-  </entry>
-  <entry>
     <id>https://www.shoeisha.co.jp/book/detail/9784798192536</id>
     <title>要件定義の極意  「機能不全」「予算超過」「遅延」を防ぐ20のルール</title>
     <updated>2026-02-10T03:19:19.237487+00:00</updated>
@@ -854,6 +847,13 @@ Ruby技術者認定試験（Silver/Gold対応&amp;#8288;）&amp;#8288; 公式テ
     <title>ユースケース実践ガイド［復刻版］  効果的なユースケースの書き方</title>
     <updated>2026-06-06T02:12:44.137405+00:00</updated>
     <link href="https://www.shoeisha.co.jp/book/detail/9784798195490"/>
+    <summary>翔泳社</summary>
+  </entry>
+  <entry>
+    <id>https://www.shoeisha.co.jp/book/detail/9784798194318</id>
+    <title>LLM・AIエージェントシステムベストプラクティス</title>
+    <updated>2026-06-19T12:10:10.173983+00:00</updated>
+    <link href="https://www.shoeisha.co.jp/book/detail/9784798194318"/>
     <summary>翔泳社</summary>
   </entry>
 </feed>
