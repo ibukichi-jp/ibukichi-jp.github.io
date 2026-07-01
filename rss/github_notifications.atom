@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-07-01T20:07:35.576801+00:00</updated>
+  <updated>2026-07-01T22:19:40.648100+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
   <entry>
@@ -235,5 +235,19 @@
     <updated>2026-07-01T16:35:39+00:00</updated>
     <link href="https://github.com/fastapi/fastapi/releases/tag/0.139.0"/>
     <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.2.10</id>
+    <title>[vercel/next.js] v16.2.10</title>
+    <updated>2026-07-01T20:14:08+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.2.10"/>
+    <summary>The React Framework</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v15.5.20</id>
+    <title>[vercel/next.js] v15.5.20</title>
+    <updated>2026-07-01T21:08:11+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v15.5.20"/>
+    <summary>The React Framework</summary>
   </entry>
 </feed>
