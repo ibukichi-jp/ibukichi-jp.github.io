@@ -2,16 +2,9 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-07-04T22:01:15.727239+00:00</updated>
+  <updated>2026-07-05T00:04:32.376971+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.55</id>
-    <title>[vercel/next.js] v16.3.0-canary.55</title>
-    <updated>2026-06-17T19:18:07+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.55"/>
-    <summary>The React Framework</summary>
-  </entry>
   <entry>
     <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.56</id>
     <title>[vercel/next.js] v16.3.0-canary.56</title>
@@ -262,6 +255,13 @@
     <title>[vercel/next.js] v16.3.0-canary.77</title>
     <updated>2026-07-04T00:00:32+00:00</updated>
     <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.77"/>
+    <summary>The React Framework</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.78</id>
+    <title>[vercel/next.js] v16.3.0-canary.78</title>
+    <updated>2026-07-04T23:57:25+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.78"/>
     <summary>The React Framework</summary>
   </entry>
 </feed>
