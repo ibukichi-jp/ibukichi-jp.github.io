@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
   <id>https://github.com/notifications</id>
   <title>Tracking tech books</title>
-  <updated>2026-07-14T23:55:15.753190+00:00</updated>
+  <updated>2026-07-15T02:42:28.457316+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
   <entry>
@@ -381,13 +381,6 @@ Ruby技術者認定試験（Silver/Gold対応&amp;#8288;）&amp;#8288; 公式テ
     <summary>技術評論社</summary>
   </entry>
   <entry>
-    <id>https://gihyo.jp/book/2025/978-4-297-15247-5</id>
-    <title>令和08年 かやのき先生のITパスポート教室準拠 書き込み式ドリル</title>
-    <updated>2026-02-07T05:46:04.949150+00:00</updated>
-    <link href="https://gihyo.jp/book/2025/978-4-297-15247-5"/>
-    <summary>技術評論社</summary>
-  </entry>
-  <entry>
     <id>https://gihyo.jp/book/2025/978-4-297-15249-9</id>
     <title>令和08年 かやのき先生の基本情報技術者教室準拠 書き込み式ドリル</title>
     <updated>2026-02-07T05:46:04.949150+00:00</updated>
@@ -469,6 +462,13 @@ Ruby技術者認定試験（Silver/Gold対応&amp;#8288;）&amp;#8288; 公式テ
     <title>令和08年 応用情報技術者 試験によくでる問題集【科目B】</title>
     <updated>2026-02-26T02:46:14.366891+00:00</updated>
     <link href="https://gihyo.jp/book/2026/978-4-297-15411-0"/>
+    <summary>技術評論社</summary>
+  </entry>
+  <entry>
+    <id>https://gihyo.jp/book/2026/978-4-297-15762-3</id>
+    <title>令和08年【下期】 ITパスポート パーフェクトラーニング過去問題集</title>
+    <updated>2026-07-15T02:42:28.456856+00:00</updated>
+    <link href="https://gihyo.jp/book/2026/978-4-297-15762-3"/>
     <summary>技術評論社</summary>
   </entry>
   <entry>
