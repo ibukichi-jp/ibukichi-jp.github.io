@@ -2,23 +2,9 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-07-21T17:24:07.876408+00:00</updated>
+  <updated>2026-07-21T19:27:52.445135+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.2.10</id>
-    <title>[vercel/next.js] v16.2.10</title>
-    <updated>2026-07-01T20:14:08+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.2.10"/>
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v15.5.20</id>
-    <title>[vercel/next.js] v15.5.20</title>
-    <updated>2026-07-01T21:08:11+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v15.5.20"/>
-    <summary>The React Framework</summary>
-  </entry>
   <entry>
     <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.75</id>
     <title>[vercel/next.js] v16.3.0-canary.75</title>
@@ -311,6 +297,20 @@
     <title>[vercel/next.js] v16.2.11</title>
     <updated>2026-07-21T16:58:48+00:00</updated>
     <link href="https://github.com/vercel/next.js/releases/tag/v16.2.11"/>
+    <summary>The React Framework</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.92</id>
+    <title>[vercel/next.js] v16.3.0-canary.92</title>
+    <updated>2026-07-21T17:51:38+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.92"/>
+    <summary>The React Framework</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-preview.7</id>
+    <title>[vercel/next.js] v16.3.0-preview.7</title>
+    <updated>2026-07-21T18:29:06+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-preview.7"/>
     <summary>The React Framework</summary>
   </entry>
 </feed>
