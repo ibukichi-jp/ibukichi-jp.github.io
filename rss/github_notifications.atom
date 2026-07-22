@@ -2,16 +2,9 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-07-22T17:23:26.271904+00:00</updated>
+  <updated>2026-07-22T19:25:18.279369+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
-  <entry>
-    <id>https://github.com/php/php-src/releases/tag/php-8.3.32</id>
-    <title>[php/php-src] PHP 8.3.32</title>
-    <updated>2026-07-03T13:52:02+00:00</updated>
-    <link href="https://github.com/php/php-src/releases/tag/php-8.3.32"/>
-    <summary>The PHP Interpreter</summary>
-  </entry>
   <entry>
     <id>https://github.com/php/php-src/releases/tag/php-8.4.23</id>
     <title>[php/php-src] PHP 8.4.23</title>
