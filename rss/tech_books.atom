@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
   <id>https://github.com/notifications</id>
   <title>Tracking tech books</title>
-  <updated>2026-07-22T23:07:56.225140+00:00</updated>
+  <updated>2026-07-23T03:13:44.419882+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
   <entry>
@@ -472,13 +472,6 @@ Ruby技術者認定試験（Silver/Gold対応&amp;#8288;）&amp;#8288; 公式テ
     <summary>技術評論社</summary>
   </entry>
   <entry>
-    <id>https://gihyo.jp/book/2025/978-4-297-14724-2</id>
-    <title>［詳解］AWS Infrastructure as Code―&amp;#8288;―使って比べるTerraform＆AWS CDK</title>
-    <updated>2026-02-07T05:46:04.949150+00:00</updated>
-    <link href="https://gihyo.jp/book/2025/978-4-297-14724-2"/>
-    <summary>技術評論社</summary>
-  </entry>
-  <entry>
     <id>https://gihyo.jp/book/2025/978-4-297-14846-1</id>
     <title>Azure Machine Learningではじめる機械学習/LLM活用入門</title>
     <updated>2026-02-07T05:46:04.949150+00:00</updated>
@@ -560,6 +553,13 @@ Ruby技術者認定試験（Silver/Gold対応&amp;#8288;）&amp;#8288; 公式テ
     <title>MastraによるAIエージェント開発・運用［実践入門］</title>
     <updated>2026-06-18T04:18:16.707683+00:00</updated>
     <link href="https://gihyo.jp/book/2026/978-4-297-15766-1"/>
+    <summary>技術評論社</summary>
+  </entry>
+  <entry>
+    <id>https://gihyo.jp/book/2026/978-4-297-15786-9</id>
+    <title>実践dbt入門</title>
+    <updated>2026-07-23T03:13:44.419339+00:00</updated>
+    <link href="https://gihyo.jp/book/2026/978-4-297-15786-9"/>
     <summary>技術評論社</summary>
   </entry>
   <entry>
