@@ -2,9 +2,16 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-07-25T13:40:34.241117+00:00</updated>
+  <updated>2026-07-25T15:05:36.680301+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
+  <entry>
+    <id>https://github.com/astral-sh/setup-uv/releases/tag/v8.3.2</id>
+    <title>[astral-sh/setup-uv] v8.3.2 🌈 update known checksums for 0.11.28</title>
+    <updated>2026-07-08T09:08:53+00:00</updated>
+    <link href="https://github.com/astral-sh/setup-uv/releases/tag/v8.3.2"/>
+    <summary>Set up your GitHub Actions workflow with a specific version of https://docs.astral.sh/uv/</summary>
+  </entry>
   <entry>
     <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.81</id>
     <title>[vercel/next.js] v16.3.0-canary.81</title>
