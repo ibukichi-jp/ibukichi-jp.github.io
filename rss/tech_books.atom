@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
   <id>https://github.com/notifications</id>
   <title>Tracking tech books</title>
-  <updated>2026-07-18T21:54:09.637584+00:00</updated>
+  <updated>2026-07-26T03:17:28.813333+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
   <entry>
@@ -472,13 +472,6 @@ Ruby技術者認定試験（Silver/Gold対応&amp;#8288;）&amp;#8288; 公式テ
     <summary>技術評論社</summary>
   </entry>
   <entry>
-    <id>https://gihyo.jp/book/2025/978-4-297-14724-2</id>
-    <title>［詳解］AWS Infrastructure as Code―&amp;#8288;―使って比べるTerraform＆AWS CDK</title>
-    <updated>2026-02-07T05:46:04.949150+00:00</updated>
-    <link href="https://gihyo.jp/book/2025/978-4-297-14724-2"/>
-    <summary>技術評論社</summary>
-  </entry>
-  <entry>
     <id>https://gihyo.jp/book/2025/978-4-297-14846-1</id>
     <title>Azure Machine Learningではじめる機械学習/LLM活用入門</title>
     <updated>2026-02-07T05:46:04.949150+00:00</updated>
@@ -560,6 +553,13 @@ Ruby技術者認定試験（Silver/Gold対応&amp;#8288;）&amp;#8288; 公式テ
     <title>MastraによるAIエージェント開発・運用［実践入門］</title>
     <updated>2026-06-18T04:18:16.707683+00:00</updated>
     <link href="https://gihyo.jp/book/2026/978-4-297-15766-1"/>
+    <summary>技術評論社</summary>
+  </entry>
+  <entry>
+    <id>https://gihyo.jp/book/2026/978-4-297-15786-9</id>
+    <title>実践dbt入門</title>
+    <updated>2026-07-23T03:13:44.419339+00:00</updated>
+    <link href="https://gihyo.jp/book/2026/978-4-297-15786-9"/>
     <summary>技術評論社</summary>
   </entry>
   <entry>
@@ -717,20 +717,6 @@ Ruby技術者認定試験（Silver/Gold対応&amp;#8288;）&amp;#8288; 公式テ
     <summary>技術評論社</summary>
   </entry>
   <entry>
-    <id>https://www.shoeisha.co.jp/book/detail/9784798194264</id>
-    <title>アジャイル はじめの一歩  スッキリわかるアジャイルの基本と役立て方</title>
-    <updated>2026-03-19T02:55:38.458310+00:00</updated>
-    <link href="https://www.shoeisha.co.jp/book/detail/9784798194264"/>
-    <summary>翔泳社</summary>
-  </entry>
-  <entry>
-    <id>https://www.shoeisha.co.jp/book/detail/9784798192550</id>
-    <title>クイズで学ぶUIデザイン  ユーザビリティの基本が身につく50問</title>
-    <updated>2026-03-21T02:39:52.848384+00:00</updated>
-    <link href="https://www.shoeisha.co.jp/book/detail/9784798192550"/>
-    <summary>翔泳社</summary>
-  </entry>
-  <entry>
     <id>https://www.shoeisha.co.jp/book/detail/9784798195001</id>
     <title>ソフトウェア受託現場の「失敗」集めてみた。  42の失敗事例で学ぶ受託開発のうまい進めかた</title>
     <updated>2026-03-26T03:17:55.717874+00:00</updated>
@@ -850,10 +836,24 @@ Ruby技術者認定試験（Silver/Gold対応&amp;#8288;）&amp;#8288; 公式テ
     <summary>翔泳社</summary>
   </entry>
   <entry>
+    <id>https://www.shoeisha.co.jp/book/detail/9784798190709</id>
+    <title>絵で見てわかるWeb APIの仕組み</title>
+    <updated>2026-07-23T11:52:11.687246+00:00</updated>
+    <link href="https://www.shoeisha.co.jp/book/detail/9784798190709"/>
+    <summary>翔泳社</summary>
+  </entry>
+  <entry>
     <id>https://www.shoeisha.co.jp/book/detail/9784798199269</id>
     <title>Claudeビジネス活用術  業務を自律化し、作業時間をゼロにする</title>
     <updated>2026-07-17T07:19:36.807144+00:00</updated>
     <link href="https://www.shoeisha.co.jp/book/detail/9784798199269"/>
+    <summary>翔泳社</summary>
+  </entry>
+  <entry>
+    <id>https://www.shoeisha.co.jp/book/detail/9784798190723</id>
+    <title>LLMアプリケーション評価駆動開発  継続的に改善し運用していくための実践知</title>
+    <updated>2026-07-23T11:52:11.687246+00:00</updated>
+    <link href="https://www.shoeisha.co.jp/book/detail/9784798190723"/>
     <summary>翔泳社</summary>
   </entry>
 </feed>
