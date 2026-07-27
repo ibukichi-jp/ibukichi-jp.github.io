@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
   <id>https://github.com/notifications</id>
   <title>Tracking tech books</title>
-  <updated>2026-07-26T23:02:15.647996+00:00</updated>
+  <updated>2026-07-27T03:27:53.187999+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
   <entry>
@@ -563,13 +563,6 @@ Ruby技術者認定試験（Silver/Gold対応&amp;#8288;）&amp;#8288; 公式テ
     <summary>技術評論社</summary>
   </entry>
   <entry>
-    <id>https://gihyo.jp/book/2023/978-4-297-13269-9</id>
-    <title>Azureコンテナアプリケーション開発─&amp;#8288;─開発に注力するための実践手法</title>
-    <updated>2026-02-06T06:43:41.198593+00:00</updated>
-    <link href="https://gihyo.jp/book/2023/978-4-297-13269-9"/>
-    <summary>技術評論社</summary>
-  </entry>
-  <entry>
     <id>https://gihyo.jp/book/2023/978-4-297-13366-5</id>
     <title>Webアプリケーションアクセシビリティ―&amp;#8288;―今日から始める現場からの改善</title>
     <updated>2026-02-06T06:43:41.198593+00:00</updated>
@@ -714,6 +707,13 @@ Ruby技術者認定試験（Silver/Gold対応&amp;#8288;）&amp;#8288; 公式テ
     <title>［改訂新版］オブジェクト指向UIデザイン─&amp;#8288;─使いやすいソフトウェアの原理</title>
     <updated>2026-07-01T09:54:41.514951+00:00</updated>
     <link href="https://gihyo.jp/book/2026/978-4-297-15716-6"/>
+    <summary>技術評論社</summary>
+  </entry>
+  <entry>
+    <id>https://gihyo.jp/book/2026/978-4-297-15776-0</id>
+    <title>Python Web開発実践入門―&amp;#8288;― FastAPIによるWeb API開発と非同期処理</title>
+    <updated>2026-07-27T03:27:53.187206+00:00</updated>
+    <link href="https://gihyo.jp/book/2026/978-4-297-15776-0"/>
     <summary>技術評論社</summary>
   </entry>
   <entry>
