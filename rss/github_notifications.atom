@@ -2,23 +2,9 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-07-27T14:41:25.615961+00:00</updated>
+  <updated>2026-07-27T17:00:15.461691+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.88</id>
-    <title>[vercel/next.js] v16.3.0-canary.88</title>
-    <updated>2026-07-16T23:55:01+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.88"/>
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.89</id>
-    <title>[vercel/next.js] v16.3.0-canary.89</title>
-    <updated>2026-07-17T23:55:35+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.89"/>
-    <summary>The React Framework</summary>
-  </entry>
   <entry>
     <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.90</id>
     <title>[vercel/next.js] v16.3.0-canary.90</title>
@@ -241,6 +227,34 @@
     <title>[fastapi/fastapi] 0.140.2</title>
     <updated>2026-07-27T14:15:10+00:00</updated>
     <link href="https://github.com/fastapi/fastapi/releases/tag/0.140.2"/>
+    <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/fastapi/fastapi/releases/tag/0.140.3</id>
+    <title>[fastapi/fastapi] 0.140.3</title>
+    <updated>2026-07-27T15:30:13+00:00</updated>
+    <link href="https://github.com/fastapi/fastapi/releases/tag/0.140.3"/>
+    <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/fastapi/fastapi/releases/tag/0.140.4</id>
+    <title>[fastapi/fastapi] 0.140.4</title>
+    <updated>2026-07-27T15:46:49+00:00</updated>
+    <link href="https://github.com/fastapi/fastapi/releases/tag/0.140.4"/>
+    <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/fastapi/fastapi/releases/tag/0.140.5</id>
+    <title>[fastapi/fastapi] 0.140.5</title>
+    <updated>2026-07-27T16:02:53+00:00</updated>
+    <link href="https://github.com/fastapi/fastapi/releases/tag/0.140.5"/>
+    <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/fastapi/fastapi/releases/tag/0.140.6</id>
+    <title>[fastapi/fastapi] 0.140.6</title>
+    <updated>2026-07-27T16:31:42+00:00</updated>
+    <link href="https://github.com/fastapi/fastapi/releases/tag/0.140.6"/>
     <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
   </entry>
 </feed>
