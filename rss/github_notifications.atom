@@ -2,30 +2,9 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-07-28T15:24:28.884663+00:00</updated>
+  <updated>2026-07-28T17:37:24.533453+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.91</id>
-    <title>[vercel/next.js] v16.3.0-canary.91</title>
-    <updated>2026-07-20T23:58:50+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.91"/>
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/anchore/syft/releases/tag/v1.49.0</id>
-    <title>[anchore/syft] v1.49.0</title>
-    <updated>2026-07-21T13:17:14+00:00</updated>
-    <link href="https://github.com/anchore/syft/releases/tag/v1.49.0"/>
-    <summary>CLI tool and library for generating a Software Bill of Materials from container images and filesystems</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/astral-sh/setup-uv/releases/tag/v9.0.0</id>
-    <title>[astral-sh/setup-uv] v9.0.0 🌈 Change `prune-cache` default to `false`</title>
-    <updated>2026-07-21T15:48:22+00:00</updated>
-    <link href="https://github.com/astral-sh/setup-uv/releases/tag/v9.0.0"/>
-    <summary>Set up your GitHub Actions workflow with a specific version of https://docs.astral.sh/uv/</summary>
-  </entry>
   <entry>
     <id>https://github.com/react/react/releases/tag/v19.1.9</id>
     <title>[react/react] 19.1.9 (July 21st, 2026)</title>
@@ -249,5 +228,26 @@
     <updated>2026-07-28T15:05:09+00:00</updated>
     <link href="https://github.com/fastapi/fastapi/releases/tag/0.140.12"/>
     <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.99</id>
+    <title>[vercel/next.js] v16.3.0-canary.99</title>
+    <updated>2026-07-28T15:21:30+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.99"/>
+    <summary>The React Framework</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/fastapi/fastapi/releases/tag/0.140.13</id>
+    <title>[fastapi/fastapi] 0.140.13</title>
+    <updated>2026-07-28T15:37:08+00:00</updated>
+    <link href="https://github.com/fastapi/fastapi/releases/tag/0.140.13"/>
+    <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-preview.10</id>
+    <title>[vercel/next.js] v16.3.0-preview.10</title>
+    <updated>2026-07-28T16:18:33+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-preview.10"/>
+    <summary>The React Framework</summary>
   </entry>
 </feed>
