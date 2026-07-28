@@ -2,23 +2,9 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-07-28T21:11:02.234641+00:00</updated>
+  <updated>2026-07-28T23:02:22.579887+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v15.5.21</id>
-    <title>[vercel/next.js] v15.5.21</title>
-    <updated>2026-07-21T16:58:38+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v15.5.21"/>
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.2.11</id>
-    <title>[vercel/next.js] v16.2.11</title>
-    <updated>2026-07-21T16:58:48+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.2.11"/>
-    <summary>The React Framework</summary>
-  </entry>
   <entry>
     <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.92</id>
     <title>[vercel/next.js] v16.3.0-canary.92</title>
@@ -249,5 +235,19 @@
     <updated>2026-07-28T21:05:14+00:00</updated>
     <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.100"/>
     <summary>The React Framework</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.101</id>
+    <title>[vercel/next.js] v16.3.0-canary.101</title>
+    <updated>2026-07-28T21:14:04+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.101"/>
+    <summary>The React Framework</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/anchore/grype/releases/tag/v0.116.1</id>
+    <title>[anchore/grype] v0.116.1</title>
+    <updated>2026-07-28T21:45:34+00:00</updated>
+    <link href="https://github.com/anchore/grype/releases/tag/v0.116.1"/>
+    <summary>A vulnerability scanner for container images and filesystems</summary>
   </entry>
 </feed>
