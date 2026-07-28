@@ -2,23 +2,9 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-07-28T07:40:54.551791+00:00</updated>
+  <updated>2026-07-28T10:38:33.182674+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
-  <entry>
-    <id>https://github.com/actions/checkout/releases/tag/v5.1.0</id>
-    <title>[actions/checkout] v5.1.0</title>
-    <updated>2026-07-20T15:28:19+00:00</updated>
-    <link href="https://github.com/actions/checkout/releases/tag/v5.1.0"/>
-    <summary>Action for checking out a repo</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/actions/checkout/releases/tag/v4.4.0</id>
-    <title>[actions/checkout] v4.4.0</title>
-    <updated>2026-07-20T15:36:30+00:00</updated>
-    <link href="https://github.com/actions/checkout/releases/tag/v4.4.0"/>
-    <summary>Action for checking out a repo</summary>
-  </entry>
   <entry>
     <id>https://github.com/actions/checkout/releases/tag/v3.7.0</id>
     <title>[actions/checkout] v3.7.0</title>
@@ -241,6 +227,13 @@
     <title>[fastapi/fastapi] 0.140.7</title>
     <updated>2026-07-27T17:33:22+00:00</updated>
     <link href="https://github.com/fastapi/fastapi/releases/tag/0.140.7"/>
+    <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/fastapi/fastapi/releases/tag/0.140.8</id>
+    <title>[fastapi/fastapi] 0.140.8</title>
+    <updated>2026-07-28T10:31:25+00:00</updated>
+    <link href="https://github.com/fastapi/fastapi/releases/tag/0.140.8"/>
     <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
   </entry>
 </feed>
