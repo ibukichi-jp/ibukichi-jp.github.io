@@ -2,23 +2,9 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-07-30T00:02:47.805765+00:00</updated>
+  <updated>2026-07-30T04:07:41.601909+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-preview.8</id>
-    <title>[vercel/next.js] v16.3.0-preview.8</title>
-    <updated>2026-07-22T10:21:58+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-preview.8"/>
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.94</id>
-    <title>[vercel/next.js] v16.3.0-canary.94</title>
-    <updated>2026-07-23T00:02:58+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.94"/>
-    <summary>The React Framework</summary>
-  </entry>
   <entry>
     <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-preview.9</id>
     <title>[vercel/next.js] v16.3.0-preview.9</title>
@@ -242,5 +228,12 @@
     <updated>2026-07-29T17:17:46+00:00</updated>
     <link href="https://github.com/fastapi/fastapi/releases/tag/0.141.1"/>
     <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.103</id>
+    <title>[vercel/next.js] v16.3.0-canary.103</title>
+    <updated>2026-07-30T00:04:57+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.103"/>
+    <summary>The React Framework</summary>
   </entry>
 </feed>
