@@ -2,16 +2,9 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-07-30T21:13:19.624209+00:00</updated>
+  <updated>2026-07-30T23:10:30.170220+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.95</id>
-    <title>[vercel/next.js] v16.3.0-canary.95</title>
-    <updated>2026-07-23T23:58:33+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.95"/>
-    <summary>The React Framework</summary>
-  </entry>
   <entry>
     <id>https://github.com/fastapi/fastapi/releases/tag/0.140.0</id>
     <title>[fastapi/fastapi] 0.140.0</title>
@@ -234,6 +227,20 @@
     <title>[php/php-src] PHP 8.5.9</title>
     <updated>2026-07-30T13:45:49+00:00</updated>
     <link href="https://github.com/php/php-src/releases/tag/php-8.5.9"/>
+    <summary>The PHP Interpreter</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/php/php-src/releases/tag/php-8.3.33</id>
+    <title>[php/php-src] PHP 8.3.33</title>
+    <updated>2026-07-30T22:51:08+00:00</updated>
+    <link href="https://github.com/php/php-src/releases/tag/php-8.3.33"/>
+    <summary>The PHP Interpreter</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/php/php-src/releases/tag/php-8.4.24</id>
+    <title>[php/php-src] PHP 8.4.24</title>
+    <updated>2026-07-30T22:51:44+00:00</updated>
+    <link href="https://github.com/php/php-src/releases/tag/php-8.4.24"/>
     <summary>The PHP Interpreter</summary>
   </entry>
 </feed>
