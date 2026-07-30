@@ -2,23 +2,9 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-07-30T12:46:46.726144+00:00</updated>
+  <updated>2026-07-30T15:12:39.544250+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-preview.9</id>
-    <title>[vercel/next.js] v16.3.0-preview.9</title>
-    <updated>2026-07-23T12:43:28+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-preview.9"/>
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/astral-sh/uv/releases/tag/0.11.32</id>
-    <title>[astral-sh/uv] 0.11.32</title>
-    <updated>2026-07-23T23:18:05+00:00</updated>
-    <link href="https://github.com/astral-sh/uv/releases/tag/0.11.32"/>
-    <summary>An extremely fast Python package and project manager, written in Rust.</summary>
-  </entry>
   <entry>
     <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.95</id>
     <title>[vercel/next.js] v16.3.0-canary.95</title>
@@ -235,5 +221,19 @@
     <updated>2026-07-30T00:04:57+00:00</updated>
     <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.103"/>
     <summary>The React Framework</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/php/php-src/releases/tag/php-8.2.33</id>
+    <title>[php/php-src] PHP 8.2.33</title>
+    <updated>2026-07-30T13:45:18+00:00</updated>
+    <link href="https://github.com/php/php-src/releases/tag/php-8.2.33"/>
+    <summary>The PHP Interpreter</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/php/php-src/releases/tag/php-8.5.9</id>
+    <title>[php/php-src] PHP 8.5.9</title>
+    <updated>2026-07-30T13:45:49+00:00</updated>
+    <link href="https://github.com/php/php-src/releases/tag/php-8.5.9"/>
+    <summary>The PHP Interpreter</summary>
   </entry>
 </feed>
