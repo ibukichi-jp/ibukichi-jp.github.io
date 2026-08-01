@@ -2,30 +2,9 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-07-31T23:03:52.567725+00:00</updated>
+  <updated>2026-08-01T03:15:50.535109+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v15.5.22</id>
-    <title>[vercel/next.js] v15.5.22</title>
-    <updated>2026-07-25T23:55:19+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v15.5.22"/>
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.2.12</id>
-    <title>[vercel/next.js] v16.2.12</title>
-    <updated>2026-07-25T23:56:02+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.2.12"/>
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.97</id>
-    <title>[vercel/next.js] v16.3.0-canary.97</title>
-    <updated>2026-07-25T23:57:13+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.97"/>
-    <summary>The React Framework</summary>
-  </entry>
   <entry>
     <id>https://github.com/fastapi/fastapi/releases/tag/0.140.1</id>
     <title>[fastapi/fastapi] 0.140.1</title>
@@ -242,5 +221,12 @@
     <updated>2026-07-31T19:43:51+00:00</updated>
     <link href="https://github.com/astral-sh/uv/releases/tag/0.12.1"/>
     <summary>An extremely fast Python package and project manager, written in Rust.</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.105</id>
+    <title>[vercel/next.js] v16.3.0-canary.105</title>
+    <updated>2026-07-31T23:57:33+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.105"/>
+    <summary>The React Framework</summary>
   </entry>
 </feed>
