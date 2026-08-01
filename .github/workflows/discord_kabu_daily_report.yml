@@ -27,7 +27,7 @@ jobs:
 
       - name: Run script for bot
         env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_URL_DAILY_REPORT: ${{ secrets.DISCORD_URL_DAILY_REPORT }}
           KABU_PRICES_JSON_BASE64:  ${{ secrets.KABU_PRICES_JSON_BASE64 }}
         run: uv run ./.src/discord_kabu_daily_report.py
 
