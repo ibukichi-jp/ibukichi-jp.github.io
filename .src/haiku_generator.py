@@ -10,9 +10,28 @@ client = OpenAI(
 )
 
 
-def generate_haiku(prompt: str = "今日という日にちなんだ俳句を詠んでください。", model: str = "gpt-oss-120b") -> str:
+def get_season(month: int) -> str:
+    if 3 <= month <= 5:
+        return "春"
+    elif 6 <= month <= 8:
+        return "夏"
+    elif 9 <= month <= 11:
+        return "秋"
+    else:
+        return "冬"
+
+
+def generate_haiku(prompt: str = None, model: str = "gpt-oss-120b") -> str:
     if not SAKURA_API_KEY:
         raise ValueError("環境変数 'SAKURA_API_KEY' が設定されていません。")
+
+    if prompt is None:
+        from datetime import datetime, timezone, timedelta
+        jst = timezone(timedelta(hours=9))
+        today = datetime.now(jst)
+        date_str = today.strftime("%Y年%m月%d日")
+        season = get_season(today.month)
+        prompt = f"今日の日付は{date_str}、季節は{season}です。この季節感や日付にちなんだ俳句を詠んでください。"
 
     system_instruction = (
         "あなたは優秀な俳人です。季語を含めた俳句を一つ作成してください。\n"
