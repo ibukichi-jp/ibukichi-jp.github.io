@@ -2,86 +2,9 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-07-29T11:28:06.798717+00:00</updated>
+  <updated>2026-08-01T03:15:50.535109+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
-  <entry>
-    <id>https://github.com/astral-sh/uv/releases/tag/0.11.31</id>
-    <title>[astral-sh/uv] 0.11.31</title>
-    <updated>2026-07-22T01:50:00+00:00</updated>
-    <link href="https://github.com/astral-sh/uv/releases/tag/0.11.31"/>
-    <summary>An extremely fast Python package and project manager, written in Rust.</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-preview.8</id>
-    <title>[vercel/next.js] v16.3.0-preview.8</title>
-    <updated>2026-07-22T10:21:58+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-preview.8"/>
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.94</id>
-    <title>[vercel/next.js] v16.3.0-canary.94</title>
-    <updated>2026-07-23T00:02:58+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.94"/>
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-preview.9</id>
-    <title>[vercel/next.js] v16.3.0-preview.9</title>
-    <updated>2026-07-23T12:43:28+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-preview.9"/>
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/astral-sh/uv/releases/tag/0.11.32</id>
-    <title>[astral-sh/uv] 0.11.32</title>
-    <updated>2026-07-23T23:18:05+00:00</updated>
-    <link href="https://github.com/astral-sh/uv/releases/tag/0.11.32"/>
-    <summary>An extremely fast Python package and project manager, written in Rust.</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.95</id>
-    <title>[vercel/next.js] v16.3.0-canary.95</title>
-    <updated>2026-07-23T23:58:33+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.95"/>
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/fastapi/fastapi/releases/tag/0.140.0</id>
-    <title>[fastapi/fastapi] 0.140.0</title>
-    <updated>2026-07-24T21:16:40+00:00</updated>
-    <link href="https://github.com/fastapi/fastapi/releases/tag/0.140.0"/>
-    <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.96</id>
-    <title>[vercel/next.js] v16.3.0-canary.96</title>
-    <updated>2026-07-25T00:00:54+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.96"/>
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v15.5.22</id>
-    <title>[vercel/next.js] v15.5.22</title>
-    <updated>2026-07-25T23:55:19+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v15.5.22"/>
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.2.12</id>
-    <title>[vercel/next.js] v16.2.12</title>
-    <updated>2026-07-25T23:56:02+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.2.12"/>
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.97</id>
-    <title>[vercel/next.js] v16.3.0-canary.97</title>
-    <updated>2026-07-25T23:57:13+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.97"/>
-    <summary>The React Framework</summary>
-  </entry>
   <entry>
     <id>https://github.com/fastapi/fastapi/releases/tag/0.140.1</id>
     <title>[fastapi/fastapi] 0.140.1</title>
@@ -234,6 +157,76 @@
     <title>[vercel/next.js] v16.3.0-canary.102</title>
     <updated>2026-07-28T23:55:32+00:00</updated>
     <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.102"/>
+    <summary>The React Framework</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/fastapi/fastapi/releases/tag/0.141.0</id>
+    <title>[fastapi/fastapi] 0.141.0</title>
+    <updated>2026-07-29T14:47:56+00:00</updated>
+    <link href="https://github.com/fastapi/fastapi/releases/tag/0.141.0"/>
+    <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/fastapi/fastapi/releases/tag/0.141.1</id>
+    <title>[fastapi/fastapi] 0.141.1</title>
+    <updated>2026-07-29T17:17:46+00:00</updated>
+    <link href="https://github.com/fastapi/fastapi/releases/tag/0.141.1"/>
+    <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.103</id>
+    <title>[vercel/next.js] v16.3.0-canary.103</title>
+    <updated>2026-07-30T00:04:57+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.103"/>
+    <summary>The React Framework</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/php/php-src/releases/tag/php-8.2.33</id>
+    <title>[php/php-src] PHP 8.2.33</title>
+    <updated>2026-07-30T13:45:18+00:00</updated>
+    <link href="https://github.com/php/php-src/releases/tag/php-8.2.33"/>
+    <summary>The PHP Interpreter</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/php/php-src/releases/tag/php-8.5.9</id>
+    <title>[php/php-src] PHP 8.5.9</title>
+    <updated>2026-07-30T13:45:49+00:00</updated>
+    <link href="https://github.com/php/php-src/releases/tag/php-8.5.9"/>
+    <summary>The PHP Interpreter</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/php/php-src/releases/tag/php-8.3.33</id>
+    <title>[php/php-src] PHP 8.3.33</title>
+    <updated>2026-07-30T22:51:08+00:00</updated>
+    <link href="https://github.com/php/php-src/releases/tag/php-8.3.33"/>
+    <summary>The PHP Interpreter</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/php/php-src/releases/tag/php-8.4.24</id>
+    <title>[php/php-src] PHP 8.4.24</title>
+    <updated>2026-07-30T22:51:44+00:00</updated>
+    <link href="https://github.com/php/php-src/releases/tag/php-8.4.24"/>
+    <summary>The PHP Interpreter</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.104</id>
+    <title>[vercel/next.js] v16.3.0-canary.104</title>
+    <updated>2026-07-30T23:56:46+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.104"/>
+    <summary>The React Framework</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/astral-sh/uv/releases/tag/0.12.1</id>
+    <title>[astral-sh/uv] 0.12.1</title>
+    <updated>2026-07-31T19:43:51+00:00</updated>
+    <link href="https://github.com/astral-sh/uv/releases/tag/0.12.1"/>
+    <summary>An extremely fast Python package and project manager, written in Rust.</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.105</id>
+    <title>[vercel/next.js] v16.3.0-canary.105</title>
+    <updated>2026-07-31T23:57:33+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.105"/>
     <summary>The React Framework</summary>
   </entry>
 </feed>
