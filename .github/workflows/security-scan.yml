@@ -43,5 +43,5 @@ jobs:
         if: failure()
         run: |
           curl -H "Content-Type: application/json" \
-               -d '{"username": "Failure", "content": "⚠️ **GitHub Actionsが失敗しました。**\n内容を確認してください: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' \
-               ${{ secrets.DISCORD_WEBHOOK }}
+               -d '{"username": "GitHub Actions", "content": "⚠️ **GitHub Actionsが失敗しました。**\n内容を確認してください: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' \
+               ${{ secrets.DISCORD_URL_GITHUB }}

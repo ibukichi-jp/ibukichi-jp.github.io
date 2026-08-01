@@ -1,5 +1,5 @@
 from datetime import datetime
-from discord_kabu_common import load_prices, get_prices, send_discord
+from discord_kabu_common import load_prices, get_prices, send_discord, get_env
 
 
 def main():
@@ -55,7 +55,8 @@ def main():
         f"📊 前週比: {total_diff:+,.0f}円",
     ])
 
-    send_discord("\n".join(lines))
+    webhook_url = get_env("DISCORD_URL_WEEKLY_REPORT")
+    send_discord("\n".join(lines), webhook_url)
 
 
 if __name__ == "__main__":

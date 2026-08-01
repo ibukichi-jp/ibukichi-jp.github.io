@@ -15,7 +15,6 @@ def get_env(name: str) -> str:
     return value
 
 
-DISCORD_WEBHOOK_URL = get_env("DISCORD_WEBHOOK")
 PRICES_JSON_BASE64 = get_env("KABU_PRICES_JSON_BASE64")
 
 
@@ -34,8 +33,8 @@ def get_prices(symbol: str, period="2d"):
     return hist
 
 
-def send_discord(message: str):
+def send_discord(message: str, webhook_url: str):
     payload = {"content": message}
-    r = requests.post(DISCORD_WEBHOOK_URL, json=payload, timeout=10)
+    r = requests.post(webhook_url, json=payload, timeout=10)
     r.raise_for_status()
 

@@ -1,5 +1,5 @@
 from datetime import datetime
-from discord_kabu_common import load_prices, get_prices, send_discord
+from discord_kabu_common import load_prices, get_prices, send_discord, get_env
 import jpholiday
 
 def is_market_open(today):
@@ -77,7 +77,8 @@ def main():
         f"📈 評価損益: {total_profit:+,.0f}円"
     )
 
-    send_discord("\n".join(lines))
+    webhook_url = get_env("DISCORD_URL_DAILY_REPORT")
+    send_discord("\n".join(lines), webhook_url)
 
 
 if __name__ == "__main__":
