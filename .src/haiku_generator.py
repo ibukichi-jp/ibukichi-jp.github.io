@@ -60,15 +60,40 @@ def generate_haiku(prompt: str = None, model: str = "gpt-oss-120b") -> str:
         raise RuntimeError(f"予期せぬエラーが発生しました: {e}")
 
 
+def load_existing_haikus(filepath: str) -> set:
+    if not os.path.exists(filepath):
+        return set()
+    try:
+        with open(filepath, "r", encoding="utf-8") as f:
+            return {line.strip() for line in f if line.strip()}
+    except Exception as e:
+        print(f"ログファイルの読み込み中にエラーが発生しました: {e}", file=sys.stderr)
+        return set()
+
+
 if __name__ == "__main__":
     try:
-        haiku = generate_haiku()
+        log_filepath = ".data/haiku.log"
+        existing_haikus = load_existing_haikus(log_filepath)
+
+        # 重複しない俳句が生成できるまで最大10回リトライする
+        max_retries = 10
+        haiku = None
+        for attempt in range(1, max_retries + 1):
+            candidate = generate_haiku()
+            if candidate not in existing_haikus:
+                haiku = candidate
+                break
+            print(f"重複を検出したため、再生成します ({attempt}/{max_retries}回目): {candidate}")
+
+        if haiku is None:
+            raise RuntimeError(f"エラー: {max_retries}回試行しましたが、重複しない新しい俳句を生成できませんでした。")
 
         # .dataディレクトリが存在しない場合は作成する
         os.makedirs(".data", exist_ok=True)
 
         # haiku.log に追記モード('a')で書き込み
-        with open(".data/haiku.log", "a", encoding="utf-8") as f:
+        with open(log_filepath, "a", encoding="utf-8") as f:
             f.write(f"{haiku}\n")
 
         print(f"俳句を .data/haiku.log に保存しました: {haiku}")
