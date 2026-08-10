@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-08-10T16:55:34.583701+00:00</updated>
+  <updated>2026-08-10T17:53:15.188772+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
   <entry>
@@ -18,5 +18,12 @@
     <updated>2026-08-10T14:55:39+00:00</updated>
     <link href="https://github.com/anchore/syft/releases/tag/v1.51.0"/>
     <summary>CLI tool and library for generating a Software Bill of Materials from container images and filesystems</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/anchore/grype/releases/tag/v0.117.0</id>
+    <title>[anchore/grype] v0.117.0</title>
+    <updated>2026-08-10T16:55:03+00:00</updated>
+    <link href="https://github.com/anchore/grype/releases/tag/v0.117.0"/>
+    <summary>A vulnerability scanner for container images and filesystems</summary>
   </entry>
 </feed>
