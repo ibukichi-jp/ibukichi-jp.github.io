@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
   <id>https://github.com/notifications</id>
   <title>Tracking tech books</title>
-  <updated>2026-08-12T08:19:50.818499+00:00</updated>
+  <updated>2026-08-30T03:42:43.965114+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
   <entry>
@@ -472,13 +472,6 @@ Ruby技術者認定試験（Silver/Gold対応&amp;#8288;）&amp;#8288; 公式テ
     <summary>技術評論社</summary>
   </entry>
   <entry>
-    <id>https://gihyo.jp/book/2025/978-4-297-14943-7</id>
-    <title>実践 SONiC入門</title>
-    <updated>2026-02-07T05:46:04.949150+00:00</updated>
-    <link href="https://gihyo.jp/book/2025/978-4-297-14943-7"/>
-    <summary>技術評論社</summary>
-  </entry>
-  <entry>
     <id>https://gihyo.jp/book/2025/978-4-297-15074-7</id>
     <title>実践Apache Iceberg—&amp;#8288;—高効率・高生産性を実現するデータ基盤の構築と運用</title>
     <updated>2026-02-07T05:46:04.949150+00:00</updated>
@@ -560,6 +553,13 @@ Ruby技術者認定試験（Silver/Gold対応&amp;#8288;）&amp;#8288; 公式テ
     <title>OpenTelemetryではじめるテレメトリーサンプリング―&amp;#8288;―シグナルデータ膨張に対応しながらオブザーバビリティを確保する</title>
     <updated>2026-08-10T08:40:40.224346+00:00</updated>
     <link href="https://gihyo.jp/book/2026/978-4-297-15813-2"/>
+    <summary>技術評論社</summary>
+  </entry>
+  <entry>
+    <id>https://gihyo.jp/book/2026/978-4-297-15860-6</id>
+    <title>Codexではじめるエージェンティックコーディング―&amp;#8288;―AIエージェントによる自律的システム開発ガイド</title>
+    <updated>2026-08-30T03:42:43.964481+00:00</updated>
+    <link href="https://gihyo.jp/book/2026/978-4-297-15860-6"/>
     <summary>技術評論社</summary>
   </entry>
   <entry>
@@ -717,20 +717,6 @@ Ruby技術者認定試験（Silver/Gold対応&amp;#8288;）&amp;#8288; 公式テ
     <summary>技術評論社</summary>
   </entry>
   <entry>
-    <id>https://www.shoeisha.co.jp/book/detail/9784798191935</id>
-    <title>Python1年生 追加授業 もっと知りたい！プログラミングのしくみ  体験してわかる！会話でまなべる！</title>
-    <updated>2026-03-25T02:52:47.811256+00:00</updated>
-    <link href="https://www.shoeisha.co.jp/book/detail/9784798191935"/>
-    <summary>翔泳社</summary>
-  </entry>
-  <entry>
-    <id>https://www.shoeisha.co.jp/book/detail/9784798190242</id>
-    <title>Exercise C  プログラマ脳を鍛える至高の問題集</title>
-    <updated>2026-03-26T03:17:55.717874+00:00</updated>
-    <link href="https://www.shoeisha.co.jp/book/detail/9784798190242"/>
-    <summary>翔泳社</summary>
-  </entry>
-  <entry>
     <id>https://www.shoeisha.co.jp/book/detail/9784798194288</id>
     <title>AIは世界をどう変えるのか？  「AIをつくった人たち」の証言から読み解く未来</title>
     <updated>2026-04-10T03:31:41.961144+00:00</updated>
@@ -854,6 +840,20 @@ Ruby技術者認定試験（Silver/Gold対応&amp;#8288;）&amp;#8288; 公式テ
     <title>エンジニアのためのNotion活用術  Notion＆Notion AIによる技術ナレッジ共有・管理手法</title>
     <updated>2026-07-31T12:02:54.282230+00:00</updated>
     <link href="https://www.shoeisha.co.jp/book/detail/9784798194806"/>
+    <summary>翔泳社</summary>
+  </entry>
+  <entry>
+    <id>https://www.shoeisha.co.jp/book/detail/9784798195513</id>
+    <title>たのしいオープンワールドゲームの作り方  Unityではじめる3Dゲーム開発入門</title>
+    <updated>2026-08-30T03:42:43.964481+00:00</updated>
+    <link href="https://www.shoeisha.co.jp/book/detail/9784798195513"/>
+    <summary>翔泳社</summary>
+  </entry>
+  <entry>
+    <id>https://www.shoeisha.co.jp/book/detail/9784798195018</id>
+    <title>野蛮なアジャイル  ［サイボウズ発！］組織の常識を覆した反骨のスクラム実践記</title>
+    <updated>2026-08-30T03:42:43.964481+00:00</updated>
+    <link href="https://www.shoeisha.co.jp/book/detail/9784798195018"/>
     <summary>翔泳社</summary>
   </entry>
 </feed>
