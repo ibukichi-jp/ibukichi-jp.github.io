@@ -2,15 +2,57 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-08-30T03:42:29.761484+00:00</updated>
+  <updated>2026-08-30T04:26:27.713981+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
   <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.4.0-canary.9</id>
-    <title>[vercel/next.js] v16.4.0-canary.9</title>
-    <updated>2026-08-27T00:43:58+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.4.0-canary.9"/>
-    <summary>The React Framework</summary>
+    <id>https://github.com/astral-sh/setup-uv/releases/tag/v10.0.0</id>
+    <title>[astral-sh/setup-uv] v10.0.0 🌈 Disable automatic caching for sensitive events and new QOL features</title>
+    <updated>2026-08-12T12:58:39+00:00</updated>
+    <link href="https://github.com/astral-sh/setup-uv/releases/tag/v10.0.0"/>
+    <summary>Set up your GitHub Actions workflow with a specific version of https://docs.astral.sh/uv/</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/astral-sh/uv/releases/tag/0.12.4</id>
+    <title>[astral-sh/uv] 0.12.4</title>
+    <updated>2026-08-13T21:16:28+00:00</updated>
+    <link href="https://github.com/astral-sh/uv/releases/tag/0.12.4"/>
+    <summary>An extremely fast Python package and project manager, written in Rust.</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/astral-sh/setup-uv/releases/tag/v10.0.1</id>
+    <title>[astral-sh/setup-uv] v10.0.1 🌈 Tolerate transient manifest timeouts</title>
+    <updated>2026-08-14T08:55:52+00:00</updated>
+    <link href="https://github.com/astral-sh/setup-uv/releases/tag/v10.0.1"/>
+    <summary>Set up your GitHub Actions workflow with a specific version of https://docs.astral.sh/uv/</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/astral-sh/uv/releases/tag/0.12.5</id>
+    <title>[astral-sh/uv] 0.12.5</title>
+    <updated>2026-08-14T19:58:12+00:00</updated>
+    <link href="https://github.com/astral-sh/uv/releases/tag/0.12.5"/>
+    <summary>An extremely fast Python package and project manager, written in Rust.</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/oven-sh/bun/releases/tag/bun-v1.4.0</id>
+    <title>[oven-sh/bun] Bun v1.4</title>
+    <updated>2026-08-20T14:07:41+00:00</updated>
+    <link href="https://github.com/oven-sh/bun/releases/tag/bun-v1.4.0"/>
+    <summary>Incredibly fast JavaScript runtime, bundler, test runner, and package manager – all in one</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/microsoft/TypeScript/releases/tag/v7.0.2</id>
+    <title>[microsoft/TypeScript] TypeScript 7.0.2</title>
+    <updated>2026-08-20T18:10:09+00:00</updated>
+    <link href="https://github.com/microsoft/TypeScript/releases/tag/v7.0.2"/>
+    <summary>TypeScript is a superset of JavaScript that compiles to clean JavaScript output.</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/astral-sh/uv/releases/tag/0.12.6</id>
+    <title>[astral-sh/uv] 0.12.6</title>
+    <updated>2026-08-25T19:41:35+00:00</updated>
+    <link href="https://github.com/astral-sh/uv/releases/tag/0.12.6"/>
+    <summary>An extremely fast Python package and project manager, written in Rust.</summary>
   </entry>
   <entry>
     <id>https://github.com/anchore/syft/releases/tag/v1.51.1</id>
@@ -34,13 +76,6 @@
     <summary>An extremely fast Python package and project manager, written in Rust.</summary>
   </entry>
   <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.4.0-canary.10</id>
-    <title>[vercel/next.js] v16.4.0-canary.10</title>
-    <updated>2026-08-28T02:14:36+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.4.0-canary.10"/>
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
     <id>https://github.com/anchore/scan-action/releases/tag/v7.4.2</id>
     <title>[anchore/scan-action] v7.4.2</title>
     <updated>2026-08-28T19:44:00+00:00</updated>
@@ -62,24 +97,10 @@
     <summary>The PHP Interpreter</summary>
   </entry>
   <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.4.0-canary.11</id>
-    <title>[vercel/next.js] v16.4.0-canary.11</title>
-    <updated>2026-08-28T23:38:57+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.4.0-canary.11"/>
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
     <id>https://github.com/php/php-src/releases/tag/php-8.5.10</id>
     <title>[php/php-src] PHP 8.5.10</title>
     <updated>2026-08-28T23:40:16+00:00</updated>
     <link href="https://github.com/php/php-src/releases/tag/php-8.5.10"/>
     <summary>The PHP Interpreter</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.4.0-canary.12</id>
-    <title>[vercel/next.js] v16.4.0-canary.12</title>
-    <updated>2026-08-29T23:39:12+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.4.0-canary.12"/>
-    <summary>The React Framework</summary>
   </entry>
 </feed>
