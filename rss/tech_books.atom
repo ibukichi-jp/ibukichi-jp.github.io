@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
   <id>https://github.com/notifications</id>
   <title>Tracking tech books</title>
-  <updated>2026-09-03T03:35:49.193787+00:00</updated>
+  <updated>2026-09-03T08:42:22.689232+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
   <entry>
@@ -472,13 +472,6 @@ Ruby技術者認定試験（Silver/Gold対応&amp;#8288;）&amp;#8288; 公式テ
     <summary>技術評論社</summary>
   </entry>
   <entry>
-    <id>https://gihyo.jp/book/2025/978-4-297-15074-7</id>
-    <title>実践Apache Iceberg—&amp;#8288;—高効率・高生産性を実現するデータ基盤の構築と運用</title>
-    <updated>2026-02-07T05:46:04.949150+00:00</updated>
-    <link href="https://gihyo.jp/book/2025/978-4-297-15074-7"/>
-    <summary>技術評論社</summary>
-  </entry>
-  <entry>
     <id>https://gihyo.jp/book/2025/978-4-297-15114-0</id>
     <title>改訂新版 Go言語プログラミングエッセンス</title>
     <updated>2026-02-07T05:46:04.949150+00:00</updated>
@@ -560,6 +553,13 @@ Ruby技術者認定試験（Silver/Gold対応&amp;#8288;）&amp;#8288; 公式テ
     <title>Codexではじめるエージェンティックコーディング―&amp;#8288;―AIエージェントによる自律的システム開発ガイド</title>
     <updated>2026-08-30T03:42:43.964481+00:00</updated>
     <link href="https://gihyo.jp/book/2026/978-4-297-15860-6"/>
+    <summary>技術評論社</summary>
+  </entry>
+  <entry>
+    <id>https://gihyo.jp/book/2026/978-4-297-15961-0</id>
+    <title>AWS CDK実践ガイド─クラウドインフラをコードで構造化する</title>
+    <updated>2026-09-03T08:42:22.688580+00:00</updated>
+    <link href="https://gihyo.jp/book/2026/978-4-297-15961-0"/>
     <summary>技術評論社</summary>
   </entry>
   <entry>
