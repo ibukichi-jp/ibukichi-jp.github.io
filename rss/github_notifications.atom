@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-09-05T22:48:48.568559+00:00</updated>
+  <updated>2026-09-06T00:42:43.616316+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
   <entry>
@@ -60,5 +60,12 @@
     <updated>2026-09-05T05:56:08+00:00</updated>
     <link href="https://github.com/oven-sh/bun/releases/tag/bun-v1.4.2"/>
     <summary>Incredibly fast JavaScript runtime, bundler, test runner, and package manager – all in one</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.4.0-canary.19</id>
+    <title>[vercel/next.js] v16.4.0-canary.19</title>
+    <updated>2026-09-05T23:37:41+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.4.0-canary.19"/>
+    <summary>The React Framework</summary>
   </entry>
 </feed>
