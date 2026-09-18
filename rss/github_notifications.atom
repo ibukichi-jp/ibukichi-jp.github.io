@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-09-17T21:57:19.752038+00:00</updated>
+  <updated>2026-09-18T00:03:11.833645+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
   <entry>
@@ -18,5 +18,12 @@
     <updated>2026-09-17T16:45:43+00:00</updated>
     <link href="https://github.com/anchore/grype/releases/tag/v0.119.0"/>
     <summary>A vulnerability scanner for container images and filesystems</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.4.0-canary.35</id>
+    <title>[vercel/next.js] v16.4.0-canary.35</title>
+    <updated>2026-09-17T23:43:51+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.4.0-canary.35"/>
+    <summary>The React Framework</summary>
   </entry>
 </feed>
