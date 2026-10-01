@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-09-30T22:51:37.552556+00:00</updated>
+  <updated>2026-10-01T01:52:15.492496+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
   <entry>
@@ -193,5 +193,12 @@
     <updated>2026-09-30T19:10:25+00:00</updated>
     <link href="https://github.com/microsoft/TypeScript/releases/tag/vscode-typescript/v1.0.1"/>
     <summary>TypeScript is a superset of JavaScript that compiles to clean JavaScript output.</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.4.0-canary.54</id>
+    <title>[vercel/next.js] v16.4.0-canary.54</title>
+    <updated>2026-09-30T23:47:05+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.4.0-canary.54"/>
+    <summary>The React Framework</summary>
   </entry>
 </feed>
