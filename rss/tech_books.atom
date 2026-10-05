@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
   <id>https://github.com/notifications</id>
   <title>Tracking tech books</title>
-  <updated>2026-10-05T01:44:11.852182+00:00</updated>
+  <updated>2026-10-05T08:37:34.964709+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
   <entry>
@@ -97,13 +97,6 @@
     <summary>技術評論社</summary>
   </entry>
   <entry>
-    <id>https://gihyo.jp/book/2026/978-4-297-15354-0</id>
-    <title>実践Claude Code入門―現場で活用するためのAIコーディングの思考法</title>
-    <updated>2026-02-07T05:46:04.949150+00:00</updated>
-    <link href="https://gihyo.jp/book/2026/978-4-297-15354-0"/>
-    <summary>技術評論社</summary>
-  </entry>
-  <entry>
     <id>https://gihyo.jp/book/2026/978-4-297-15419-6</id>
     <title>LLMの原理、RAG・エージェント開発から読み解く コンテキストエンジニアリング</title>
     <updated>2026-02-07T05:46:04.949150+00:00</updated>
@@ -185,6 +178,13 @@
     <title>Microsoft Fabric入門―&amp;#8288;―レイクハウスで実現するAI時代の統合データ基盤</title>
     <updated>2026-09-12T06:31:45.794629+00:00</updated>
     <link href="https://gihyo.jp/book/2026/978-4-297-15877-4"/>
+    <summary>技術評論社</summary>
+  </entry>
+  <entry>
+    <id>https://gihyo.jp/book/2026/978-4-297-15725-8</id>
+    <title>実践TypeScriptバックエンド開発：データと関数によるドメインモデリングで堅牢性を高める</title>
+    <updated>2026-10-05T08:37:34.964067+00:00</updated>
+    <link href="https://gihyo.jp/book/2026/978-4-297-15725-8"/>
     <summary>技術評論社</summary>
   </entry>
   <entry>
