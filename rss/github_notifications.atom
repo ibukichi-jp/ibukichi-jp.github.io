@@ -2,23 +2,9 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-10-07T20:29:11.785330+00:00</updated>
+  <updated>2026-10-08T00:48:25.534701+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
-  <entry>
-    <id>https://github.com/anchore/syft/releases/tag/v1.52.0</id>
-    <title>[anchore/syft] v1.52.0</title>
-    <updated>2026-09-17T14:38:38+00:00</updated>
-    <link href="https://github.com/anchore/syft/releases/tag/v1.52.0"/>
-    <summary>CLI tool and library for generating a Software Bill of Materials from container images and filesystems</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/anchore/grype/releases/tag/v0.119.0</id>
-    <title>[anchore/grype] v0.119.0</title>
-    <updated>2026-09-17T16:45:43+00:00</updated>
-    <link href="https://github.com/anchore/grype/releases/tag/v0.119.0"/>
-    <summary>A vulnerability scanner for container images and filesystems</summary>
-  </entry>
   <entry>
     <id>https://github.com/astral-sh/uv/releases/tag/0.12.16</id>
     <title>[astral-sh/uv] 0.12.16</title>
@@ -347,5 +333,19 @@
     <updated>2026-10-07T19:21:46+00:00</updated>
     <link href="https://github.com/fastapi/fastapi/releases/tag/0.142.3"/>
     <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/fastapi/fastapi/releases/tag/0.142.4</id>
+    <title>[fastapi/fastapi] 0.142.4</title>
+    <updated>2026-10-07T21:22:17+00:00</updated>
+    <link href="https://github.com/fastapi/fastapi/releases/tag/0.142.4"/>
+    <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.3</id>
+    <title>[vercel/next.js] v16.5.0-canary.3</title>
+    <updated>2026-10-07T23:50:50+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.3"/>
+    <summary>The React Framework</summary>
   </entry>
 </feed>
