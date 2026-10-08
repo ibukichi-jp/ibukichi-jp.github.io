@@ -2,23 +2,9 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-10-08T15:21:39.027208+00:00</updated>
+  <updated>2026-10-08T21:08:26.686780+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
-  <entry>
-    <id>https://github.com/astral-sh/uv/releases/tag/0.12.16</id>
-    <title>[astral-sh/uv] 0.12.16</title>
-    <updated>2026-09-18T01:02:03+00:00</updated>
-    <link href="https://github.com/astral-sh/uv/releases/tag/0.12.16"/>
-    <summary>An extremely fast Python package and project manager, written in Rust.</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/astral-sh/uv/releases/tag/0.12.17</id>
-    <title>[astral-sh/uv] 0.12.17</title>
-    <updated>2026-09-18T18:59:45+00:00</updated>
-    <link href="https://github.com/astral-sh/uv/releases/tag/0.12.17"/>
-    <summary>An extremely fast Python package and project manager, written in Rust.</summary>
-  </entry>
   <entry>
     <id>https://github.com/astral-sh/setup-uv/releases/tag/v10.2.0</id>
     <title>[astral-sh/setup-uv] v10.2.0 🌈 Disable automatic cache saves for merge queues</title>
@@ -354,5 +340,19 @@
     <updated>2026-10-08T12:29:50+00:00</updated>
     <link href="https://github.com/fastapi/fastapi/releases/tag/0.143.0"/>
     <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.4</id>
+    <title>[vercel/next.js] v16.5.0-canary.4</title>
+    <updated>2026-10-08T16:12:56+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.4"/>
+    <summary>The React Framework</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/astral-sh/uv/releases/tag/0.12.24</id>
+    <title>[astral-sh/uv] 0.12.24</title>
+    <updated>2026-10-08T20:06:41+00:00</updated>
+    <link href="https://github.com/astral-sh/uv/releases/tag/0.12.24"/>
+    <summary>An extremely fast Python package and project manager, written in Rust.</summary>
   </entry>
 </feed>
