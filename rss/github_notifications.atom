@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-10-14T16:47:58.156583+00:00</updated>
+  <updated>2026-10-14T20:30:05.241743+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
   <entry>
@@ -32,5 +32,54 @@
     <updated>2026-10-14T12:53:12+00:00</updated>
     <link href="https://github.com/fastapi/fastapi/releases/tag/0.143.1"/>
     <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/react/react/releases/tag/v19.3.1</id>
+    <title>[react/react] 19.3.1 (October 14th, 2026)</title>
+    <updated>2026-10-14T17:12:48+00:00</updated>
+    <link href="https://github.com/react/react/releases/tag/v19.3.1"/>
+    <summary>The library for web and native user interfaces.</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/react/react/releases/tag/v19.0.9</id>
+    <title>[react/react] 19.0.9 (October 14th, 2026)</title>
+    <updated>2026-10-14T17:14:14+00:00</updated>
+    <link href="https://github.com/react/react/releases/tag/v19.0.9"/>
+    <summary>The library for web and native user interfaces.</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/react/react/releases/tag/v19.1.10</id>
+    <title>[react/react] 19.1.10 (October 14th, 2026)</title>
+    <updated>2026-10-14T17:29:56+00:00</updated>
+    <link href="https://github.com/react/react/releases/tag/v19.1.10"/>
+    <summary>The library for web and native user interfaces.</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/react/react/releases/tag/v19.2.9</id>
+    <title>[react/react] 19.2.9 (October 14th, 2026)</title>
+    <updated>2026-10-14T17:26:20+00:00</updated>
+    <link href="https://github.com/react/react/releases/tag/v19.2.9"/>
+    <summary>The library for web and native user interfaces.</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v15.5.28</id>
+    <title>[vercel/next.js] v15.5.28</title>
+    <updated>2026-10-14T17:48:10+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v15.5.28"/>
+    <summary>The React Framework</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.4.1</id>
+    <title>[vercel/next.js] v16.4.1</title>
+    <updated>2026-10-14T17:48:21+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.4.1"/>
+    <summary>The React Framework</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.11</id>
+    <title>[vercel/next.js] v16.5.0-canary.11</title>
+    <updated>2026-10-14T18:53:19+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.11"/>
+    <summary>The React Framework</summary>
   </entry>
 </feed>
