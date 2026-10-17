@@ -25,8 +25,9 @@ def get_github_token(env_var: str = TOKEN_ENV_VAR) -> str:
 def github_headers(token: str) -> dict[str, str]:
     """Build shared headers for GitHub API requests."""
     return {
-        "Authorization": f"token {token}",
+        "Authorization": f"Bearer {token}",
         "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
     }
 
 

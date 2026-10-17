@@ -3,10 +3,11 @@ import os
 import requests
 
 
-def set_request_headers(token: str) -> dict:
+def set_request_headers(token: str) -> dict[str, str]:
     return {
-        "Authorization": f"token {token}",
+        "Authorization": f"Bearer {token}",
         "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
     }
 
 
@@ -33,21 +34,24 @@ def call_github_api_by_patch(url: str, token: str, timeout: int) -> requests.Res
 if __name__ == "__main__":
     token = os.getenv("GITHUB_TOKEN")
     if not token:
-        raise ValueError("Failed to get ENV.")
+        raise ValueError("環境変数 GITHUB_TOKEN が設定されていません。")
 
-    url = "https://api.github.com/notifications"
-    response = call_github_api_by_get(url, token, 10)
+    api_url = "https://api.github.com/notifications"
+    response = call_github_api_by_get(api_url, token, 10)
     notifications = response.json()
 
+    marked_count = 0
     for notification in notifications:
         reason = notification.get("reason")
         is_unread = notification.get("unread")
-        title = notification.get("subject", {}).get("title")
-        url = notification.get("url")
+        title = notification.get("subject", {}).get("title", "")
+        thread_url = notification.get("url")
 
-        if reason != "ci_activity" or not is_unread or "succeeded" not in title:
+        if reason != "ci_activity" or not is_unread or "succeeded" not in title or not thread_url:
             continue
 
-        call_github_api_by_patch(url, token, 10)
+        call_github_api_by_patch(thread_url, token, 10)
+        marked_count += 1
+        print(f"✅ Marked as read: {thread_url}")
 
-        print(f"✅ Marked as read: {url}")
+    print(f"合計 {marked_count} 件のCI成功通知を既読化しました。")
