@@ -47,7 +47,8 @@ GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)�
 │   └── workflows/                    # 各種定期実行・CIワークフロー
 │       ├── daily.yml                 # 日次定期実行（タニタ同期・俳句生成・Bluesky投稿）
 │       ├── hourly.yml                # 毎時定期実行（RSS生成 & CI通知既読化）
-│       ├── lint.yml                  # コード静的解析・品質チェック（Ruff）
+│       ├── lint.yml                  # コード静的解析・構文チェック（Ruff）
+│       ├── test.yml                  # 単体テスト自動実行（pytest）
 │       └── security-scan.yml         # Syft / Grype スキャン & AI自動修正PR
 ├── .src/
 │   ├── bot_bsky.py                   # Bluesky投稿ボット本体

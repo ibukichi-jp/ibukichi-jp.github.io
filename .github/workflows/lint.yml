@@ -30,6 +30,3 @@ jobs:
 
       - name: Run Ruff Formatter Check
         run: uv run ruff format --check .
-
-      - name: Run Unit Tests (pytest)
-        run: uv run pytest
