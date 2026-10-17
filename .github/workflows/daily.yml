@@ -29,6 +29,7 @@ jobs:
         run: uv sync --frozen --no-dev
 
       - name: Run Tanita Sync
+        id: tanita
         continue-on-error: true
         env:
           TANITA_CLIENT_ID: ${{ secrets.TANITA_CLIENT_ID }}
@@ -38,6 +39,7 @@ jobs:
           uv run ./.src/tanita_sync.py
 
       - name: Generate Haiku
+        id: haiku
         continue-on-error: true
         env:
           SAKURA_API_KEY: ${{ secrets.SAKURA_API_KEY }}
@@ -45,6 +47,8 @@ jobs:
           uv run ./.src/haiku_generator.py
 
       - name: Commit and push daily data
+        id: commit_push
+        continue-on-error: true
         env:
           GIT_USER_NAME: "${{ secrets.GIT_USER_NAME }}"
           GIT_EMAIL: "${{ secrets.GIT_EMAIL }}"
@@ -56,9 +60,54 @@ jobs:
           git push https://x-access-token:${{ secrets.TOKEN_FOR_WRITE }}@github.com/${{ github.actor }}/${{ github.actor }}.github.io.git main
 
       - name: Run Bluesky Bot
+        id: bluesky
         continue-on-error: true
         env:
           BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
           BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
         run: |
           uv run ./.src/bot_bsky.py
+
+      - name: Report and Summary
+        if: always()
+        run: |
+          echo "## 📊 Daily Runner 実行サマリー" >> $GITHUB_STEP_SUMMARY
+          echo "| 処理名 | ステータス |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| 🏋️ タニタ体組成同期 | ${{ steps.tanita.outcome == 'success' && '✅ 成功' || '❌ 失敗' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🌸 さくらのAI俳句生成 | ${{ steps.haiku.outcome == 'success' && '✅ 成功' || '❌ 失敗' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 💾 日次データコミット | ${{ steps.commit_push.outcome == 'success' && '✅ 成功' || '❌ 失敗' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🦋 Bluesky投稿 | ${{ steps.bluesky.outcome == 'success' && '✅ 成功' || '❌ 失敗' }} |" >> $GITHUB_STEP_SUMMARY
+
+      - name: Notify Discord on Failure
+        if: always() && (steps.tanita.outcome == 'failure' || steps.haiku.outcome == 'failure' || steps.commit_push.outcome == 'failure' || steps.bluesky.outcome == 'failure')
+        env:
+          DISCORD_URL_GITHUB: ${{ secrets.DISCORD_URL_GITHUB }}
+        run: |
+          python3 -c "
+          import os, json, urllib.request
+
+          failures = []
+          if '${{ steps.tanita.outcome }}' == 'failure': failures.append('🏋️ タニタ体組成同期')
+          if '${{ steps.haiku.outcome }}' == 'failure': failures.append('🌸 さくらのAI俳句生成')
+          if '${{ steps.commit_push.outcome }}' == 'failure': failures.append('💾 日次データコミット')
+          if '${{ steps.bluesky.outcome }}' == 'failure': failures.append('🦋 Bluesky投稿')
+
+          failures_text = '\n'.join([f'- {f}' for f in failures])
+          content = f'⚠️ **Daily Runner (日次処理) でエラーが発生しました**\n{failures_text}\n\n詳細ログ: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+
+          webhook_url = os.environ.get('DISCORD_URL_GITHUB')
+          if webhook_url:
+              req = urllib.request.Request(
+                  webhook_url,
+                  data=json.dumps({'username': 'GitHub Actions', 'content': content}).encode('utf-8'),
+                  headers={'Content-Type': 'application/json', 'User-Agent': 'GitHub-Actions'}
+              )
+              urllib.request.urlopen(req)
+          "
+
+      - name: Fail workflow if any step failed
+        if: always() && (steps.tanita.outcome == 'failure' || steps.haiku.outcome == 'failure' || steps.commit_push.outcome == 'failure' || steps.bluesky.outcome == 'failure')
+        run: |
+          echo "❌ 1つ以上のステップでエラーが発生したため、ワークフローを失敗（Error）として終了します。"
+          exit 1

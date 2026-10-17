@@ -29,12 +29,16 @@ jobs:
         run: uv sync --frozen --no-dev
 
       - name: Generate RSS files
+        id: rss
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
         run: |
           uv run ./.src/rss_github_notifications.py
 
       - name: Commit and push RSS files
+        id: commit_push
+        continue-on-error: true
         env:
           GIT_USER_NAME: "${{ secrets.GIT_USER_NAME }}"
           GIT_EMAIL: "${{ secrets.GIT_EMAIL }}"
@@ -46,8 +50,51 @@ jobs:
           git push https://x-access-token:${{ secrets.TOKEN_FOR_WRITE }}@github.com/${{ github.actor }}/${{ github.actor }}.github.io.git main
 
       - name: Mark GitHub notifications as read
+        id: notifications
         continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
         run: |
           uv run ./.src/change_github_notifications_to_read.py
+
+      - name: Report and Summary
+        if: always()
+        run: |
+          echo "## ⏱️ Hourly Runner 実行サマリー" >> $GITHUB_STEP_SUMMARY
+          echo "| 処理名 | ステータス |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| 📡 RSSフィード生成 | ${{ steps.rss.outcome == 'success' && '✅ 成功' || '❌ 失敗' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 💾 RSSコミット | ${{ steps.commit_push.outcome == 'success' && '✅ 成功' || '❌ 失敗' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 📬 CI通知既読化 | ${{ steps.notifications.outcome == 'success' && '✅ 成功' || '❌ 失敗' }} |" >> $GITHUB_STEP_SUMMARY
+
+      - name: Notify Discord on Failure
+        if: always() && (steps.rss.outcome == 'failure' || steps.commit_push.outcome == 'failure' || steps.notifications.outcome == 'failure')
+        env:
+          DISCORD_URL_GITHUB: ${{ secrets.DISCORD_URL_GITHUB }}
+        run: |
+          python3 -c "
+          import os, json, urllib.request
+
+          failures = []
+          if '${{ steps.rss.outcome }}' == 'failure': failures.append('📡 RSSフィード生成')
+          if '${{ steps.commit_push.outcome }}' == 'failure': failures.append('💾 RSSコミット')
+          if '${{ steps.notifications.outcome }}' == 'failure': failures.append('📬 CI通知既読化')
+
+          failures_text = '\n'.join([f'- {f}' for f in failures])
+          content = f'⚠️ **Hourly Runner (毎時処理) でエラーが発生しました**\n{failures_text}\n\n詳細ログ: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+
+          webhook_url = os.environ.get('DISCORD_URL_GITHUB')
+          if webhook_url:
+              req = urllib.request.Request(
+                  webhook_url,
+                  data=json.dumps({'username': 'GitHub Actions', 'content': content}).encode('utf-8'),
+                  headers={'Content-Type': 'application/json', 'User-Agent': 'GitHub-Actions'}
+              )
+              urllib.request.urlopen(req)
+          "
+
+      - name: Fail workflow if any step failed
+        if: always() && (steps.rss.outcome == 'failure' || steps.commit_push.outcome == 'failure' || steps.notifications.outcome == 'failure')
+        run: |
+          echo "❌ 1つ以上のステップでエラーが発生したため、ワークフローを失敗（Error）として終了します。"
+          exit 1
