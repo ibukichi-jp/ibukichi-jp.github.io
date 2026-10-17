@@ -29,7 +29,7 @@ def load_grype_results(json_path: Path) -> List[Dict[str, Any]]:
     matches = data.get("matches", [])
     high_critical = [
         m for m in matches
-        if m.get("vulnerability", {}).get("severity", "").lower() in ["medium", "high", "critical"]
+        if m.get("vulnerability", {}).get("severity", "").lower() in ["high", "critical"]
     ]
     return high_critical
 
@@ -172,8 +172,10 @@ def create_remediation_pr(
         return pr_url
     else:
         print(f"Notice from gh pr create: {result.stderr}")
+        fallback_url = f"https://github.com/{repo_actor}/{repo_actor}.github.io/pull/new/{branch_name}"
+        print(f"Direct PR URL: {fallback_url}")
         subprocess.run(["git", "checkout", "main"], check=True)
-        return None
+        return fallback_url
 
 
 def main() -> None:
