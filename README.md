@@ -7,38 +7,24 @@ Blueskyへの定期投稿ボット、AIによる日々の俳句生成、GitHub�
 
 ## 🚀 主な機能
 
-### 1. Bluesky 自動投稿ボット (`.src/bot_bsky.py`)
-毎日定刻（JST 9:00）に GitHub Actions（`bot.yml`）から起動し、当日の記念情報を Bluesky に自動ポストします。
-- **祝日・記念日通知**: `jpholiday` による日本の祝日判定および月末金曜日のプレミアムフライデー判定・お知らせをBlueskyにポスト
+### 1. 日次定期バッチ (`.github/workflows/daily.yml`)
+毎日定刻（JST 9:00）に起動し、以下の処理を順次実行してデータを自動コミットします。
+- **タニタ体組成データ自動同期 (`.src/tanita_sync.py`)**: 体組成計で計測した直近データを取得し、[`.data/tanita.json`](.data/tanita.json) にマージして蓄積
+- **さくらのAI 俳句生成器 (`.src/haiku_generator.py`)**: さくらのクラウド 高火力AIサービス（OpenAI互換API / `gpt-oss-120b`）を利用し、日付と季節に合わせた俳句を生成して [`.data/haiku.log`](.data/haiku.log) に蓄積
+- **日次データ自動コミット**: 更新された体組成データと俳句ログを1回のコミットで安全にプッシュ
+- **Bluesky 自動投稿ボット (`.src/bot_bsky.py`)**: `jpholiday` による日本の祝日判定および月末金曜日のプレミアムフライデー判定・お知らせをBlueskyに自動ポスト
 
-### 2. タニタ体組成データ自動同期 (`.src/tanita_sync.py`)
-毎日定刻（JST 9:00）に GitHub Actions（`tanita.yml`）から起動し、ダッシュボード用のヘルスケアデータを自動更新します。
-- **タニタ ヘルスプラネット連携**: 体組成計で計測した直近データを取得し、[`.data/tanita.json`](.data/tanita.json) にマージして自動コミット
-- 体重・体脂肪率のほか、ダッシュボード用のBMI・筋肉量も自動算出して蓄積
+### 2. 毎時定期バッチ (`.github/workflows/hourly.yml`)
+毎時0分に起動し、通知の収集から既読化までを一括処理します。
+- **GitHub リリース通知の RSS/Atom フィード化 (`.src/rss_github_notifications.py`)**: 未読通知から `Release` 種別を抽出して [`rss/github_notifications.atom`](rss/github_notifications.atom) を生成・自動コミット
+- **GitHub CI通知の自動既読化 (`.src/change_github_notifications_to_read.py`)**: 成功したCI実行完了通知（`ci_activity`）を自動的に既読化
 
-### 3. さくらのAI 俳句生成器 (`.src/haiku_generator.py`)
-毎日定刻（JST 8:00）に実行される俳句ジェネレーターです。
-- さくらのクラウド 高火力AIサービス（OpenAI互換API / `gpt-oss-120b`）を利用
-- 実行日の日付と季節に合わせた五・七・五の俳句を生成
-- 過去に詠んだ句との重複を防止するリトライロジックを搭載
-- 生成された俳句は [`.data/haiku.log`](.data/haiku.log) に蓄積され、自動コミット
-
-### 4. GitHub リリース通知の RSS/Atom フィード化 (`.src/rss_github_notifications.py`)
-毎時0分に実行され、GitHub通知から関心のあるリリース情報をフィード化します。
-- GitHub API から未読通知を取得し、`Release` 種別のものを抽出
-- Atomフィード形式（[`rss/github_notifications.atom`](rss/github_notifications.atom)）に変換して自動更新コミット
-- RSSリーダーでお気に入りのOSSのリリースをまとめて追跡可能
-
-### 5. GitHub CI通知の自動既読化 (`.src/change_github_notifications_to_read.py`)
-毎時3分に実行され、GitHub通知ボックスのノイズを低減します。
-- GitHub Actions の CI 実行完了通知（`ci_activity`）のうち、成功（`succeeded`）した通知を自動的に既読に変更
-
-### 6. セキュリティスキャン & SBOM 生成 (`.github/workflows/security-scan.yml`)
+### 3. セキュリティスキャン & SBOM 生成 (`.github/workflows/security-scan.yml`)
 - Syft による SBOM（Software Bill of Materials）生成
 - Grype による脆弱性スキャン（High以上の脆弱性検知時にCIを停止）
 - スキャン失敗時の Discord 通知
 
-### 7. GitHub Pages ダッシュボード (`index.html`)
+### 4. GitHub Pages ダッシュボード (`index.html`)
 GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)）で公開されるリアルタイムダッシュボードです。Bootstrap 5によるレスポンシブなダークテーマデザインを採用しています。
 - **ヘッダー**: GitHubプロフィールアイコン連携、リアルタイム秒刻みデジタル時計
 - **タニタ体組成データ可視化**: [`.data/tanita.json`](.data/tanita.json) に蓄積された過去2年分の全データを Chart.js でインタラクティブにグラフ化（体重・体脂肪率・筋肉量の3連グラフ）
@@ -57,12 +43,9 @@ GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)�
 │   └── tanita.json                   # 蓄積された体重・体脂肪率のヘルスデータ
 ├── .github/
 │   └── workflows/                    # 各種定期実行・CIワークフロー
-│       ├── bot.yml                   # Blueskyボット定期実行
-│       ├── change_github_notifications_to_read.yml # CI通知既読化
-│       ├── haiku.yml                 # 俳句生成 & コミット
-│       ├── rss.yml                   # GitHubリリースAtomフィード生成 & コミット
-│       ├── security-scan.yml         # Syft / Grype セキュリティスキャン
-│       └── tanita.yml                # タニタ体組成データ自動同期 & コミット
+│       ├── daily.yml                 # 日次定期実行（タニタ同期・俳句生成・Bluesky投稿）
+│       ├── hourly.yml                # 毎時定期実行（RSS生成 & CI通知既読化）
+│       └── security-scan.yml         # Syft / Grype セキュリティスキャン
 ├── .src/
 │   ├── bot_bsky.py                   # Bluesky投稿ボット本体
 │   ├── change_github_notifications_to_read.py # CI通知既読化スクリプト

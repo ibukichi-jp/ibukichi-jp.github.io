@@ -1,17 +1,16 @@
-name: Tanita Sync runner
+name: Daily Runner (Tanita, Haiku, Bluesky)
 
 on:
-  # 手動実行を許可
   workflow_dispatch:
-  # 定刻に実行（毎日 JST 9:00 = UTC 0:00）
   schedule:
+    # 毎日 JST 9:00 (UTC 0:00)
     - cron: '0 0 * * *'
 
 permissions:
   contents: write
 
 jobs:
-  sync:
+  daily:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,6 +29,7 @@ jobs:
         run: uv sync --frozen --no-dev
 
       - name: Run Tanita Sync
+        continue-on-error: true
         env:
           TANITA_CLIENT_ID: ${{ secrets.TANITA_CLIENT_ID }}
           TANITA_CLIENT_SECRET: ${{ secrets.TANITA_CLIENT_SECRET }}
@@ -37,13 +37,28 @@ jobs:
         run: |
           uv run ./.src/tanita_sync.py
 
-      - name: Commit and push tanita.json
+      - name: Generate Haiku
+        continue-on-error: true
+        env:
+          SAKURA_API_KEY: ${{ secrets.SAKURA_API_KEY }}
+        run: |
+          uv run ./.src/haiku_generator.py
+
+      - name: Commit and push daily data
         env:
           GIT_USER_NAME: "${{ secrets.GIT_USER_NAME }}"
           GIT_EMAIL: "${{ secrets.GIT_EMAIL }}"
         run: |
           git config user.name "${GIT_USER_NAME}"
           git config user.email "${GIT_EMAIL}"
-          git add .data/tanita.json
-          git commit -m "Update Tanita health data by CI." || { echo "No changes to commit"; exit 0; }
+          git add .data/tanita.json .data/haiku.log
+          git commit -m "Update daily health & haiku data by CI." || { echo "No changes to commit"; exit 0; }
           git push https://x-access-token:${{ secrets.TOKEN_FOR_WRITE }}@github.com/${{ github.actor }}/${{ github.actor }}.github.io.git main
+
+      - name: Run Bluesky Bot
+        continue-on-error: true
+        env:
+          BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
+          BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
+        run: |
+          uv run ./.src/bot_bsky.py

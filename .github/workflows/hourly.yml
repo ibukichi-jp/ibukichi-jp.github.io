@@ -1,15 +1,16 @@
-name: Generate RSS files
-
-permissions:
-  contents: write
+name: Hourly Runner (RSS & Notifications)
 
 on:
   workflow_dispatch:
   schedule:
+    # 毎時0分 (UTC)
     - cron: '0 * * * *'
 
+permissions:
+  contents: write
+
 jobs:
-  generate:
+  hourly:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,7 +25,7 @@ jobs:
           version: "latest"
           enable-cache: true
 
-      - name: Sync dependencies
+      - name: Setup dependencies
         run: uv sync --frozen --no-dev
 
       - name: Generate RSS files
@@ -33,7 +34,7 @@ jobs:
         run: |
           uv run ./.src/rss_github_notifications.py
 
-      - name: Do Git push RSS files to GitHub
+      - name: Commit and push RSS files
         env:
           GIT_USER_NAME: "${{ secrets.GIT_USER_NAME }}"
           GIT_EMAIL: "${{ secrets.GIT_EMAIL }}"
@@ -43,3 +44,10 @@ jobs:
           git add ./rss/*.atom
           git commit -m "Update RSS files by CI." || { echo "No changes to commit"; exit 0; }
           git push https://x-access-token:${{ secrets.TOKEN_FOR_WRITE }}@github.com/${{ github.actor }}/${{ github.actor }}.github.io.git main
+
+      - name: Mark GitHub notifications as read
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
+        run: |
+          uv run ./.src/change_github_notifications_to_read.py
