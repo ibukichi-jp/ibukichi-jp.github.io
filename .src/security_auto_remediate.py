@@ -29,7 +29,7 @@ def load_grype_results(json_path: Path) -> List[Dict[str, Any]]:
     matches = data.get("matches", [])
     high_critical = [
         m for m in matches
-        if m.get("vulnerability", {}).get("severity", "").lower() in ["high", "critical"]
+        if m.get("vulnerability", {}).get("severity", "").lower() in ["medium", "high", "critical"]
     ]
     return high_critical
 
@@ -289,8 +289,8 @@ def main() -> None:
             repo_actor=repo_actor,
         )
 
-        # 1次資料リンクのDiscord用フォーマット
-        discord_links = "\n".join([f"・[{label}]({url})" for label, url in primary_links[:3]])
+        # 1次資料リンクのDiscord用フォーマット (<URL>で囲むことでDiscordのプレビューカード乱立を防止)
+        discord_links = "\n".join([f"・[{label}](<{url}>)" for label, url in primary_links[:3]])
 
         # Discord通知作成
         if pr_url:
@@ -302,8 +302,8 @@ def main() -> None:
                 f"{ai_summary}\n\n"
                 f"🔗 **1次情報（公式アドバイザリ）**:\n"
                 f"{discord_links}\n\n"
-                f"📦 **作成された修正PR**: {pr_url}\n"
-                f"📋 **スキャン実行ログ**: {run_url}"
+                f"📦 **作成された修正PR**: <{pr_url}>\n"
+                f"📋 **スキャン実行ログ**: <{run_url}>"
             )
         else:
             msg = (
@@ -315,7 +315,7 @@ def main() -> None:
                 f"🔗 **1次情報（公式アドバイザリ）**:\n"
                 f"{discord_links}\n\n"
                 f"※現在PyPI上に自動適用可能な修正バージョンが未提供のため、PRは作成されませんでした。\n"
-                f"📋 **スキャン実行ログ**: {run_url}"
+                f"📋 **スキャン実行ログ**: <{run_url}>"
             )
 
         send_discord_message(discord_url, msg)
