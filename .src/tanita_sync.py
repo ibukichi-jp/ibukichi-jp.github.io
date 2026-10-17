@@ -73,7 +73,7 @@ def update_tanita_data_store(raw_data: list[dict], filepath: str = TANITA_DATA_P
     }
     if os.path.exists(filepath):
         try:
-            with open(filepath, "r", encoding="utf-8") as f:
+            with open(filepath, encoding="utf-8") as f:
                 loaded = json.load(f)
                 if isinstance(loaded, dict) and "records" in loaded:
                     existing_store = loaded

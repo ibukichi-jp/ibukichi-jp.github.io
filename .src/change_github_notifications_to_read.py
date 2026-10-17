@@ -1,5 +1,7 @@
 import os
+
 import requests
+
 
 def set_request_headers(token: str) -> dict:
     return {
@@ -9,7 +11,7 @@ def set_request_headers(token: str) -> dict:
 
 
 def call_github_api_by_get(url: str, token: str, timeout: int) -> requests.Response:
-    headers  = set_request_headers(token)
+    headers = set_request_headers(token)
     response = requests.get(url, headers=headers, timeout=timeout)
     if response.status_code != 200:
         raise RuntimeError(
@@ -19,7 +21,7 @@ def call_github_api_by_get(url: str, token: str, timeout: int) -> requests.Respo
 
 
 def call_github_api_by_patch(url: str, token: str, timeout: int) -> requests.Response:
-    headers  = set_request_headers(token)
+    headers = set_request_headers(token)
     response = requests.patch(url, headers=headers, timeout=timeout)
     if response.status_code != 205:
         raise RuntimeError(
@@ -29,22 +31,21 @@ def call_github_api_by_patch(url: str, token: str, timeout: int) -> requests.Res
 
 
 if __name__ == "__main__":
-
     token = os.getenv("GITHUB_TOKEN")
     if not token:
         raise ValueError("Failed to get ENV.")
 
-    url      = "https://api.github.com/notifications"
+    url = "https://api.github.com/notifications"
     response = call_github_api_by_get(url, token, 10)
     notifications = response.json()
 
     for notification in notifications:
-        reason    = notification.get("reason")
+        reason = notification.get("reason")
         is_unread = notification.get("unread")
-        title     = notification.get("subject", {}).get("title")
-        url       = notification.get("url")
+        title = notification.get("subject", {}).get("title")
+        url = notification.get("url")
 
-        if reason != "ci_activity" or not is_unread or not "succeeded" in title:
+        if reason != "ci_activity" or not is_unread or "succeeded" not in title:
             continue
 
         call_github_api_by_patch(url, token, 10)

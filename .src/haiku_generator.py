@@ -1,13 +1,11 @@
 import os
 import sys
+
 from openai import OpenAI, OpenAIError
 
 SAKURA_API_KEY = os.getenv("SAKURA_API_KEY")
 
-client = OpenAI(
-    api_key=SAKURA_API_KEY,
-    base_url="https://api.ai.sakura.ad.jp/v1"
-)
+client = OpenAI(api_key=SAKURA_API_KEY, base_url="https://api.ai.sakura.ad.jp/v1")
 
 
 def get_season(month: int) -> str:
@@ -26,7 +24,8 @@ def generate_haiku(prompt: str = None, model: str = "gpt-oss-120b") -> str:
         raise ValueError("環境変数 'SAKURA_API_KEY' が設定されていません。")
 
     if prompt is None:
-        from datetime import datetime, timezone, timedelta
+        from datetime import datetime, timedelta, timezone
+
         jst = timezone(timedelta(hours=9))
         today = datetime.now(jst)
         date_str = today.strftime("%Y年%m月%d日")
@@ -43,7 +42,7 @@ def generate_haiku(prompt: str = None, model: str = "gpt-oss-120b") -> str:
 
     messages = [
         {"role": "system", "content": system_instruction},
-        {"role": "user", "content": prompt}
+        {"role": "user", "content": prompt},
     ]
 
     try:
@@ -55,16 +54,16 @@ def generate_haiku(prompt: str = None, model: str = "gpt-oss-120b") -> str:
         return response.choices[0].message.content.strip()
 
     except OpenAIError as e:
-        raise RuntimeError(f"APIエラーが発生しました: {e}")
+        raise RuntimeError(f"APIエラーが発生しました: {e}") from e
     except Exception as e:
-        raise RuntimeError(f"予期せぬエラーが発生しました: {e}")
+        raise RuntimeError(f"予期せぬエラーが発生しました: {e}") from e
 
 
 def load_existing_haikus(filepath: str) -> set:
     if not os.path.exists(filepath):
         return set()
     try:
-        with open(filepath, "r", encoding="utf-8") as f:
+        with open(filepath, encoding="utf-8") as f:
             return {line.strip() for line in f if line.strip()}
     except Exception as e:
         print(f"ログファイルの読み込み中にエラーが発生しました: {e}", file=sys.stderr)
@@ -87,7 +86,9 @@ if __name__ == "__main__":
             print(f"重複を検出したため、再生成します ({attempt}/{max_retries}回目): {candidate}")
 
         if haiku is None:
-            raise RuntimeError(f"エラー: {max_retries}回試行しましたが、重複しない新しい俳句を生成できませんでした。")
+            raise RuntimeError(
+                f"エラー: {max_retries}回試行しましたが、重複しない新しい俳句を生成できませんでした。"
+            )
 
         # .dataディレクトリが存在しない場合は作成する
         os.makedirs(".data", exist_ok=True)

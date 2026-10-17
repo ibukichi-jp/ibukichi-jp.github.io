@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Interactive package update manager with supply-chain safety intervals."""
+
 from __future__ import annotations
 
 import subprocess
@@ -50,8 +51,12 @@ def main() -> None:
         "更新モードを選択してください:",
         choices=[
             questionary.Choice("🛡️  通常安全更新 (5日間のクールダウンを適用・推奨)", value="safe"),
-            questionary.Choice("⚡ 特定パッケージを選択して例外更新 (チェックボックスで複数選択)", value="partial"),
-            questionary.Choice("🚀 全パッケージ即時更新 (クールダウンなしで全て最新化)", value="force_all"),
+            questionary.Choice(
+                "⚡ 特定パッケージを選択して例外更新 (チェックボックスで複数選択)", value="partial"
+            ),
+            questionary.Choice(
+                "🚀 全パッケージ即時更新 (クールダウンなしで全て最新化)", value="force_all"
+            ),
             questionary.Choice("❌ キャンセル", value="cancel"),
         ],
     ).ask()
@@ -96,7 +101,9 @@ def main() -> None:
 
         subprocess.run(lock_cmd + ["--dry-run"])
 
-        confirm = questionary.confirm(f"{', '.join(selected_pkgs)} を今すぐ最新化しますか？", default=True).ask()
+        confirm = questionary.confirm(
+            f"{', '.join(selected_pkgs)} を今すぐ最新化しますか？", default=True
+        ).ask()
         if confirm:
             print("\n\033[32m選択したパッケージを最新化中...\033[m")
             if run_command(lock_cmd):

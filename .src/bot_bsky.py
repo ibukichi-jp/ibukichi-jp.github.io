@@ -1,5 +1,4 @@
 import os
-import sys
 from datetime import date, timedelta
 from typing import Final
 
@@ -50,7 +49,9 @@ def holiday_bot_message(target_date: date) -> str:
     holiday_name = jpholiday.is_holiday_name(target_date)
     if not holiday_name:
         return ""
-    return f"今日は祝日「{holiday_name}」です。ゆっくり過ごしましょう！\n（この投稿は自動投稿です。）"
+    return (
+        f"今日は祝日「{holiday_name}」です。ゆっくり過ごしましょう！\n（この投稿は自動投稿です。）"
+    )
 
 
 def premium_friday_bot_message(target_date: date) -> str:

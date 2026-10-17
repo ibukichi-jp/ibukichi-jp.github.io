@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Security Auto-Remediation with Grype, Sakura AI, Discord alerts, and automated PR creation."""
+
 from __future__ import annotations
 
 import json
@@ -8,19 +9,19 @@ import subprocess
 import sys
 import urllib.request
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 from openai import OpenAI, OpenAIError
 
 
-def load_grype_results(json_path: Path) -> List[Dict[str, Any]]:
+def load_grype_results(json_path: Path) -> list[dict[str, Any]]:
     """Parse Grype JSON output and return High/Critical vulnerability matches."""
     if not json_path.exists():
         print(f"Warning: {json_path} が見つかりません。")
         return []
 
     try:
-        with open(json_path, "r", encoding="utf-8") as f:
+        with open(json_path, encoding="utf-8") as f:
             data = json.load(f)
     except Exception as e:
         print(f"Error loading {json_path}: {e}")
@@ -28,15 +29,16 @@ def load_grype_results(json_path: Path) -> List[Dict[str, Any]]:
 
     matches = data.get("matches", [])
     high_critical = [
-        m for m in matches
+        m
+        for m in matches
         if m.get("vulnerability", {}).get("severity", "").lower() in ["high", "critical"]
     ]
     return high_critical
 
 
-def build_primary_advisory_links(cve_id: str, vuln: Dict[str, Any]) -> List[Tuple[str, str]]:
+def build_primary_advisory_links(cve_id: str, vuln: dict[str, Any]) -> list[tuple[str, str]]:
     """Extract and build official primary advisory links (NVD, CVE.org, GitHub Advisory)."""
-    links: List[Tuple[str, str]] = []
+    links: list[tuple[str, str]] = []
     seen: set[str] = set()
 
     def add_link(label: str, url: str) -> None:
@@ -46,7 +48,9 @@ def build_primary_advisory_links(cve_id: str, vuln: Dict[str, Any]) -> List[Tupl
 
     # NVD & CVE.org
     if cve_id.startswith("CVE-"):
-        add_link("NVD (National Vulnerability Database)", f"https://nvd.nist.gov/vuln/detail/{cve_id}")
+        add_link(
+            "NVD (National Vulnerability Database)", f"https://nvd.nist.gov/vuln/detail/{cve_id}"
+        )
         add_link("CVE.org 公式レコード", f"https://www.cve.org/CVERecord?id={cve_id}")
     elif cve_id.startswith("GHSA-"):
         add_link("GitHub Security Advisory", f"https://github.com/advisories/{cve_id}")
@@ -74,8 +78,8 @@ def summarize_vulnerability_with_ai(
     cve_id: str,
     severity: str,
     description: str,
-    fix_versions: List[str],
-    primary_links: List[Tuple[str, str]],
+    fix_versions: list[str],
+    primary_links: list[tuple[str, str]],
     api_key: str | None,
 ) -> str:
     """Use Sakura AI (OpenAI-compatible gpt-oss-120b) to summarize the CVE in Japanese with primary sources."""
@@ -105,7 +109,10 @@ def summarize_vulnerability_with_ai(
         response = client.chat.completions.create(
             model="gpt-oss-120b",
             messages=[
-                {"role": "system", "content": "あなたは優秀なセキュリティエンジニアです。専門用語をわかりやすく解説し、1次資料の参照先も明確に伝えてください。"},
+                {
+                    "role": "system",
+                    "content": "あなたは優秀なセキュリティエンジニアです。専門用語をわかりやすく解説し、1次資料の参照先も明確に伝えてください。",
+                },
                 {"role": "user", "content": prompt},
             ],
             temperature=0.7,
@@ -140,13 +147,13 @@ def create_remediation_pr(
     cve_id: str,
     severity: str,
     ai_summary: str,
-    primary_links: List[Tuple[str, str]],
+    primary_links: list[tuple[str, str]],
     token: str,
     repo_actor: str,
 ) -> str:
     """Apply uv update, commit to a new branch, and create a Pull Request via GitHub CLI or direct URL."""
     branch_name = f"security/auto-patch-{pkg_name}"
-    
+
     # 既存ブランチがあれば削除して最新のmainから切り直す
     subprocess.run(["git", "checkout", "main"], check=False)
     subprocess.run(["git", "branch", "-D", branch_name], check=False)
@@ -166,7 +173,9 @@ def create_remediation_pr(
         check=True,
     )
     if not diff_status.stdout.strip():
-        print(f"ℹ️ {pkg_name} にアップデート可能なバージョンが存在しないため、PR作成をスキップします。")
+        print(
+            f"ℹ️ {pkg_name} にアップデート可能なバージョンが存在しないため、PR作成をスキップします。"
+        )
         subprocess.run(["git", "checkout", "main"], check=True)
         return ""
 
@@ -205,11 +214,17 @@ def create_remediation_pr(
     )
 
     pr_cmd = [
-        "gh", "pr", "create",
-        "--title", f"fix(security): auto-patch {pkg_name} ({cve_id})",
-        "--body", pr_body,
-        "--head", branch_name,
-        "--base", "main",
+        "gh",
+        "pr",
+        "create",
+        "--title",
+        f"fix(security): auto-patch {pkg_name} ({cve_id})",
+        "--body",
+        pr_body,
+        "--head",
+        branch_name,
+        "--base",
+        "main",
     ]
     env = os.environ.copy()
     env["GH_TOKEN"] = token
@@ -223,7 +238,9 @@ def create_remediation_pr(
         return pr_url
     else:
         print(f"Notice from gh pr create: {result.stderr}")
-        fallback_url = f"https://github.com/{repo_actor}/{repo_actor}.github.io/pull/new/{branch_name}"
+        fallback_url = (
+            f"https://github.com/{repo_actor}/{repo_actor}.github.io/pull/new/{branch_name}"
+        )
         print(f"Direct PR URL: {fallback_url}")
         subprocess.run(["git", "checkout", "main"], check=True)
         return fallback_url
@@ -245,10 +262,12 @@ def main() -> None:
         print("✅ High / Critical 深刻度の脆弱性は検知されませんでした。")
         sys.exit(0)
 
-    print(f"⚠️ {len(vulnerabilities)} 件の高深刻度脆弱性を検知しました。AIによる分析と自動パッチ作成を開始します...")
+    print(
+        f"⚠️ {len(vulnerabilities)} 件の高深刻度脆弱性を検知しました。AIによる分析と自動パッチ作成を開始します..."
+    )
 
     # パッケージごとに集約
-    pkg_groups: Dict[str, List[Dict[str, Any]]] = {}
+    pkg_groups: dict[str, list[dict[str, Any]]] = {}
     for match in vulnerabilities:
         pkg_name = match.get("artifact", {}).get("name", "unknown")
         pkg_groups.setdefault(pkg_name, []).append(match)

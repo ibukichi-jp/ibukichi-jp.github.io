@@ -47,6 +47,7 @@ GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)�
 │   └── workflows/                    # 各種定期実行・CIワークフロー
 │       ├── daily.yml                 # 日次定期実行（タニタ同期・俳句生成・Bluesky投稿）
 │       ├── hourly.yml                # 毎時定期実行（RSS生成 & CI通知既読化）
+│       ├── lint.yml                  # コード静的解析・品質チェック（Ruff）
 │       └── security-scan.yml         # Syft / Grype スキャン & AI自動修正PR
 ├── .src/
 │   ├── bot_bsky.py                   # Bluesky投稿ボット本体
@@ -95,6 +96,20 @@ uv sync
 
 ```bash
 ./update_package.sh
+```
+
+### コード品質チェック・自動整形（Ruff）
+Python 3.12 基準の静的解析およびフォーマッターとして [Ruff](https://docs.astral.sh/ruff/) を導入しています。
+
+```bash
+# 静的解析チェック
+uv run ruff check .
+
+# 自動修正
+uv run ruff check --fix .
+
+# コードフォーマット
+uv run ruff format .
 ```
 
 ---

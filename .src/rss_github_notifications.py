@@ -1,8 +1,10 @@
 """Generate an Atom feed for GitHub release notifications."""
+
 from __future__ import annotations
 
 import os
-from typing import Any, Dict, Iterable, List
+from collections.abc import Iterable
+from typing import Any
 
 import requests
 from feedgen.feed import FeedGenerator
@@ -20,7 +22,7 @@ def get_github_token(env_var: str = TOKEN_ENV_VAR) -> str:
     return token
 
 
-def github_headers(token: str) -> Dict[str, str]:
+def github_headers(token: str) -> dict[str, str]:
     """Build shared headers for GitHub API requests."""
     return {
         "Authorization": f"token {token}",
@@ -28,17 +30,15 @@ def github_headers(token: str) -> Dict[str, str]:
     }
 
 
-def request_json(url: str, headers: Dict[str, str]) -> Any:
+def request_json(url: str, headers: dict[str, str]) -> Any:
     """Perform a GET request and return the JSON payload."""
     response = requests.get(url, headers=headers, timeout=REQUEST_TIMEOUT)
     if response.status_code != 200:
-        raise RuntimeError(
-            f"GitHub API Error: {response.status_code} - {response.text}"
-        )
+        raise RuntimeError(f"GitHub API Error: {response.status_code} - {response.text}")
     return response.json()
 
 
-def fetch_notifications(headers: Dict[str, str]) -> List[Dict[str, Any]]:
+def fetch_notifications(headers: dict[str, str]) -> list[dict[str, Any]]:
     """Fetch GitHub notifications."""
     data = request_json(API_NOTIFICATIONS_URL, headers)
     if not isinstance(data, list):
@@ -46,7 +46,7 @@ def fetch_notifications(headers: Dict[str, str]) -> List[Dict[str, Any]]:
     return data
 
 
-def fetch_release_link(subject_url: str | None, headers: Dict[str, str]) -> str:
+def fetch_release_link(subject_url: str | None, headers: dict[str, str]) -> str:
     """Retrieve the HTML URL for a release subject."""
     if not subject_url:
         return ""
@@ -58,10 +58,10 @@ def fetch_release_link(subject_url: str | None, headers: Dict[str, str]) -> str:
 
 
 def extract_release_entries(
-    notifications: Iterable[Dict[str, Any]], headers: Dict[str, str]
-) -> List[Dict[str, str]]:
+    notifications: Iterable[dict[str, Any]], headers: dict[str, str]
+) -> list[dict[str, str]]:
     """Build feed entries from release notifications."""
-    entries: List[Dict[str, str]] = []
+    entries: list[dict[str, str]] = []
     for notification in notifications:
         subject = notification.get("subject") or {}
         if subject.get("type") != "Release":
@@ -88,7 +88,7 @@ def extract_release_entries(
     return entries
 
 
-def build_feed(entries: Iterable[Dict[str, str]]) -> FeedGenerator:
+def build_feed(entries: Iterable[dict[str, str]]) -> FeedGenerator:
     """Create an Atom feed from feed entries."""
     fg = FeedGenerator()
     fg.id("https://github.com/notifications")
@@ -112,7 +112,9 @@ def build_feed(entries: Iterable[Dict[str, str]]) -> FeedGenerator:
     return fg
 
 
-def write_atom_feed(feed: FeedGenerator, output_path: str = "./rss/github_notifications.atom") -> None:
+def write_atom_feed(
+    feed: FeedGenerator, output_path: str = "./rss/github_notifications.atom"
+) -> None:
     """Write the Atom feed to disk."""
     atom_feed = feed.atom_str(pretty=True)
     with open(output_path, "wb") as atom_file:
