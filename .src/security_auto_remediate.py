@@ -114,7 +114,9 @@ def create_remediation_pr(
 
     # パッケージをアップデート
     print(f"\n📦 {pkg_name} の最新化を試行中...")
-    subprocess.run(["uv", "lock", "--upgrade-package", pkg_name], check=True)
+    res = subprocess.run(["uv", "add", pkg_name], check=False)
+    if res.returncode != 0:
+        subprocess.run(["uv", "lock", "--upgrade-package", pkg_name], check=True)
     subprocess.run(["uv", "sync", "--frozen", "--no-dev"], check=True)
 
     # 差分の確認
