@@ -1,0 +1,49 @@
+name: Tanita Sync runner
+
+on:
+  # 手動実行を許可
+  workflow_dispatch:
+  # 定刻に実行（毎日 JST 9:00 = UTC 0:00）
+  schedule:
+    - cron: '0 0 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "latest"
+          enable-cache: true
+
+      - name: Setup dependencies
+        run: uv sync --frozen --no-dev
+
+      - name: Run Tanita Sync
+        env:
+          TANITA_CLIENT_ID: ${{ secrets.TANITA_CLIENT_ID }}
+          TANITA_CLIENT_SECRET: ${{ secrets.TANITA_CLIENT_SECRET }}
+          TANITA_REFRESH_TOKEN: ${{ secrets.TANITA_REFRESH_TOKEN }}
+        run: |
+          uv run ./.src/tanita_sync.py
+
+      - name: Commit and push tanita.json
+        env:
+          GIT_USER_NAME: "${{ secrets.GIT_USER_NAME }}"
+          GIT_EMAIL: "${{ secrets.GIT_EMAIL }}"
+        run: |
+          git config user.name "${GIT_USER_NAME}"
+          git config user.email "${GIT_EMAIL}"
+          git add .data/tanita.json
+          git commit -m "Update Tanita health data by CI." || { echo "No changes to commit"; exit 0; }
+          git push https://x-access-token:${{ secrets.TOKEN_FOR_WRITE }}@github.com/${{ github.actor }}/${{ github.actor }}.github.io.git main

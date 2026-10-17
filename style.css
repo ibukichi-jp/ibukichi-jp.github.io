@@ -1,0 +1,549 @@
+/* ==========================================================================
+   Design Tokens & Variables
+   ========================================================================== */
+:root {
+  --bg-base: #090d16;
+  --bg-card: rgba(18, 24, 38, 0.78);
+  --bg-card-hover: rgba(24, 32, 51, 0.9);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+
+  --accent-cyan: #06b6d4;
+  --accent-cyan-glow: rgba(6, 182, 212, 0.25);
+  --accent-indigo: #6366f1;
+  --accent-indigo-glow: rgba(99, 102, 241, 0.25);
+  --accent-purple: #a855f7;
+  --accent-pink: #ec4899;
+  --accent-emerald: #10b981;
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: 'Plus Jakarta Sans', var(--font-sans);
+  --font-serif: 'Noto Serif JP', serif;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 25px rgba(99, 102, 241, 0.15);
+  --transition-normal: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   Base & Bootstrap Overrides
+   ========================================================================== */
+body {
+  background-color: var(--bg-base);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 背景装飾用オーブ */
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.45;
+}
+
+.orb-1 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, var(--accent-indigo) 0%, transparent 70%);
+  top: -100px;
+  left: -150px;
+}
+
+.orb-2 {
+  width: 550px;
+  height: 550px;
+  background: radial-gradient(circle, var(--accent-cyan) 0%, transparent 70%);
+  top: 320px;
+  right: -150px;
+}
+
+/* Bootstrap Containerの微調整 */
+.dashboard-container {
+  max-width: 1320px;
+}
+
+/* Bootstrap Card のグラスモルフィズムスタイル適用 */
+.card {
+  background-color: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: var(--radius-lg);
+  color: var(--text-main);
+}
+
+/* ==========================================================================
+   Header Styles
+   ========================================================================== */
+.dashboard-header {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.avatar-ring {
+  position: relative;
+}
+
+.avatar-link {
+  display: block;
+  text-decoration: none;
+  border-radius: 50%;
+}
+
+.avatar-img {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(6, 182, 212, 0.5);
+  box-shadow: 0 4px 15px rgba(6, 182, 212, 0.35);
+  transition: var(--transition-normal);
+  display: block;
+}
+
+.avatar-link:hover .avatar-img {
+  transform: scale(1.06);
+  border-color: var(--accent-cyan);
+  box-shadow: 0 6px 22px rgba(6, 182, 212, 0.6);
+}
+
+.status-indicator {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 14px;
+  height: 14px;
+  background-color: var(--accent-emerald);
+  border: 2px solid var(--bg-base);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent-emerald);
+}
+
+.dashboard-title {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  background: linear-gradient(120deg, #ffffff 40%, var(--accent-cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.dashboard-subtitle {
+  font-size: 0.825rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* デジタル時計バッジ */
+.digital-clock-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 16px;
+  background: rgba(18, 24, 38, 0.75);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  font-variant-numeric: tabular-nums;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  user-select: none;
+}
+
+.clock-pulse-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--accent-cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--accent-cyan);
+  animation: pulse 2s infinite ease-in-out;
+}
+
+.clock-date {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+.clock-time {
+  font-family: var(--font-display), monospace;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+  background: linear-gradient(120deg, #ffffff, var(--accent-cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+
+/* ==========================================================================
+   Section Headers
+   ========================================================================== */
+.section-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--accent-cyan);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  color: var(--text-main);
+}
+
+.measurement-time {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+/* ==========================================================================
+   KPI Cards (5 Current Metrics)
+   ========================================================================== */
+.kpi-card {
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-card);
+  transition: var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+  background-color: var(--bg-card);
+}
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: transparent;
+  transition: var(--transition-normal);
+}
+
+.kpi-card.card-height::before { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+.kpi-card.card-weight::before { background: linear-gradient(90deg, var(--accent-cyan), var(--accent-indigo)); }
+.kpi-card.card-fat::before { background: linear-gradient(90deg, var(--accent-purple), var(--accent-pink)); }
+.kpi-card.card-bmi::before { background: linear-gradient(90deg, var(--accent-indigo), var(--accent-cyan)); }
+.kpi-card.card-muscle::before { background: linear-gradient(90deg, var(--accent-emerald), #34d399); }
+
+.kpi-card:hover {
+  background-color: var(--bg-card-hover);
+  border-color: rgba(255, 255, 255, 0.16) !important;
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-glow);
+}
+
+.kpi-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.kpi-icon {
+  font-size: 1.15rem;
+}
+
+.kpi-value-row {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.kpi-value {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 2vw, 2.1rem);
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: #fff;
+  line-height: 1.1;
+}
+
+.kpi-unit {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-dim);
+}
+
+.target-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.target-badge.cyan {
+  background: rgba(6, 182, 212, 0.12);
+  color: #38bdf8;
+  border: 1px solid rgba(6, 182, 212, 0.25);
+}
+
+.target-badge.purple {
+  background: rgba(168, 85, 247, 0.12);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.25);
+}
+
+.target-badge.indigo {
+  background: rgba(99, 102, 241, 0.12);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.25);
+}
+
+/* ==========================================================================
+   Chart Controls & Custom Select
+   ========================================================================== */
+.charts-title-icon {
+  font-size: 1.25rem;
+}
+
+.charts-section-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.filter-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* Bootstrap form-select のカスタムダークスタイル */
+.custom-bootstrap-select {
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  color: #f8fafc;
+  font-size: 0.825rem;
+  font-weight: 600;
+  padding-left: 14px;
+  padding-right: 32px;
+  cursor: pointer;
+  min-width: 125px;
+  transition: var(--transition-normal);
+}
+
+.custom-bootstrap-select:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.custom-bootstrap-select:focus {
+  background-color: rgba(18, 24, 38, 0.95);
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 0 0.2rem rgba(6, 182, 212, 0.2);
+  color: #fff;
+}
+
+.custom-bootstrap-select option {
+  background-color: #0f172a;
+  color: #f8fafc;
+}
+
+/* ==========================================================================
+   Chart Cards & Canvas
+   ========================================================================== */
+.chart-container-card {
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-card);
+  transition: var(--transition-normal);
+}
+
+.chart-container-card:hover {
+  border-color: rgba(255, 255, 255, 0.16) !important;
+}
+
+.chart-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.chart-badge.cyan {
+  background: rgba(6, 182, 212, 0.15);
+  color: var(--accent-cyan);
+}
+
+.chart-badge.purple {
+  background: rgba(168, 85, 247, 0.15);
+  color: #c084fc;
+}
+
+.chart-badge.emerald {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+}
+
+.chart-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: #fff;
+}
+
+.chart-sub {
+  font-size: 0.775rem;
+  color: var(--text-dim);
+  display: block;
+}
+
+.chart-canvas-wrapper {
+  position: relative;
+  height: clamp(230px, 28vh, 280px);
+  width: 100%;
+}
+
+.chart-empty-state {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  backdrop-filter: blur(6px);
+  background: rgba(9, 13, 22, 0.85);
+  border-radius: var(--radius-md);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  gap: 10px;
+}
+
+.chart-empty-state.active {
+  display: flex;
+}
+
+.empty-icon {
+  font-size: 2.2rem;
+}
+
+.chart-empty-state h5 {
+  font-size: 1rem;
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 0;
+}
+
+/* ==========================================================================
+   AI Haiku Section
+   ========================================================================== */
+.haiku-card {
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-card);
+}
+
+.haiku-paper {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: clamp(18px, 2vw, 24px);
+  position: relative;
+  overflow: hidden;
+}
+
+.haiku-accent-mark {
+  position: absolute;
+  top: -10px;
+  right: 15px;
+  font-family: var(--font-serif);
+  font-size: 80px;
+  color: rgba(255, 255, 255, 0.03);
+  pointer-events: none;
+  font-weight: 600;
+}
+
+.haiku-text {
+  font-family: var(--font-serif);
+  font-size: clamp(1.15rem, 1.6vw, 1.45rem);
+  font-weight: 600;
+  line-height: 2.1;
+  color: #f1f5f9;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  word-break: break-all;
+}
+
+
+.past-haiku-block {
+  padding: clamp(12px, 1.5vw, 18px);
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.past-haiku-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.past-haiku-item {
+  font-family: var(--font-serif);
+  font-size: 0.825rem;
+  color: var(--text-muted);
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-sm);
+  border-left: 2px solid var(--accent-indigo);
+  transition: var(--transition-normal);
+  word-break: break-all;
+}
+
+.past-haiku-item:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.skeleton-item {
+  height: 32px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: var(--radius-sm);
+  animation: pulse 1.5s infinite;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.dashboard-footer {
+  border-top-color: var(--border-subtle) !important;
+}

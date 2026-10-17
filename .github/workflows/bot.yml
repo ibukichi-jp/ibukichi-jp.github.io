@@ -1,14 +1,14 @@
-name: Bot runner
+name: Bluesky Bot runner
 
 on:
   # 手動実行を許可
   workflow_dispatch:
-  # 定刻に実行
+  # 定刻に実行（毎日 JST 9:00 = UTC 0:00）
   schedule:
     - cron: '0 0 * * *'
 
 jobs:
-  generate:
+  post:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,8 +30,5 @@ jobs:
         env:
           BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
           BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
-          TANITA_CLIENT_ID: ${{ secrets.TANITA_CLIENT_ID }}
-          TANITA_CLIENT_SECRET: ${{ secrets.TANITA_CLIENT_SECRET }}
-          TANITA_REFRESH_TOKEN: ${{ secrets.TANITA_REFRESH_TOKEN }}
         run: |
           uv run ./.src/bot_bsky.py
