@@ -19,10 +19,12 @@ Blueskyへの定期投稿ボット、AIによる日々の俳句生成、GitHub�
 - **GitHub リリース通知の RSS/Atom フィード化 (`.src/rss_github_notifications.py`)**: 未読通知から `Release` 種別を抽出して [`rss/github_notifications.atom`](rss/github_notifications.atom) を生成・自動コミット
 - **GitHub CI通知の自動既読化 (`.src/change_github_notifications_to_read.py`)**: 成功したCI実行完了通知（`ci_activity`）を自動的に既読化
 
-### 3. セキュリティスキャン & SBOM 生成 (`.github/workflows/security-scan.yml`)
-- Syft による SBOM（Software Bill of Materials）生成
-- Grype による脆弱性スキャン（High以上の脆弱性検知時にCIを停止）
-- スキャン失敗時の Discord 通知
+### 3. セキュリティスキャン & AI自動修正PR (`.github/workflows/security-scan.yml`)
+- **Syft**: 依存関係から SBOM（Software Bill of Materials）を生成
+- **Grype**: SBOM から脆弱性（CVE）をスキャン
+- **さくらのAI による脆弱性自動要約**: High 以上の脆弱性を検知した場合、さくらの高火力AIが CVE の内容・攻撃リスク・修正方針を日本語で要約
+- **Discord 即時アラート**: AI の要約解説および修正 PR へのリンクを Discord に即時通知
+- **自動修正 Pull Request 作成**: 影響を受けるパッケージのパッチを自動適用した修正ブランチを作成し、Pull Request を自動起票
 
 ### 4. GitHub Pages ダッシュボード (`index.html`)
 GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)）で公開されるリアルタイムダッシュボードです。Bootstrap 5によるレスポンシブなダークテーマデザインを採用しています。
@@ -45,13 +47,15 @@ GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)�
 │   └── workflows/                    # 各種定期実行・CIワークフロー
 │       ├── daily.yml                 # 日次定期実行（タニタ同期・俳句生成・Bluesky投稿）
 │       ├── hourly.yml                # 毎時定期実行（RSS生成 & CI通知既読化）
-│       └── security-scan.yml         # Syft / Grype セキュリティスキャン
+│       └── security-scan.yml         # Syft / Grype スキャン & AI自動修正PR
 ├── .src/
 │   ├── bot_bsky.py                   # Bluesky投稿ボット本体
 │   ├── change_github_notifications_to_read.py # CI通知既読化スクリプト
 │   ├── haiku_generator.py            # AI俳句生成スクリプト
 │   ├── rss_github_notifications.py   # Atomフィード生成スクリプト
-│   └── tanita_sync.py                # タニタデータ取得・保存スクリプト
+│   ├── security_auto_remediate.py    # 脆弱性検知時のAI要約 & 自動PR作成スクリプト
+│   ├── tanita_sync.py                # タニタデータ取得・保存スクリプト
+│   └── update_manager.py             # 対話型パッケージ更新マネージャー
 ├── docs/                             # 開発用メモ・技術ドキュメント
 ├── rss/
 │   └── github_notifications.atom     # 生成されたAtomフィード
@@ -61,7 +65,7 @@ GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)�
 ├── app.js                            # ダッシュボード用ロジック（Chart.js / データ連携）
 ├── pyproject.toml                    # プロジェクト設定・依存パッケージ定義
 ├── uv.lock                           # uv ロックファイル
-├── update_package.sh                 # 依存パッケージ更新スクリプト
+├── update_package.sh                 # 対話型パッケージ更新スクリプト
 └── README.md
 ```
 
