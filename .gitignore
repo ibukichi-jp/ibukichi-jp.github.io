@@ -1,5 +1,15 @@
+# IDE
 .idea
-.src/__pycache__
-__pycache__
+.vscode/
+
+# Python & uv
+__pycache__/
+*.py[cod]
+*$py.class
 .venv/
-*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# SBOM & scanning artifacts
+sbom.json
+grype-results.json

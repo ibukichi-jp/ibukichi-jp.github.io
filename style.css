@@ -253,7 +253,6 @@ body {
 .kpi-card.card-weight::before { background: linear-gradient(90deg, var(--accent-cyan), var(--accent-indigo)); }
 .kpi-card.card-fat::before { background: linear-gradient(90deg, var(--accent-purple), var(--accent-pink)); }
 .kpi-card.card-bmi::before { background: linear-gradient(90deg, var(--accent-indigo), var(--accent-cyan)); }
-.kpi-card.card-muscle::before { background: linear-gradient(90deg, var(--accent-emerald), #34d399); }
 
 .kpi-card:hover {
   background-color: var(--bg-card-hover);

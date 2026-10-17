@@ -1,7 +1,7 @@
 [project]
 name = "github-notification-api"
 version = "0.1.0"
-description = "Add your description here"
+description = "Personal dashboard and automated CI workflows for ibukichi-jp"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -14,6 +14,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "pytest>=9.1.1",
     "ruff>=0.17.1",
 ]
 

@@ -46,8 +46,12 @@ jobs:
           git config user.name "${GIT_USER_NAME}"
           git config user.email "${GIT_EMAIL}"
           git add ./rss/*.atom
-          git commit -m "Update RSS files by CI." || { echo "No changes to commit"; exit 0; }
-          git push https://x-access-token:${{ secrets.TOKEN_FOR_WRITE }}@github.com/${{ github.actor }}/${{ github.actor }}.github.io.git main
+          if git diff --staged --quiet; then
+            echo "No changes in RSS files. Skipping commit."
+          else
+            git commit -m "Update RSS files by CI."
+            git push https://x-access-token:${{ secrets.TOKEN_FOR_WRITE }}@github.com/${{ github.actor }}/${{ github.actor }}.github.io.git main
+          fi
 
       - name: Mark GitHub notifications as read
         id: notifications
