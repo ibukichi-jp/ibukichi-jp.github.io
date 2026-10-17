@@ -4,9 +4,7 @@ permissions:
   contents: write
 
 on:
-  # 手動実行を許可
   workflow_dispatch:
-  # 毎時実行
   schedule:
     - cron: '0 * * * *'
 
@@ -34,7 +32,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
         run: |
           uv run ./.src/rss_github_notifications.py
-          uv run ./.src/rss_tech_books.py
 
       - name: Do Git push RSS files to GitHub
         env:
@@ -43,6 +40,6 @@ jobs:
         run: |
           git config user.name "${GIT_USER_NAME}"
           git config user.email "${GIT_EMAIL}"
-          git add ./rss/*.atom ./.data/tech_books.json
+          git add ./rss/*.atom
           git commit -m "Update RSS files by CI." || { echo "No changes to commit"; exit 0; }
           git push https://x-access-token:${{ secrets.TOKEN_FOR_WRITE }}@github.com/${{ github.actor }}/${{ github.actor }}.github.io.git main
