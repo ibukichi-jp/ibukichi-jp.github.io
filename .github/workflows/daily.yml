@@ -36,8 +36,6 @@ jobs:
           TANITA_CLIENT_SECRET: ${{ secrets.TANITA_CLIENT_SECRET }}
           TANITA_REFRESH_TOKEN: ${{ secrets.TANITA_REFRESH_TOKEN }}
         run: |
-          echo "⚠️ テスト用: 意図的なエラーを発生させます"
-          exit 1
           uv run ./.src/tanita_sync.py
 
       - name: Generate Haiku
