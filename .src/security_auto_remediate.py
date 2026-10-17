@@ -29,7 +29,7 @@ def load_grype_results(json_path: Path) -> List[Dict[str, Any]]:
     matches = data.get("matches", [])
     high_critical = [
         m for m in matches
-        if m.get("vulnerability", {}).get("severity", "").lower() in ["high", "critical"]
+        if m.get("vulnerability", {}).get("severity", "").lower() in ["medium", "high", "critical"]
     ]
     return high_critical
 
