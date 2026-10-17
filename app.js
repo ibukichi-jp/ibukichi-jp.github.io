@@ -5,7 +5,6 @@
 // グローバル状態
 let weightChartInstance = null;
 let fatChartInstance = null;
-let muscleChartInstance = null;
 let selectedYear = new Date().getFullYear().toString();
 let realTanitaData = null;
 
@@ -200,17 +199,6 @@ function renderDashboard(data) {
       `<span class="target-badge indigo">目標: ${TARGET_BMI.toFixed(1)} (${diffText})</span>`;
   }
 
-  // 筋肉量 (最新値のみ表示、バッジ不要)
-  const latestMuscle = latestAll.muscle != null
-    ? latestAll.muscle
-    : (latestAll.weight && latestAll.fat ? latestAll.weight * (1 - latestAll.fat / 100) : null);
-
-  if (latestMuscle != null) {
-    document.getElementById('kpiMuscle').textContent = latestMuscle.toFixed(1);
-  } else {
-    document.getElementById('kpiMuscle').textContent = '--.-';
-  }
-
   // 3. グラフ用データのフィルタリング（選択された年）
   let displayRecords = allRecords;
   if (selectedYear !== 'all') {
@@ -220,25 +208,21 @@ function renderDashboard(data) {
   if (displayRecords.length === 0) {
     document.getElementById('weightEmptyState').classList.add('active');
     document.getElementById('fatEmptyState').classList.add('active');
-    document.getElementById('muscleEmptyState').classList.add('active');
     destroyCharts();
     return;
   }
 
   document.getElementById('weightEmptyState').classList.remove('active');
   document.getElementById('fatEmptyState').classList.remove('active');
-  document.getElementById('muscleEmptyState').classList.remove('active');
 
   // 4. グラフ上部統計テキスト更新
   const yearLabel = selectedYear === 'all' ? '全期間' : `${selectedYear}年`;
   updateStatsBadge('weightStatsText', displayRecords.map(r => r.weight), 'kg', yearLabel);
   updateStatsBadge('fatStatsText', displayRecords.map(r => r.fat), '%', yearLabel);
-  updateStatsBadge('muscleStatsText', displayRecords.map(r => r.muscle || (r.weight && r.fat ? r.weight * (1 - r.fat / 100) : null)), 'kg', yearLabel);
 
-  // 5. 3つのチャートを描画
+  // 5. チャートを描画
   renderWeightChart(displayRecords);
   renderFatChart(displayRecords);
-  renderMuscleChart(displayRecords);
 }
 
 function updateStatsBadge(elementId, values, unit, periodLabel) {
@@ -257,14 +241,12 @@ function renderEmptyState() {
   document.getElementById('kpiWeight').textContent = '--.-';
   document.getElementById('kpiFat').textContent = '--.-';
   document.getElementById('kpiBmi').textContent = '--.-';
-  document.getElementById('kpiMuscle').textContent = '--.-';
   document.getElementById('kpiWeightTarget').innerHTML = '<span class="target-badge cyan">目標: 67.4kg</span>';
   document.getElementById('kpiFatTarget').innerHTML = '<span class="target-badge purple">目標: 19.9%</span>';
   document.getElementById('kpiBmiTarget').innerHTML = '<span class="target-badge indigo">目標: 22.0</span>';
   document.getElementById('latestMeasurementTime').textContent = '最新測定: 未測定';
   document.getElementById('weightEmptyState').classList.add('active');
   document.getElementById('fatEmptyState').classList.add('active');
-  document.getElementById('muscleEmptyState').classList.add('active');
   destroyCharts();
 }
 
@@ -276,10 +258,6 @@ function destroyCharts() {
   if (fatChartInstance) {
     fatChartInstance.destroy();
     fatChartInstance = null;
-  }
-  if (muscleChartInstance) {
-    muscleChartInstance.destroy();
-    muscleChartInstance = null;
   }
 }
 
@@ -364,48 +342,6 @@ function renderFatChart(records) {
       }]
     },
     options: createChartOptions('体脂肪率', '%', '#c084fc', '#a855f7', records)
-  });
-}
-
-// ==========================================================================
-// 3. 筋肉量チャート (Muscle Mass Chart: エメラルドグリーン系)
-// ==========================================================================
-function renderMuscleChart(records) {
-  const canvas = document.getElementById('muscleChart');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-
-  if (muscleChartInstance) {
-    muscleChartInstance.destroy();
-  }
-
-  const labels = records.map(r => formatChartDate(r.date, selectedYear === 'all'));
-  const data = records.map(r => r.muscle || (r.weight && r.fat ? roundTwo(r.weight * (1 - r.fat / 100)) : null));
-
-  const grad = ctx.createLinearGradient(0, 0, 0, 260);
-  grad.addColorStop(0, 'rgba(16, 185, 129, 0.4)');
-  grad.addColorStop(1, 'rgba(16, 185, 129, 0.0)');
-
-  muscleChartInstance = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [{
-        label: '筋肉量 (kg)',
-        data,
-        borderColor: '#10b981',
-        backgroundColor: grad,
-        fill: true,
-        tension: 0.35,
-        borderWidth: 2.5,
-        pointRadius: records.length > 30 ? 2 : 3.5,
-        pointHoverRadius: 6,
-        pointBackgroundColor: '#10b981',
-        pointBorderColor: '#ffffff',
-        pointBorderWidth: 1.5,
-      }]
-    },
-    options: createChartOptions('筋肉量', 'kg', '#34d399', '#10b981', records)
   });
 }
 

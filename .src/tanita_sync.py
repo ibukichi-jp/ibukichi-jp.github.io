@@ -108,7 +108,6 @@ def update_tanita_data_store(raw_data: list[dict], filepath: str = TANITA_DATA_P
                 "weight": None,
                 "fat": None,
                 "bmi": None,
-                "muscle": None,
             }
 
         rec = records_by_date[display_time]
@@ -119,8 +118,6 @@ def update_tanita_data_store(raw_data: list[dict], filepath: str = TANITA_DATA_P
 
         if rec.get("weight") is not None:
             rec["bmi"] = round(rec["weight"] / (height_m * height_m), 2)
-            if rec.get("fat") is not None:
-                rec["muscle"] = round(rec["weight"] * (1.0 - rec["fat"] / 100.0), 2)
 
     # 日付昇順でソート
     sorted_records = sorted(records_by_date.values(), key=lambda r: r["date"])

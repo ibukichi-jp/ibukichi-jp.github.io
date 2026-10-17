@@ -112,8 +112,8 @@
           </div>
         </div>
 
-        <!-- 現在の指標（Bootstrap Grid: 5大メトリクス） -->
-        <div class="row row-cols-2 row-cols-md-3 row-cols-xl-5 g-3 mb-4">
+        <!-- 現在の指標（Bootstrap Grid: 4大メトリクス） -->
+        <div class="row row-cols-2 row-cols-md-4 g-3 mb-4">
           <!-- 1. 身長カード（バッジ不要） -->
           <div class="col">
             <div class="card h-100 border-0 kpi-card card-height shadow-sm">
@@ -186,22 +186,6 @@
               </div>
             </div>
           </div>
-
-          <!-- 5. 筋肉量カード（バッジ不要） -->
-          <div class="col col-12 col-md-auto col-xl">
-            <div class="card h-100 border-0 kpi-card card-muscle shadow-sm">
-              <div class="card-body p-3 d-flex flex-column justify-content-between">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <span class="kpi-label">筋肉量 (Muscle Mass)</span>
-                  <span class="kpi-icon">💪</span>
-                </div>
-                <div class="kpi-value-row">
-                  <span class="kpi-value" id="kpiMuscle">--.-</span>
-                  <span class="kpi-unit">kg</span>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
         <!-- グラフツールバー（期間絞り込み） -->
@@ -220,8 +204,8 @@
           </div>
         </div>
 
-        <!-- 3連グラフ（Bootstrap Grid: 体重、体脂肪率、筋肉量） -->
-        <div class="row row-cols-1 row-cols-xl-3 g-3">
+        <!-- 2連グラフ（Bootstrap Grid: 体重、体脂肪率） -->
+        <div class="row row-cols-1 row-cols-lg-2 g-3">
           <!-- 1. 体重チャート -->
           <div class="col">
             <div class="card h-100 border-0 chart-container-card shadow-sm">
@@ -262,29 +246,6 @@
                   <div class="chart-empty-state" id="fatEmptyState">
                     <div class="empty-icon">💧</div>
                     <h5>体脂肪率データ待機中</h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 3. 筋肉量チャート -->
-          <div class="col">
-            <div class="card h-100 border-0 chart-container-card shadow-sm">
-              <div class="card-body p-3 p-md-4 d-flex flex-column gap-3">
-                <div class="d-flex justify-content-between align-items-start gap-2">
-                  <div>
-                    <span class="chart-badge emerald">💪 MUSCLE MASS</span>
-                    <h4 class="chart-title h6 mb-1">筋肉量 推移</h4>
-                    <span class="chart-sub" id="muscleStatsText">最新: --.-kg · 範囲: --.-kg 〜 --.-kg</span>
-                  </div>
-                </div>
-
-                <div class="chart-canvas-wrapper flex-grow-1">
-                  <canvas id="muscleChart"></canvas>
-                  <div class="chart-empty-state" id="muscleEmptyState">
-                    <div class="empty-icon">💪</div>
-                    <h5>筋肉量データ待機中</h5>
                   </div>
                 </div>
               </div>
