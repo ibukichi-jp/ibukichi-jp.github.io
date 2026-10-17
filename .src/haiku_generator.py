@@ -3,9 +3,12 @@ import sys
 
 from openai import OpenAI, OpenAIError
 
-SAKURA_API_KEY = os.getenv("SAKURA_API_KEY")
 
-client = OpenAI(api_key=SAKURA_API_KEY, base_url="https://api.ai.sakura.ad.jp/v1")
+def get_client(api_key: str | None = None) -> OpenAI:
+    key = api_key or os.getenv("SAKURA_API_KEY")
+    if not key:
+        raise ValueError("環境変数 'SAKURA_API_KEY' が設定されていません。")
+    return OpenAI(api_key=key, base_url="https://api.ai.sakura.ad.jp/v1")
 
 
 def get_season(month: int) -> str:
@@ -19,9 +22,10 @@ def get_season(month: int) -> str:
         return "冬"
 
 
-def generate_haiku(prompt: str = None, model: str = "gpt-oss-120b") -> str:
-    if not SAKURA_API_KEY:
-        raise ValueError("環境変数 'SAKURA_API_KEY' が設定されていません。")
+def generate_haiku(
+    prompt: str = None, model: str = "gpt-oss-120b", api_key: str | None = None
+) -> str:
+    client = get_client(api_key)
 
     if prompt is None:
         from datetime import datetime, timedelta, timezone

@@ -26,4 +26,7 @@ jobs:
         run: uv sync --dev
 
       - name: Run Pytest Suite
+        env:
+          SAKURA_API_KEY: "dummy_test_key"
+          GITHUB_TOKEN: "dummy_github_token"
         run: uv run pytest -v
