@@ -112,11 +112,10 @@ def create_remediation_pr(
     subprocess.run(["git", "branch", "-D", branch_name], check=False)
     subprocess.run(["git", "checkout", "-b", branch_name], check=True)
 
-    # パッケージをアップデート
+    # パッケージをアップデート（既存の古いピン留めを解除して最新化）
     print(f"\n📦 {pkg_name} の最新化を試行中...")
-    res = subprocess.run(["uv", "add", pkg_name], check=False)
-    if res.returncode != 0:
-        subprocess.run(["uv", "lock", "--upgrade-package", pkg_name], check=True)
+    subprocess.run(["uv", "remove", pkg_name], check=False)
+    subprocess.run(["uv", "add", pkg_name], check=True)
     subprocess.run(["uv", "sync", "--frozen", "--no-dev"], check=True)
 
     # 差分の確認
