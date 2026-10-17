@@ -54,6 +54,7 @@ jobs:
         env:
           SAKURA_API_KEY: ${{ secrets.SAKURA_API_KEY }}
           DISCORD_URL_GITHUB: ${{ secrets.DISCORD_URL_GITHUB }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TOKEN_FOR_WRITE: ${{ secrets.TOKEN_FOR_WRITE }}
           GIT_USER_NAME: "${{ secrets.GIT_USER_NAME }}"
           GIT_EMAIL: "${{ secrets.GIT_EMAIL }}"

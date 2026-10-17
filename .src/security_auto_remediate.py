@@ -233,7 +233,7 @@ def main() -> None:
     grype_file = Path(os.getenv("GRYPE_RESULT_FILE", "grype-results.json"))
     sakura_api_key = os.getenv("SAKURA_API_KEY")
     discord_url = os.getenv("DISCORD_URL_GITHUB")
-    token = os.getenv("TOKEN_FOR_WRITE") or os.getenv("GITHUB_TOKEN", "")
+    token = os.getenv("GITHUB_TOKEN") or os.getenv("TOKEN_FOR_WRITE", "")
     repo_actor = os.getenv("GITHUB_ACTOR", "ibukichi-jp")
     server_url = os.getenv("GITHUB_SERVER_URL", "https://github.com")
     repo = os.getenv("GITHUB_REPOSITORY", f"{repo_actor}/{repo_actor}.github.io")
