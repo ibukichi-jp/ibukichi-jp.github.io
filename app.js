@@ -409,8 +409,33 @@ function roundTwo(num) {
 }
 
 // ==========================================================================
-// 俳句データの読み込み
+// 俳句データの読み込み & SNSシェア機能（Twitter / Bluesky）
 // ==========================================================================
+function updateHaikuShareLinks(haikuText, badgeLabel = '最新の一句') {
+  const latestEl = document.getElementById('latestHaikuText');
+  const badgeEl = document.getElementById('haikuSelectedBadge');
+  const twitterShareBtn = document.getElementById('haikuShareTwitter');
+  const blueskyShareBtn = document.getElementById('haikuShareBluesky');
+
+  if (latestEl) {
+    latestEl.textContent = haikuText;
+  }
+  if (badgeEl) {
+    badgeEl.textContent = badgeLabel;
+  }
+
+  // シェア用本文
+  const shareBaseText = `今日の一句: 「${haikuText}」\n#AI俳句 #ibukichi_jp\nhttps://ibukichi-jp.github.io/`;
+
+  if (twitterShareBtn) {
+    twitterShareBtn.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareBaseText)}`;
+  }
+
+  if (blueskyShareBtn) {
+    blueskyShareBtn.href = `https://bsky.app/intent/compose?text=${encodeURIComponent(shareBaseText)}`;
+  }
+}
+
 async function loadHaikuData() {
   const latestEl = document.getElementById('latestHaikuText');
   const pastListEl = document.getElementById('pastHaikuList');
@@ -425,32 +450,49 @@ async function loadHaikuData() {
       .filter(line => line.length > 0);
 
     if (lines.length === 0) {
-      latestEl.textContent = '俳句データがまだありません。';
-      pastListEl.innerHTML = '<li class="past-haiku-item">次回実行をお待ちください</li>';
+      if (latestEl) latestEl.textContent = '俳句データがまだありません。';
+      if (pastListEl) pastListEl.innerHTML = '<li class="past-haiku-item">次回実行をお待ちください</li>';
       return;
     }
 
     const latestHaiku = lines[lines.length - 1];
-    latestEl.textContent = latestHaiku;
+    updateHaikuShareLinks(latestHaiku, '最新の一句');
 
     const pastHaikus = lines.slice(0, -1).reverse().slice(0, 5);
-    pastListEl.innerHTML = '';
+    if (pastListEl) {
+      pastListEl.innerHTML = '';
 
-    if (pastHaikus.length === 0) {
-      pastListEl.innerHTML = '<li class="past-haiku-item">過去のアーカイブはまだありません</li>';
-    } else {
-      pastHaikus.forEach(haiku => {
-        const li = document.createElement('li');
-        li.className = 'past-haiku-item';
-        li.textContent = haiku;
-        pastListEl.appendChild(li);
-      });
+      if (pastHaikus.length === 0) {
+        pastListEl.innerHTML = '<li class="past-haiku-item">過去のアーカイブはまだありません</li>';
+      } else {
+        pastHaikus.forEach(haiku => {
+          const li = document.createElement('li');
+          li.className = 'past-haiku-item';
+          li.textContent = haiku;
+          li.title = 'クリックしてこの句をメインに表示＆シェア';
+
+          li.addEventListener('click', () => {
+            // 他のアクティブを解除
+            const items = pastListEl.querySelectorAll('.past-haiku-item');
+            items.forEach(it => it.classList.remove('active'));
+            li.classList.add('active');
+
+            // メイン表示とシェアリンクを更新
+            updateHaikuShareLinks(haiku, '過去の一句');
+          });
+
+          pastListEl.appendChild(li);
+        });
+      }
     }
 
   } catch (err) {
     console.warn('俳句データの取得に失敗しました:', err);
-    latestEl.textContent = '春風や 朝日に映える 富士の嶺';
-    pastListEl.innerHTML = '<li class="past-haiku-item">（サンプル俳句を表示中）</li>';
+    const sampleHaiku = '春風や 朝日に映える 富士の嶺';
+    updateHaikuShareLinks(sampleHaiku, 'サンプル句');
+    if (pastListEl) {
+      pastListEl.innerHTML = '<li class="past-haiku-item">（サンプル俳句を表示中）</li>';
+    }
   }
 }
 
