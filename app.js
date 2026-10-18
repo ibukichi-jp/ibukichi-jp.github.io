@@ -13,6 +13,7 @@ let realTanitaData = null;
 // ==========================================================================
 document.addEventListener('DOMContentLoaded', () => {
   startDigitalClock();
+  initCountdown();
   initEventListeners();
   loadTanitaData();
   loadHaikuData();
@@ -451,3 +452,271 @@ async function loadHaikuData() {
     pastListEl.innerHTML = '<li class="past-haiku-item">（サンプル俳句を表示中）</li>';
   }
 }
+
+// ==========================================================================
+// カウントダウン機能（給料日・次の休み・プレミアムフライデー）
+// ==========================================================================
+
+/**
+ * 日本の祝日を計算して辞書形式で返す
+ * @param {number} year - 対象の西暦年
+ * @returns {Object} { 'YYYY-MM-DD': '祝日名' }
+ */
+function getJapaneseHolidays(year) {
+  const holidays = {};
+
+  function add(m, d, name) {
+    const key = `${year}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+    holidays[key] = name;
+  }
+
+  // 第N月曜日を計算 (m: 1-12, n: 1-5)
+  function getNthMonday(m, n) {
+    const firstDay = new Date(year, m - 1, 1).getDay();
+    const offset = (1 - firstDay + 7) % 7; // 月曜日までのオフセット
+    return 1 + offset + (n - 1) * 7;
+  }
+
+  // 固定祝日
+  add(1, 1, '元日');
+  add(1, getNthMonday(1, 2), '成人の日');
+  add(2, 11, '建国記念の日');
+  add(2, 23, '天皇誕生日');
+
+  // 春分の日 (天文学計算公式: 1980年〜2099年有効)
+  const vernalEquinoxDay = Math.floor(20.8431 + 0.242194 * (year - 1980) - Math.floor((year - 1980) / 4));
+  add(3, vernalEquinoxDay, '春分の日');
+
+  add(4, 29, '昭和の日');
+  add(5, 3, '憲法記念日');
+  add(5, 4, 'みどりの日');
+  add(5, 5, 'こどもの日');
+
+  add(7, getNthMonday(7, 3), '海の日');
+  add(8, 11, '山の日');
+  add(9, getNthMonday(9, 3), '敬老の日');
+
+  // 秋分の日 (天文学計算公式: 1980年〜2099年有効)
+  const autumnEquinoxDay = Math.floor(23.2488 + 0.242194 * (year - 1980) - Math.floor((year - 1980) / 4));
+  add(9, autumnEquinoxDay, '秋分の日');
+
+  add(10, getNthMonday(10, 2), 'スポーツの日');
+  add(11, 3, '文化の日');
+  add(11, 23, '勤労感謝の日');
+
+  // 振替休日の判定（祝日が日曜日の場合、その日以降で最も近い祝日でない平日）
+  const holidayDates = Object.keys(holidays).sort();
+  holidayDates.forEach(k => {
+    const [y, m, d] = k.split('-').map(Number);
+    const dt = new Date(y, m - 1, d);
+    if (dt.getDay() === 0) { // 日曜日
+      let cur = new Date(y, m - 1, d + 1);
+      while (true) {
+        const curKey = `${cur.getFullYear()}-${String(cur.getMonth() + 1).padStart(2, '0')}-${String(cur.getDate()).padStart(2, '0')}`;
+        if (!holidays[curKey]) {
+          holidays[curKey] = '振替休日';
+          break;
+        }
+        cur.setDate(cur.getDate() + 1);
+      }
+    }
+  });
+
+  // 国民の休日の判定（祝日と祝日に挟まれた平日）
+  for (let m = 1; m <= 12; m++) {
+    const daysInMonth = new Date(year, m, 0).getDate();
+    for (let d = 2; d < daysInMonth; d++) {
+      const prevKey = `${year}-${String(m).padStart(2, '0')}-${String(d - 1).padStart(2, '0')}`;
+      const curKey = `${year}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+      const nextKey = `${year}-${String(m).padStart(2, '0')}-${String(d + 1).padStart(2, '0')}`;
+      if (holidays[prevKey] && holidays[nextKey] && !holidays[curKey]) {
+        const curDt = new Date(year, m - 1, d);
+        if (curDt.getDay() !== 0) {
+          holidays[curKey] = '国民の休日';
+        }
+      }
+    }
+  }
+
+  return holidays;
+}
+
+/**
+ * 日本の祝日または土日かどうかを判定
+ */
+function isHolidayOrWeekend(date) {
+  const day = date.getDay();
+  if (day === 0 || day === 6) return true; // 土日
+
+  const y = date.getFullYear();
+  const holidays = getJapaneseHolidays(y);
+  const key = `${y}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  return !!holidays[key];
+}
+
+/**
+ * 次の給料日（毎月10日、土日祝なら直前の平日に前倒し）を算出
+ */
+function getNextPayday(now) {
+  function getPaydayForMonth(year, monthIndex) {
+    let d = new Date(year, monthIndex, 10, 0, 0, 0, 0);
+    // 土日祝なら前倒し（直前の平日へ）
+    while (isHolidayOrWeekend(d)) {
+      d.setDate(d.getDate() - 1);
+    }
+    return d;
+  }
+
+  const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+
+  // 今月の給料日
+  const thisMonthPayday = getPaydayForMonth(now.getFullYear(), now.getMonth());
+  if (thisMonthPayday >= todayMidnight) {
+    return thisMonthPayday;
+  }
+
+  // 今月が既に過ぎていれば来月の給料日
+  return getPaydayForMonth(now.getFullYear(), now.getMonth() + 1);
+}
+
+/**
+ * 次の休み（土曜日、日曜日、日本の祝日）を算出
+ */
+function getNextHoliday(now) {
+  const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+
+  // 今日がすでに休みかどうか
+  if (isHolidayOrWeekend(todayMidnight)) {
+    return { date: todayMidnight, isToday: true };
+  }
+
+  // 明日以降で最も近い休みを探す
+  let cur = new Date(todayMidnight);
+  cur.setDate(cur.getDate() + 1);
+  while (!isHolidayOrWeekend(cur)) {
+    cur.setDate(cur.getDate() + 1);
+  }
+  return { date: cur, isToday: false };
+}
+
+/**
+ * 次のプレミアムフライデー（毎月末の金曜日）を算出
+ */
+function getNextPremiumFriday(now) {
+  function getLastFridayOfMonth(year, monthIndex) {
+    // 翌月の0日 = 当月末日
+    let d = new Date(year, monthIndex + 1, 0, 0, 0, 0, 0);
+    while (d.getDay() !== 5) { // 金曜日は 5
+      d.setDate(d.getDate() - 1);
+    }
+    return d;
+  }
+
+  const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+
+  // 今月の最終金曜日
+  const thisMonthPF = getLastFridayOfMonth(now.getFullYear(), now.getMonth());
+  if (thisMonthPF >= todayMidnight) {
+    return thisMonthPF;
+  }
+
+  // 今月が既に過ぎていれば来月の最終金曜日
+  return getLastFridayOfMonth(now.getFullYear(), now.getMonth() + 1);
+}
+
+/**
+ * カウントダウンの初期化＆描画
+ */
+function initCountdown() {
+  updateCountdown();
+  // 1分ごとに更新（日付変更時にも追従）
+  setInterval(updateCountdown, 60000);
+}
+
+function updateCountdown() {
+  const now = new Date();
+  const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+  const weekdays = ['日', '月', '火', '水', '木', '金', '土'];
+
+  function diffInDays(targetDate) {
+    const diffMs = targetDate.getTime() - todayMidnight.getTime();
+    return Math.round(diffMs / (1000 * 60 * 60 * 24));
+  }
+
+  function formatDate(d) {
+    const m = d.getMonth() + 1;
+    const date = d.getDate();
+    const w = weekdays[d.getDay()];
+    return `${m}/${date} (${w})`;
+  }
+
+  // 1. 給料日
+  const payday = getNextPayday(now);
+  const paydayDiff = diffInDays(payday);
+  const cdPaydayRow = document.getElementById('cdPaydayRow');
+  const cdPaydayDate = document.getElementById('cdPaydayDate');
+
+  if (cdPaydayRow && cdPaydayDate) {
+    const isOriginal10 = payday.getDate() === 10;
+    const noteText = isOriginal10 ? '' : ` (繰上)`;
+
+    if (paydayDiff === 0) {
+      cdPaydayRow.innerHTML = '<span class="countdown-prefix">あと</span><span class="countdown-value text-warning">0</span><span class="countdown-unit">日 (本日🎉)</span>';
+    } else if (paydayDiff === 1) {
+      cdPaydayRow.innerHTML = '<span class="countdown-prefix">あと</span><span class="countdown-value">1</span><span class="countdown-unit">日 (明日)</span>';
+    } else {
+      cdPaydayRow.innerHTML = `<span class="countdown-prefix">あと</span><span class="countdown-value">${paydayDiff}</span><span class="countdown-unit">日</span>`;
+    }
+    cdPaydayDate.innerHTML = `<span class="countdown-badge amber">次回: ${formatDate(payday)}${noteText}</span>`;
+  }
+
+  // 2. 次の休み
+  const holidayInfo = getNextHoliday(now);
+  const cdHolidayRow = document.getElementById('cdHolidayRow');
+  const cdHolidayDate = document.getElementById('cdHolidayDate');
+
+  if (cdHolidayRow && cdHolidayDate) {
+    if (holidayInfo.isToday) {
+      cdHolidayRow.innerHTML = '<span class="countdown-prefix">あと</span><span class="countdown-value text-success">0</span><span class="countdown-unit">日 (本日休日🎉)</span>';
+      // 祝日名があれば表示
+      const holidaysObj = getJapaneseHolidays(now.getFullYear());
+      const key = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+      const holidayName = holidaysObj[key];
+      cdHolidayDate.innerHTML = `<span class="countdown-badge emerald">${holidayName ? holidayName : '週末・休日を満喫中'}</span>`;
+    } else {
+      const holidayDiff = diffInDays(holidayInfo.date);
+      if (holidayDiff === 1) {
+        cdHolidayRow.innerHTML = '<span class="countdown-prefix">あと</span><span class="countdown-value">1</span><span class="countdown-unit">日 (明日)</span>';
+      } else {
+        cdHolidayRow.innerHTML = `<span class="countdown-prefix">あと</span><span class="countdown-value">${holidayDiff}</span><span class="countdown-unit">日</span>`;
+      }
+
+      const holidaysObj = getJapaneseHolidays(holidayInfo.date.getFullYear());
+      const key = `${holidayInfo.date.getFullYear()}-${String(holidayInfo.date.getMonth() + 1).padStart(2, '0')}-${String(holidayInfo.date.getDate()).padStart(2, '0')}`;
+      const holidayName = holidaysObj[key];
+      const subLabel = holidayName ? `次回: ${formatDate(holidayInfo.date)} (${holidayName})` : `次回: ${formatDate(holidayInfo.date)}`;
+
+      cdHolidayDate.innerHTML = `<span class="countdown-badge emerald">${subLabel}</span>`;
+    }
+  }
+
+  // 3. プレミアムフライデー
+  const premFri = getNextPremiumFriday(now);
+  const premFriDiff = diffInDays(premFri);
+  const cdPremFriRow = document.getElementById('cdPremFriRow');
+  const cdPremFriDate = document.getElementById('cdPremFriDate');
+
+  if (cdPremFriRow && cdPremFriDate) {
+    if (premFriDiff === 0) {
+      cdPremFriRow.innerHTML = '<span class="countdown-prefix">あと</span><span class="countdown-value text-danger">0</span><span class="countdown-unit">日 (本日🍻)</span>';
+    } else if (premFriDiff === 1) {
+      cdPremFriRow.innerHTML = '<span class="countdown-prefix">あと</span><span class="countdown-value">1</span><span class="countdown-unit">日 (明日)</span>';
+    } else {
+      cdPremFriRow.innerHTML = `<span class="countdown-prefix">あと</span><span class="countdown-value">${premFriDiff}</span><span class="countdown-unit">日</span>`;
+    }
+    cdPremFriDate.innerHTML = `<span class="countdown-badge pink">次回: ${formatDate(premFri)}</span>`;
+  }
+}
+
+
+
