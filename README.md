@@ -1,7 +1,7 @@
 # ibukichi-jp.github.io
 
 GitHub Actions と Python (`uv`) を活用した、個人用自動化・ダッシュボードプラットフォームです。  
-Blueskyへの定期投稿ボット、AIによる日々の俳句生成、GitHub通知のRSS(Atom)フィード化、CI通知の自動既読化などを自動運用しています。
+AIによる日々の俳句生成、GitHub通知のRSS(Atom)フィード化、CI通知の自動既読化などを自動運用しています。
 
 ---
 
@@ -12,7 +12,6 @@ Blueskyへの定期投稿ボット、AIによる日々の俳句生成、GitHub�
 - **タニタ体組成データ自動同期 (`.src/tanita_sync.py`)**: 体組成計で計測した直近データを取得し、[`.data/tanita.json`](.data/tanita.json) にマージして蓄積
 - **さくらのAI 俳句生成器 (`.src/haiku_generator.py`)**: さくらのクラウド 高火力AIサービス（OpenAI互換API / `gpt-oss-120b`）を利用し、日付と季節に合わせた俳句を生成して [`.data/haiku.log`](.data/haiku.log) に蓄積
 - **日次データ自動コミット**: 更新された体組成データと俳句ログを1回のコミットで安全にプッシュ
-- **Bluesky 自動投稿ボット (`.src/bot_bsky.py`)**: `jpholiday` による日本の祝日判定・お知らせをBlueskyに自動ポスト
 
 ### 2. 毎時定期バッチ (`.github/workflows/hourly.yml`)
 毎時0分に起動し、通知の収集から既読化までを一括処理します。
@@ -29,7 +28,7 @@ Blueskyへの定期投稿ボット、AIによる日々の俳句生成、GitHub�
 ### 4. GitHub Pages ダッシュボード (`index.html`)
 GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)）で公開されるリアルタイムダッシュボードです。Bootstrap 5によるレスポンシブなダークテーマデザインを採用しています。
 - **ヘッダー & SNSリンク集**: GitHubプロフィール、Blog(Blogger)、はてブ、X、Bluesky、Instagramの円形アイコンリンク、リアルタイム秒刻みデジタル時計
-- **カウントダウン**: 次の給料日（10日前倒し判定）、次の休み（土日祝判定）、プレミアムフライデー（月末金曜）までの日数カウントダウン
+- **日本のカレンダー & カウントダウン**: 日本の祝日（春分・秋分、振替休日、国民の休日等）に対応したマンスリーカレンダーと、次の給料日（10日前倒し判定）、次の休み（土日祝判定）、プレミアムフライデー（月末金曜）の双方向同期カウントダウン
 - **タニタ体組成データ可視化**: [`.data/tanita.json`](.data/tanita.json) に蓄積された過去全データを Chart.js でインタラクティブにグラフ化（体重・体脂肪率の2連グラフ）
 - **5大KPIカード**: 身長、体重（目標67.4kg）、体脂肪率（目標19.9%）、BMI（目標22.0）、最新測定日時を表示
 - **期間絞り込み**: 年単位（初期値: 現在の年）のドロップダウンによる推移トレンドの即時フィルタリング
@@ -46,13 +45,12 @@ GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)�
 │   └── tanita.json                   # 蓄積された体重・体脂肪率のヘルスデータ
 ├── .github/
 │   └── workflows/                    # 各種定期実行・CIワークフロー
-│       ├── daily.yml                 # 日次定期実行（タニタ同期・俳句生成・Bluesky投稿）
+│       ├── daily.yml                 # 日次定期実行（タニタ同期・俳句生成）
 │       ├── hourly.yml                # 毎時定期実行（RSS生成 & CI通知既読化）
 │       ├── lint.yml                  # コード静的解析・構文チェック（Ruff）
 │       ├── test.yml                  # 単体テスト自動実行（pytest）
 │       └── security-scan.yml         # Syft / Grype スキャン & AI自動修正PR
 ├── .src/
-│   ├── bot_bsky.py                   # Bluesky投稿ボット本体
 │   ├── change_github_notifications_to_read.py # CI通知既読化スクリプト
 │   ├── haiku_generator.py            # AI俳句生成スクリプト
 │   ├── rss_github_notifications.py   # Atomフィード生成スクリプト
@@ -122,8 +120,6 @@ GitHub Actions の実行には、以下の Secrets の設定が必要です。
 
 | シークレット名 | 用途 |
 |---|---|
-| `BSKY_HANDLE` | Bluesky のハンドル名（アカウントID） |
-| `BSKY_APP_PASSWORD` | Bluesky のアプリパスワード |
 | `TANITA_CLIENT_ID` | タニタ Health Planet API クライアントID |
 | `TANITA_CLIENT_SECRET` | タニタ Health Planet API クライアントシークレット |
 | `TANITA_REFRESH_TOKEN` | タニタ Health Planet API リフレッシュトークン |

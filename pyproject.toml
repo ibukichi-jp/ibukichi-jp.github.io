@@ -5,9 +5,7 @@ description = "Personal dashboard and automated CI workflows for ibukichi-jp"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "atproto>=0.0.72",
     "feedgen>=1.0.0",
-    "jpholiday>=1.0.3",
     "openai>=3.33.0",
     "requests>=2.34.2",
 ]
