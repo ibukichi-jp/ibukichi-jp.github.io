@@ -14,6 +14,7 @@ let realTanitaData = null;
 document.addEventListener('DOMContentLoaded', () => {
   startDigitalClock();
   initCountdown();
+  initCalendar();
   initEventListeners();
   loadTanitaData();
   loadHaikuData();
@@ -716,7 +717,261 @@ function updateCountdown() {
     }
     cdPremFriDate.innerHTML = `<span class="countdown-badge pink">次回: ${formatDate(premFri)}</span>`;
   }
+  // カレンダー描画も現在日付と同期
+  if (typeof renderCalendar === 'function') {
+    renderCalendar();
+  }
 }
+
+/**
+ * ==========================================================================
+ * 日本のカレンダー（祝日対応・カウントダウン同期）
+ * ==========================================================================
+ */
+let currentCalendarDate = new Date();
+
+function initCalendar() {
+  const btnPrev = document.getElementById('btnPrevMonth');
+  const btnNext = document.getElementById('btnNextMonth');
+  const btnToday = document.getElementById('btnTodayMonth');
+
+  if (btnPrev) {
+    btnPrev.addEventListener('click', () => {
+      currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+      renderCalendar();
+    });
+  }
+
+  if (btnNext) {
+    btnNext.addEventListener('click', () => {
+      currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+      renderCalendar();
+    });
+  }
+
+  if (btnToday) {
+    btnToday.addEventListener('click', () => {
+      currentCalendarDate = new Date();
+      renderCalendar();
+    });
+  }
+
+  renderCalendar();
+  initCountdownSyncHover();
+}
+
+/**
+ * カレンダーグリッドの描画
+ */
+function renderCalendar() {
+  const grid = document.getElementById('calendarDaysGrid');
+  const monthLabel = document.getElementById('calendarMonthLabel');
+  const holidaySummary = document.getElementById('calendarHolidaySummary');
+  if (!grid || !monthLabel) return;
+
+  const now = new Date();
+  const todayYear = now.getFullYear();
+  const todayMonth = now.getMonth();
+  const todayDate = now.getDate();
+
+  const calYear = currentCalendarDate.getFullYear();
+  const calMonth = currentCalendarDate.getMonth();
+
+  monthLabel.textContent = `${calYear}年 ${calMonth + 1}月`;
+
+  // カウントダウン同期対象日を計算
+  const paydayObj = getNextPayday(now);
+  const holidayInfo = getNextHoliday(now);
+  const nextHolidayObj = holidayInfo.isToday ? now : holidayInfo.date;
+  const premFriObj = getNextPremiumFriday(now);
+
+  const fmtKey = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const paydayKey = fmtKey(paydayObj);
+  const nextHolidayKey = fmtKey(nextHolidayObj);
+  const premFriKey = fmtKey(premFriObj);
+
+  // 祝日データ取得（当年、前年、翌年をサポート）
+  const holidaysCurrent = getJapaneseHolidays(calYear);
+  const holidaysPrev = getJapaneseHolidays(calYear - 1);
+  const holidaysNext = getJapaneseHolidays(calYear + 1);
+  const getHolidayName = (y, m, d) => {
+    const k = `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+    if (y === calYear) return holidaysCurrent[k] || null;
+    if (y < calYear) return holidaysPrev[k] || null;
+    return holidaysNext[k] || null;
+  };
+
+  // 当月の祝日数カウント
+  let monthHolidayCount = 0;
+  for (let d = 1; d <= 31; d++) {
+    const testDate = new Date(calYear, calMonth, d);
+    if (testDate.getMonth() !== calMonth) break;
+    if (getHolidayName(calYear, calMonth, d)) {
+      monthHolidayCount++;
+    }
+  }
+  if (holidaySummary) {
+    if (monthHolidayCount > 0) {
+      holidaySummary.textContent = `祝日 ${monthHolidayCount}日`;
+      holidaySummary.style.display = 'inline-block';
+    } else {
+      holidaySummary.style.display = 'none';
+    }
+  }
+
+  // カレンダーマトリックス作成
+  grid.innerHTML = '';
+
+  const firstDayIndex = new Date(calYear, calMonth, 1).getDay(); // 0(日) - 6(土)
+  const lastDate = new Date(calYear, calMonth + 1, 0).getDate();
+  const prevMonthLastDate = new Date(calYear, calMonth, 0).getDate();
+
+  // 1. 前月のはみ出し
+  const prevMonthYear = calMonth === 0 ? calYear - 1 : calYear;
+  const prevMonthIndex = calMonth === 0 ? 11 : calMonth - 1;
+  for (let i = firstDayIndex - 1; i >= 0; i--) {
+    const dayNum = prevMonthLastDate - i;
+    const cellDate = new Date(prevMonthYear, prevMonthIndex, dayNum);
+    grid.appendChild(createCalendarCell(cellDate, true, getHolidayName, paydayKey, nextHolidayKey, premFriKey, todayYear, todayMonth, todayDate));
+  }
+
+  // 2. 当月の日付
+  for (let d = 1; d <= lastDate; d++) {
+    const cellDate = new Date(calYear, calMonth, d);
+    grid.appendChild(createCalendarCell(cellDate, false, getHolidayName, paydayKey, nextHolidayKey, premFriKey, todayYear, todayMonth, todayDate));
+  }
+
+  // 3. 翌月のはみ出し（7の倍数まで埋める）
+  const nextMonthYear = calMonth === 11 ? calYear + 1 : calYear;
+  const nextMonthIndex = calMonth === 11 ? 0 : calMonth + 1;
+  const totalCellsSoFar = firstDayIndex + lastDate;
+  const trailingDays = (7 - (totalCellsSoFar % 7)) % 7;
+  for (let d = 1; d <= trailingDays; d++) {
+    const cellDate = new Date(nextMonthYear, nextMonthIndex, d);
+    grid.appendChild(createCalendarCell(cellDate, true, getHolidayName, paydayKey, nextHolidayKey, premFriKey, todayYear, todayMonth, todayDate));
+  }
+
+  // カレンダーセルホバー時のカウントダウン連動リスナーを設定
+  attachCellHoverListeners();
+}
+
+/**
+ * 1日分のカレンダーセル要素を作成
+ */
+function createCalendarCell(cellDate, isOtherMonth, getHolidayName, paydayKey, nextHolidayKey, premFriKey, todayYear, todayMonth, todayDate) {
+  const y = cellDate.getFullYear();
+  const m = cellDate.getMonth();
+  const d = cellDate.getDate();
+  const dayOfWeek = cellDate.getDay();
+  const dateKey = `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+
+  const holidayName = getHolidayName(y, m, d);
+  const isToday = !isOtherMonth && (y === todayYear && m === todayMonth && d === todayDate);
+
+  const isPayday = dateKey === paydayKey;
+  const isNextHoliday = dateKey === nextHolidayKey;
+  const isPremFri = dateKey === premFriKey;
+
+  const cell = document.createElement('div');
+  cell.className = 'cal-day-cell';
+  if (isOtherMonth) cell.classList.add('other-month');
+  if (dayOfWeek === 0) cell.classList.add('is-sun');
+  if (dayOfWeek === 6) cell.classList.add('is-sat');
+  if (holidayName) cell.classList.add('is-holiday');
+  if (isToday) cell.classList.add('is-today');
+
+  // カウントダウン同期属性
+  const markers = [];
+  const titles = [];
+
+  if (isPayday) {
+    cell.classList.add('sync-target-payday');
+    cell.setAttribute('data-sync', 'payday');
+    markers.push('<span class="cal-marker" title="次の給料日">💰</span>');
+    titles.push('次回給料日');
+  }
+  if (isNextHoliday) {
+    cell.classList.add('sync-target-holiday');
+    if (!cell.hasAttribute('data-sync')) {
+      cell.setAttribute('data-sync', 'holiday');
+    }
+    markers.push('<span class="cal-marker" title="次の休み">🏖️</span>');
+    titles.push(holidayName ? `次の休み (${holidayName})` : '次の休み');
+  }
+  if (isPremFri) {
+    cell.classList.add('sync-target-prem-fri');
+    if (!cell.hasAttribute('data-sync')) {
+      cell.setAttribute('data-sync', 'prem-fri');
+    }
+    markers.push('<span class="cal-marker" title="プレミアムフライデー">🍻</span>');
+    titles.push('プレミアムフライデー');
+  }
+
+  if (holidayName) {
+    titles.push(holidayName);
+  }
+  if (isToday) {
+    titles.push('今日');
+  }
+
+  if (titles.length > 0) {
+    cell.setAttribute('title', `${m + 1}/${d} (${['日','月','火','水','木','金','土'][dayOfWeek]}): ${titles.join(' / ')}`);
+  }
+
+  // HTML構築
+  let html = `
+    <div class="cal-day-top">
+      <span class="cal-day-num">${d}</span>
+      <div class="cal-markers-row">${markers.join('')}</div>
+    </div>
+  `;
+
+  if (holidayName) {
+    html += `<div class="cal-holiday-name" title="${holidayName}">${holidayName}</div>`;
+  }
+
+  cell.innerHTML = html;
+  return cell;
+}
+
+/**
+ * カウントダウンカードとカレンダーセルの双方向ホバー連携
+ */
+function initCountdownSyncHover() {
+  const countdownCards = document.querySelectorAll('.countdown-card[data-sync-target]');
+  countdownCards.forEach(card => {
+    const targetType = card.getAttribute('data-sync-target');
+
+    card.addEventListener('mouseenter', () => {
+      const syncCells = document.querySelectorAll(`.cal-day-cell[data-sync="${targetType}"]`);
+      syncCells.forEach(c => c.classList.add('sync-pulse'));
+    });
+
+    card.addEventListener('mouseleave', () => {
+      const syncCells = document.querySelectorAll(`.cal-day-cell[data-sync="${targetType}"]`);
+      syncCells.forEach(c => c.classList.remove('sync-pulse'));
+    });
+  });
+}
+
+function attachCellHoverListeners() {
+  const syncCells = document.querySelectorAll('.cal-day-cell[data-sync]');
+  syncCells.forEach(cell => {
+    const targetType = cell.getAttribute('data-sync');
+    const matchedCard = document.querySelector(`.countdown-card[data-sync-target="${targetType}"]`);
+
+    if (matchedCard) {
+      cell.addEventListener('mouseenter', () => {
+        matchedCard.classList.add('sync-card-pulse');
+      });
+
+      cell.addEventListener('mouseleave', () => {
+        matchedCard.classList.remove('sync-card-pulse');
+      });
+    }
+  });
+}
+
 
 
 

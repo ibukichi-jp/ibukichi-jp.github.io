@@ -66,7 +66,7 @@
   <!-- Bootstrap 5.3.3 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- カスタムスタイル (キャッシュバスター付き) -->
-  <link rel="stylesheet" href="style.css?v=20261018c">
+  <link rel="stylesheet" href="style.css?v=20261018e">
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
@@ -153,17 +153,64 @@
 
     <main>
 
-      <!-- カウントダウン セクション -->
-      <section class="mb-4 pb-2" aria-labelledby="countdownSectionTitle">
+      <!-- カレンダー & カウントダウン セクション -->
+      <section class="mb-4 pb-2" aria-labelledby="calendarSectionTitle">
         <div class="mb-3">
-          <div class="section-tag">COUNTDOWN</div>
-          <h2 id="countdownSectionTitle" class="section-title h5 mb-0">カウントダウン</h2>
+          <div class="section-tag">CALENDAR & COUNTDOWN</div>
+          <h2 id="calendarSectionTitle" class="section-title h5 mb-0">カレンダー & カウントダウン</h2>
         </div>
 
+        <!-- 日本のカレンダー（マンスリーカレンダー：祝日・給料日・プレ金同期） -->
+        <div class="card border-0 calendar-card shadow-sm mb-3">
+          <div class="card-body p-3 p-md-4">
+            <div class="calendar-header d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+              <div class="d-flex align-items-center gap-2">
+                <span class="calendar-icon">📅</span>
+                <h3 class="calendar-title h6 mb-0" id="calendarMonthLabel">----年 --月</h3>
+                <span class="calendar-holiday-summary badge" id="calendarHolidaySummary"></span>
+              </div>
+              <div class="calendar-nav-buttons d-flex align-items-center gap-1">
+                <button type="button" class="btn btn-sm btn-calendar-nav" id="btnPrevMonth" title="前月" aria-label="前月">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </button>
+                <button type="button" class="btn btn-sm btn-calendar-today" id="btnTodayMonth" title="今月に戻る">今月</button>
+                <button type="button" class="btn btn-sm btn-calendar-nav" id="btnNextMonth" title="翌月" aria-label="翌月">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- カレンダー本体グリッド -->
+            <div class="calendar-grid-container">
+              <!-- 曜日ヘッダー -->
+              <div class="calendar-weekdays-grid">
+                <div class="cal-weekday sun">日</div>
+                <div class="cal-weekday mon">月</div>
+                <div class="cal-weekday tue">火</div>
+                <div class="cal-weekday wed">水</div>
+                <div class="cal-weekday thu">木</div>
+                <div class="cal-weekday fri">金</div>
+                <div class="cal-weekday sat">土</div>
+              </div>
+              <!-- 日付グリッド（JavaScriptで動的描画） -->
+              <div class="calendar-days-grid" id="calendarDaysGrid"></div>
+            </div>
+
+            <!-- カレンダー凡例 -->
+            <div class="calendar-legend d-flex flex-wrap align-items-center justify-content-center gap-3 mt-3 pt-3 border-top border-secondary border-opacity-10">
+              <div class="legend-item"><span class="legend-dot today"></span> 今日</div>
+              <div class="legend-item"><span class="legend-marker payday">💰</span> 給料日 (10日前倒し)</div>
+              <div class="legend-item"><span class="legend-marker holiday">🏖️</span> 次の休み / 祝日</div>
+              <div class="legend-item"><span class="legend-marker prem-fri">🍻</span> プレ金</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- カウントダウン3連カード -->
         <div class="row row-cols-1 row-cols-sm-3 g-3">
           <!-- 1. 次の給料日 -->
           <div class="col">
-            <div class="card h-100 border-0 countdown-card card-payday shadow-sm">
+            <div class="card h-100 border-0 countdown-card card-payday shadow-sm" data-sync-target="payday" role="button" tabindex="0" title="カレンダー上の給料日と同期">
               <div class="card-body p-3 d-flex flex-column justify-content-between">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span class="countdown-label">次の給料日</span>
@@ -183,7 +230,7 @@
 
           <!-- 2. 次の休み -->
           <div class="col">
-            <div class="card h-100 border-0 countdown-card card-holiday shadow-sm">
+            <div class="card h-100 border-0 countdown-card card-holiday shadow-sm" data-sync-target="holiday" role="button" tabindex="0" title="カレンダー上の次の休みと同期">
               <div class="card-body p-3 d-flex flex-column justify-content-between">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span class="countdown-label">次の休み</span>
@@ -203,7 +250,7 @@
 
           <!-- 3. 次のプレミアムフライデー -->
           <div class="col">
-            <div class="card h-100 border-0 countdown-card card-prem-fri shadow-sm">
+            <div class="card h-100 border-0 countdown-card card-prem-fri shadow-sm" data-sync-target="prem-fri" role="button" tabindex="0" title="カレンダー上のプレミアムフライデーと同期">
               <div class="card-body p-3 d-flex flex-column justify-content-between">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span class="countdown-label">プレミアムフライデー</span>
@@ -432,6 +479,6 @@
   <!-- Bootstrap 5.3.3 JS Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <!-- アプリケーションロジック -->
-  <script src="app.js?v=20261018d"></script>
+  <script src="app.js?v=20261018e"></script>
 </body>
 </html>
