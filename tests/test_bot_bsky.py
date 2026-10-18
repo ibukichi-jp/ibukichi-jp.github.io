@@ -6,12 +6,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent / ".src"))
 
 from bot_bsky import (
+    build_bot_messages,
     holiday_bot_message,
     is_business_day,
     is_holiday,
-    is_premium_friday,
     is_weekend,
-    premium_friday_bot_message,
 )
 
 
@@ -48,16 +47,6 @@ def test_is_business_day():
     assert is_business_day(holiday_weekday) is False
 
 
-def test_is_premium_friday():
-    """プレミアムフライデー（月末の金曜日かつ営業日）のテスト"""
-    # 2026年10月: 10/2, 10/9, 10/16, 10/23, 10/30 (金曜日)
-    # 最終金曜日は 10/30
-    assert is_premium_friday(date(2026, 10, 30)) is True
-    assert is_premium_friday(date(2026, 10, 23)) is False
-    assert is_premium_friday(date(2026, 10, 16)) is False
-    assert is_premium_friday(date(2026, 10, 31)) is False  # 土曜日
-
-
 def test_holiday_bot_message():
     """祝日ボットメッセージ生成のテスト"""
     new_years_day = date(2026, 1, 1)
@@ -69,12 +58,12 @@ def test_holiday_bot_message():
     assert holiday_bot_message(normal_day) == ""
 
 
-def test_premium_friday_bot_message():
-    """プレミアムフライデーメッセージ生成のテスト"""
-    pf_day = date(2026, 10, 30)
-    msg = premium_friday_bot_message(pf_day)
-    assert "プレミアムフライデー" in msg
-    assert "自動投稿" in msg
+def test_build_bot_messages():
+    """ボットメッセージ構築のテスト（祝日のみ）"""
+    new_years_day = date(2026, 1, 1)
+    messages = build_bot_messages(new_years_day)
+    assert len(messages) == 1
+    assert "元日" in messages[0]
 
-    non_pf_day = date(2026, 10, 23)
-    assert premium_friday_bot_message(non_pf_day) == ""
+    normal_day = date(2026, 10, 15)
+    assert build_bot_messages(normal_day) == []
