@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   startDigitalClock();
   initCountdown();
   initCalendar();
+  initWeatherForecast();
   initEventListeners();
   loadTanitaData();
   loadHaikuData();
@@ -1013,6 +1014,230 @@ function attachCellHoverListeners() {
     }
   });
 }
+
+/**
+ * ==========================================================================
+ * 八王子市の天気予報 (Open-Meteo API)
+ * ==========================================================================
+ */
+const HACHIOJI_LAT = 35.655;
+const HACHIOJI_LON = 139.324;
+
+function getWeatherMeta(code, isDay = 1) {
+  switch (code) {
+    case 0: return { label: '快晴', icon: isDay ? '☀️' : '🌙' };
+    case 1: return { label: '晴れ', icon: isDay ? '🌤️' : '🌙' };
+    case 2: return { label: '一部曇り', icon: isDay ? '⛅' : '☁️' };
+    case 3: return { label: '曇り', icon: '☁️' };
+    case 45:
+    case 48: return { label: '霧', icon: '🌫️' };
+    case 51:
+    case 53:
+    case 55: return { label: '霧雨', icon: '🌦️' };
+    case 61: return { label: '小雨', icon: '🌧️' };
+    case 63: return { label: '雨', icon: '🌧️' };
+    case 65: return { label: '大雨', icon: '🌧️' };
+    case 71:
+    case 73:
+    case 75:
+    case 77: return { label: '雪', icon: '❄️' };
+    case 80:
+    case 81:
+    case 82: return { label: 'にわか雨', icon: '🌦️' };
+    case 85:
+    case 86: return { label: 'にわか雪', icon: '🌨️' };
+    case 95:
+    case 96:
+    case 99: return { label: '雷雨', icon: '⛈️' };
+    default: return { label: '晴れ', icon: isDay ? '☀️' : '🌙' };
+  }
+}
+
+function initWeatherForecast() {
+  const refreshBtn = document.getElementById('btnWeatherRefresh');
+  const hourlyBtn = document.getElementById('btnForecastHourly');
+  const dailyBtn = document.getElementById('btnForecastDaily');
+  const hourlyContainer = document.getElementById('weatherHourlyContainer');
+  const dailyContainer = document.getElementById('weatherDailyContainer');
+
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', () => {
+      refreshBtn.classList.add('is-spinning');
+      loadWeatherData().finally(() => {
+        setTimeout(() => refreshBtn.classList.remove('is-spinning'), 800);
+      });
+    });
+  }
+
+  if (hourlyBtn && dailyBtn && hourlyContainer && dailyContainer) {
+    hourlyBtn.addEventListener('click', () => {
+      hourlyBtn.classList.add('active');
+      dailyBtn.classList.remove('active');
+      hourlyContainer.classList.remove('d-none');
+      dailyContainer.classList.add('d-none');
+    });
+
+    dailyBtn.addEventListener('click', () => {
+      dailyBtn.classList.add('active');
+      hourlyBtn.classList.remove('active');
+      dailyContainer.classList.remove('d-none');
+      hourlyContainer.classList.add('d-none');
+    });
+  }
+
+  loadWeatherData();
+  // 15分ごとに自動更新
+  setInterval(loadWeatherData, 15 * 60 * 1000);
+}
+
+async function loadWeatherData() {
+  const updateTimeEl = document.getElementById('weatherUpdateTime');
+  const currentIconEl = document.getElementById('currentWeatherIcon');
+  const currentTextEl = document.getElementById('currentWeatherText');
+  const currentTempEl = document.getElementById('currentTempNum');
+  const currentApparentEl = document.getElementById('currentApparentTemp');
+  const highLowEl = document.getElementById('weatherHighLow');
+  const precipProbEl = document.getElementById('weatherPrecipProb');
+  const humidityEl = document.getElementById('weatherHumidity');
+  const sunTimesEl = document.getElementById('weatherSunTimes');
+  const hourlyContainer = document.getElementById('weatherHourlyContainer');
+  const dailyContainer = document.getElementById('weatherDailyContainer');
+
+  try {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${HACHIOJI_LAT}&longitude=${HACHIOJI_LON}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,wind_speed_10m&hourly=temperature_2m,precipitation_probability,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset&timezone=Asia%2FTokyo`;
+
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+
+    const current = data.current;
+    const daily = data.daily;
+    const hourly = data.hourly;
+
+    const weatherInfo = getWeatherMeta(current.weather_code, current.is_day);
+
+    if (currentIconEl) currentIconEl.textContent = weatherInfo.icon;
+    if (currentTextEl) currentTextEl.textContent = weatherInfo.label;
+    if (currentTempEl) currentTempEl.textContent = current.temperature_2m.toFixed(1);
+    if (currentApparentEl) currentApparentEl.textContent = `体感: ${current.apparent_temperature.toFixed(1)}℃ · 風速: ${current.wind_speed_10m.toFixed(1)}km/h`;
+
+    const maxTemp = daily.temperature_2m_max[0];
+    const minTemp = daily.temperature_2m_min[0];
+    if (highLowEl) highLowEl.textContent = `${maxTemp.toFixed(1)}℃ / ${minTemp.toFixed(1)}℃`;
+
+    const precipProb = daily.precipitation_probability_max[0] ?? 0;
+    if (precipProbEl) precipProbEl.textContent = `${precipProb}%`;
+
+    if (humidityEl) humidityEl.textContent = `${current.relative_humidity_2m}%`;
+
+    // 日の出・日の入り (例: "2026-10-18T05:50" -> "05:50")
+    const sunriseStr = daily.sunrise[0]?.split('T')[1] || '--:--';
+    const sunsetStr = daily.sunset[0]?.split('T')[1] || '--:--';
+    if (sunTimesEl) sunTimesEl.textContent = `${sunriseStr} / ${sunsetStr}`;
+
+    // 更新時刻
+    const now = new Date();
+    const timeFormatted = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    if (updateTimeEl) updateTimeEl.textContent = `${timeFormatted} 取得`;
+
+    // 時間別予報（現在から24時間分）
+    if (hourlyContainer && hourly) {
+      renderHourlyForecast(hourly, current.time, hourlyContainer);
+    }
+
+    // 週間予報（7日間）
+    if (dailyContainer && daily) {
+      renderDailyForecast(daily, dailyContainer);
+    }
+
+    // カレンダーの「今日」セルに天気を反映
+    const todayCell = document.querySelector('.cal-day-cell.is-today .cal-markers-row');
+    if (todayCell && !todayCell.querySelector('.weather-cal-marker')) {
+      const span = document.createElement('span');
+      span.className = 'cal-marker weather-cal-marker';
+      span.title = `今日の八王子: ${weatherInfo.label} (${current.temperature_2m.toFixed(0)}℃)`;
+      span.textContent = weatherInfo.icon;
+      todayCell.appendChild(span);
+    }
+
+  } catch (err) {
+    console.warn('八王子の天気データの取得に失敗しました:', err);
+    if (updateTimeEl) updateTimeEl.textContent = '気象データ取得失敗';
+  }
+}
+
+function renderHourlyForecast(hourly, currentTimeStr, container) {
+  container.innerHTML = '';
+
+  const nowIndex = hourly.time.findIndex(t => t >= currentTimeStr) || 0;
+  const targetIndices = [];
+  for (let i = 0; i < 24 && (nowIndex + i) < hourly.time.length; i++) {
+    targetIndices.push(nowIndex + i);
+  }
+
+  targetIndices.forEach((idx, offset) => {
+    const timeStr = hourly.time[idx];
+    const hour = timeStr.split('T')[1].slice(0, 5);
+    const hourNum = parseInt(hour.split(':')[0], 10);
+    const isDay = (hourNum >= 6 && hourNum < 18) ? 1 : 0;
+    const code = hourly.weather_code[idx];
+    const info = getWeatherMeta(code, isDay);
+    const temp = hourly.temperature_2m[idx].toFixed(0);
+    const pop = hourly.precipitation_probability[idx] ?? 0;
+
+    const item = document.createElement('div');
+    item.className = 'weather-hourly-item';
+    if (offset === 0) item.classList.add('is-now');
+
+    item.innerHTML = `
+      <span class="hourly-time">${offset === 0 ? '現在' : hour}</span>
+      <span class="hourly-icon" title="${info.label}">${info.icon}</span>
+      <span class="hourly-temp">${temp}℃</span>
+      <span class="hourly-pop">${pop > 0 ? `☔${pop}%` : '0%'}</span>
+    `;
+    container.appendChild(item);
+  });
+}
+
+function renderDailyForecast(daily, container) {
+  container.innerHTML = '';
+  const weekdays = ['日', '月', '火', '水', '木', '金', '土'];
+
+  for (let i = 0; i < daily.time.length && i < 7; i++) {
+    const dateStr = daily.time[i];
+    const parts = dateStr.split('-');
+    const m = parseInt(parts[1], 10);
+    const d = parseInt(parts[2], 10);
+    const dateObj = new Date(parseInt(parts[0], 10), m - 1, d);
+    const dayOfWeek = dateObj.getDay();
+
+    const code = daily.weather_code[i];
+    const info = getWeatherMeta(code, 1);
+    const maxT = daily.temperature_2m_max[i].toFixed(0);
+    const minT = daily.temperature_2m_min[i].toFixed(0);
+    const pop = daily.precipitation_probability_max[i] ?? 0;
+
+    const item = document.createElement('div');
+    item.className = 'weather-daily-item';
+    if (i === 0) item.classList.add('is-today');
+
+    const dayClass = dayOfWeek === 0 ? 'is-sun' : (dayOfWeek === 6 ? 'is-sat' : '');
+
+    item.innerHTML = `
+      <span class="daily-day ${dayClass}">${i === 0 ? '今日' : (i === 1 ? '明日' : `${weekdays[dayOfWeek]}曜`)}</span>
+      <span class="daily-date">${m}/${d}</span>
+      <span class="daily-icon" title="${info.label}">${info.icon}</span>
+      <div class="daily-temp-row">
+        <span class="daily-max">${maxT}</span>
+        <span class="opacity-50">/</span>
+        <span class="daily-min">${minT}</span>
+      </div>
+      <span class="daily-pop">☔${pop}%</span>
+    `;
+    container.appendChild(item);
+  }
+}
+
 
 
 

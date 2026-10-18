@@ -66,7 +66,7 @@
   <!-- Bootstrap 5.3.3 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- カスタムスタイル (キャッシュバスター付き) -->
-  <link rel="stylesheet" href="style.css?v=20261018f">
+  <link rel="stylesheet" href="style.css?v=20261018g">
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
@@ -153,8 +153,100 @@
 
     <main>
 
+      <!-- セクション: 八王子の天気（気象情報） -->
+      <section class="mb-5" aria-labelledby="weatherSectionTitle">
+        <div class="d-flex flex-wrap justify-content-between align-items-end mb-3">
+          <div>
+            <div class="section-tag">WEATHER FORECAST</div>
+            <h2 id="weatherSectionTitle" class="section-title h5 mb-0">八王子市の天気</h2>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <span class="measurement-time" id="weatherUpdateTime">気象データ取得中...</span>
+            <button type="button" class="btn btn-sm btn-weather-refresh" id="btnWeatherRefresh" title="天気を最新に更新" aria-label="天気を最新に更新">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="card border-0 weather-card shadow-sm">
+          <div class="card-body p-3 p-md-4">
+            <!-- 現在の気象概況（メイン行） -->
+            <div class="weather-current-row mb-4">
+              <!-- 左: 天気アイコン & 概況 -->
+              <div class="weather-condition-col d-flex align-items-center gap-3">
+                <span class="weather-icon-large" id="currentWeatherIcon">☀️</span>
+                <div>
+                  <div class="weather-condition-label h4 mb-0" id="currentWeatherText">読み込み中</div>
+                  <span class="weather-location-sub text-secondary small">📍 東京都八王子市</span>
+                </div>
+              </div>
+
+              <!-- 中央: 気温 & 体感温度 -->
+              <div class="weather-temp-col">
+                <div class="d-flex align-items-baseline gap-1">
+                  <span class="weather-temp-num" id="currentTempNum">--.-</span>
+                  <span class="weather-temp-unit">℃</span>
+                </div>
+                <span class="weather-apparent-temp" id="currentApparentTemp">体感: --.-℃</span>
+              </div>
+
+              <!-- 右: 4大気象指標ピル -->
+              <div class="weather-metrics-pills">
+                <div class="weather-pill">
+                  <span class="pill-icon">🌡️</span>
+                  <div class="pill-meta">
+                    <span class="pill-label">最高 / 最低</span>
+                    <span class="pill-value" id="weatherHighLow">--.-℃ / --.-℃</span>
+                  </div>
+                </div>
+                <div class="weather-pill">
+                  <span class="pill-icon">☔</span>
+                  <div class="pill-meta">
+                    <span class="pill-label">降水確率</span>
+                    <span class="pill-value" id="weatherPrecipProb">--%</span>
+                  </div>
+                </div>
+                <div class="weather-pill">
+                  <span class="pill-icon">💧</span>
+                  <div class="pill-meta">
+                    <span class="pill-label">湿度</span>
+                    <span class="pill-value" id="weatherHumidity">--%</span>
+                  </div>
+                </div>
+                <div class="weather-pill">
+                  <span class="pill-icon">🌅</span>
+                  <div class="pill-meta">
+                    <span class="pill-label">日の出 / 日の入り</span>
+                    <span class="pill-value" id="weatherSunTimes">--:-- / --:--</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 予報切り替えタブ（今後24時間 / 週間予報） -->
+            <div class="weather-forecast-header mb-3 d-flex flex-wrap align-items-center justify-content-between gap-2 border-top border-secondary border-opacity-10 pt-3">
+              <div class="weather-tabs-pill d-inline-flex p-1">
+                <button type="button" class="btn btn-sm weather-tab-btn active" id="btnForecastHourly">24時間予報</button>
+                <button type="button" class="btn btn-sm weather-tab-btn" id="btnForecastDaily">週間予報 (7日間)</button>
+              </div>
+              <span class="weather-source-credit text-secondary small">高精度気象API: Open-Meteo</span>
+            </div>
+
+            <!-- 時間別予報 (横スクロール) -->
+            <div class="weather-hourly-scroll" id="weatherHourlyContainer">
+              <div class="weather-loading-text text-secondary small py-3 text-center">時間別予報を取得中...</div>
+            </div>
+
+            <!-- 週間予報 (7日グリッド) -->
+            <div class="weather-daily-grid d-none" id="weatherDailyContainer">
+              <div class="weather-loading-text text-secondary small py-3 text-center">週間予報を取得中...</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- カレンダー & カウントダウン セクション -->
-      <section class="mb-4 pb-2" aria-labelledby="calendarSectionTitle">
+      <section class="mb-5 pb-2" aria-labelledby="calendarSectionTitle">
         <div class="mb-3">
           <div class="section-tag">CALENDAR & COUNTDOWN</div>
           <h2 id="calendarSectionTitle" class="section-title h5 mb-0">カレンダー & カウントダウン</h2>
@@ -504,6 +596,6 @@
   <!-- Bootstrap 5.3.3 JS Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <!-- アプリケーションロジック -->
-  <script src="app.js?v=20261018f"></script>
+  <script src="app.js?v=20261018g"></script>
 </body>
 </html>
