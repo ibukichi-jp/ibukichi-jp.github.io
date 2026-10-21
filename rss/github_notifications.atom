@@ -2,30 +2,9 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-10-21T19:59:23.159158+00:00</updated>
+  <updated>2026-10-21T23:12:37.851477+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
-  <entry>
-    <id>https://github.com/react/react/releases/tag/v19.3.1</id>
-    <title>[react/react] 19.3.1 (October 14th, 2026)</title>
-    <updated>2026-10-14T17:12:48+00:00</updated>
-    <link href="https://github.com/react/react/releases/tag/v19.3.1"/>
-    <summary>The library for web and native user interfaces.</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/react/react/releases/tag/v19.0.9</id>
-    <title>[react/react] 19.0.9 (October 14th, 2026)</title>
-    <updated>2026-10-14T17:14:14+00:00</updated>
-    <link href="https://github.com/react/react/releases/tag/v19.0.9"/>
-    <summary>The library for web and native user interfaces.</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/react/react/releases/tag/v19.1.10</id>
-    <title>[react/react] 19.1.10 (October 14th, 2026)</title>
-    <updated>2026-10-14T17:29:56+00:00</updated>
-    <link href="https://github.com/react/react/releases/tag/v19.1.10"/>
-    <summary>The library for web and native user interfaces.</summary>
-  </entry>
   <entry>
     <id>https://github.com/react/react/releases/tag/v19.2.9</id>
     <title>[react/react] 19.2.9 (October 14th, 2026)</title>
@@ -353,6 +332,27 @@
     <title>[fastapi/fastapi] 0.158.2</title>
     <updated>2026-10-21T19:20:54+00:00</updated>
     <link href="https://github.com/fastapi/fastapi/releases/tag/0.158.2"/>
+    <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/astral-sh/setup-uv/releases/tag/v10.3.1</id>
+    <title>[astral-sh/setup-uv] v10.3.1 🌈 preserve cache error class names in save-cache bundle</title>
+    <updated>2026-10-21T20:01:57+00:00</updated>
+    <link href="https://github.com/astral-sh/setup-uv/releases/tag/v10.3.1"/>
+    <summary>Set up your GitHub Actions workflow with a specific version of https://docs.astral.sh/uv/</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/fastapi/fastapi/releases/tag/0.159.0</id>
+    <title>[fastapi/fastapi] 0.159.0</title>
+    <updated>2026-10-21T20:04:19+00:00</updated>
+    <link href="https://github.com/fastapi/fastapi/releases/tag/0.159.0"/>
+    <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/fastapi/fastapi/releases/tag/0.159.1</id>
+    <title>[fastapi/fastapi] 0.159.1</title>
+    <updated>2026-10-21T20:59:36+00:00</updated>
+    <link href="https://github.com/fastapi/fastapi/releases/tag/0.159.1"/>
     <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
   </entry>
 </feed>
