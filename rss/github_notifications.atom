@@ -2,16 +2,9 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-10-21T09:56:02.509874+00:00</updated>
+  <updated>2026-10-21T15:00:47.494871+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.9</id>
-    <title>[vercel/next.js] v16.5.0-canary.9</title>
-    <updated>2026-10-12T23:53:23+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.9"/>
-    <summary>The React Framework</summary>
-  </entry>
   <entry>
     <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.10</id>
     <title>[vercel/next.js] v16.5.0-canary.10</title>
@@ -326,5 +319,40 @@
     <updated>2026-10-21T08:45:24+00:00</updated>
     <link href="https://github.com/fastapi/fastapi/releases/tag/0.156.8"/>
     <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/fastapi/fastapi/releases/tag/0.157.0</id>
+    <title>[fastapi/fastapi] 0.157.0</title>
+    <updated>2026-10-21T13:55:57+00:00</updated>
+    <link href="https://github.com/fastapi/fastapi/releases/tag/0.157.0"/>
+    <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/php/php-src/releases/tag/php-8.5.12</id>
+    <title>[php/php-src] PHP 8.5.12</title>
+    <updated>2026-10-21T14:07:10+00:00</updated>
+    <link href="https://github.com/php/php-src/releases/tag/php-8.5.12"/>
+    <summary>The PHP Interpreter</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/php/php-src/releases/tag/php-8.4.27</id>
+    <title>[php/php-src] PHP 8.4.27</title>
+    <updated>2026-10-21T14:07:56+00:00</updated>
+    <link href="https://github.com/php/php-src/releases/tag/php-8.4.27"/>
+    <summary>The PHP Interpreter</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/php/php-src/releases/tag/php-8.3.36</id>
+    <title>[php/php-src] PHP 8.3.36</title>
+    <updated>2026-10-21T14:08:20+00:00</updated>
+    <link href="https://github.com/php/php-src/releases/tag/php-8.3.36"/>
+    <summary>The PHP Interpreter</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/php/php-src/releases/tag/php-8.2.35</id>
+    <title>[php/php-src] PHP 8.2.35</title>
+    <updated>2026-10-21T14:09:42+00:00</updated>
+    <link href="https://github.com/php/php-src/releases/tag/php-8.2.35"/>
+    <summary>The PHP Interpreter</summary>
   </entry>
 </feed>
