@@ -2,23 +2,9 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-10-22T19:52:22.253269+00:00</updated>
+  <updated>2026-10-22T23:07:32.004910+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
-  <entry>
-    <id>https://github.com/fastapi/fastapi/releases/tag/0.143.3</id>
-    <title>[fastapi/fastapi] 0.143.3</title>
-    <updated>2026-10-16T14:28:56+00:00</updated>
-    <link href="https://github.com/fastapi/fastapi/releases/tag/0.143.3"/>
-    <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/fastapi/fastapi/releases/tag/0.143.5</id>
-    <title>[fastapi/fastapi] 0.143.5</title>
-    <updated>2026-10-18T09:12:46+00:00</updated>
-    <link href="https://github.com/fastapi/fastapi/releases/tag/0.143.5"/>
-    <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
-  </entry>
   <entry>
     <id>https://github.com/fastapi/fastapi/releases/tag/0.144.0</id>
     <title>[fastapi/fastapi] 0.144.0</title>
@@ -353,6 +339,20 @@
     <title>[fastapi/fastapi] 0.160.0</title>
     <updated>2026-10-22T19:04:43+00:00</updated>
     <link href="https://github.com/fastapi/fastapi/releases/tag/0.160.0"/>
+    <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/fastapi/fastapi/releases/tag/0.161.0</id>
+    <title>[fastapi/fastapi] 0.161.0</title>
+    <updated>2026-10-22T20:08:04+00:00</updated>
+    <link href="https://github.com/fastapi/fastapi/releases/tag/0.161.0"/>
+    <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/fastapi/fastapi/releases/tag/0.161.1</id>
+    <title>[fastapi/fastapi] 0.161.1</title>
+    <updated>2026-10-22T22:22:11+00:00</updated>
+    <link href="https://github.com/fastapi/fastapi/releases/tag/0.161.1"/>
     <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
   </entry>
 </feed>
