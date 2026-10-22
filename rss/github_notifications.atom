@@ -2,16 +2,9 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-10-22T04:08:31.237508+00:00</updated>
+  <updated>2026-10-22T09:56:12.469014+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v15.5.28</id>
-    <title>[vercel/next.js] v15.5.28</title>
-    <updated>2026-10-14T17:48:10+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v15.5.28"/>
-    <summary>The React Framework</summary>
-  </entry>
   <entry>
     <id>https://github.com/vercel/next.js/releases/tag/v16.4.1</id>
     <title>[vercel/next.js] v16.4.1</title>
@@ -354,5 +347,12 @@
     <updated>2026-10-22T01:36:14+00:00</updated>
     <link href="https://github.com/astral-sh/uv/releases/tag/0.13.5"/>
     <summary>An extremely fast Python package and project manager, written in Rust.</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/astral-sh/setup-uv/releases/tag/v10.3.2</id>
+    <title>[astral-sh/setup-uv] v10.3.2 🌈 update known checksums for 0.13.5</title>
+    <updated>2026-10-22T08:47:31+00:00</updated>
+    <link href="https://github.com/astral-sh/setup-uv/releases/tag/v10.3.2"/>
+    <summary>Set up your GitHub Actions workflow with a specific version of https://docs.astral.sh/uv/</summary>
   </entry>
 </feed>
