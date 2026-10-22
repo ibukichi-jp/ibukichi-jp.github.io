@@ -5,6 +5,7 @@ description = "Personal dashboard and automated CI workflows for ibukichi-jp"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "certifi>=2026.7.22",
     "feedgen>=1.0.0",
     "openai>=3.33.0",
     "requests>=2.34.2",

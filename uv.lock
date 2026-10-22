@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = ">=3.12"
 
 [[package]]
@@ -188,6 +188,7 @@ name = "github-notification-api"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "certifi" },
     { name = "feedgen" },
     { name = "openai" },
     { name = "requests" },
@@ -201,6 +202,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "certifi", specifier = ">=2026.7.22" },
     { name = "feedgen", specifier = ">=1.0.0" },
     { name = "openai", specifier = ">=3.33.0" },
     { name = "requests", specifier = ">=2.34.2" },
