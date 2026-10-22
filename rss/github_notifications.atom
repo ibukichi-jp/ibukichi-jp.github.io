@@ -2,23 +2,9 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-10-22T09:56:12.469014+00:00</updated>
+  <updated>2026-10-22T15:01:05.716625+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.4.1</id>
-    <title>[vercel/next.js] v16.4.1</title>
-    <updated>2026-10-14T17:48:21+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.4.1"/>
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/fastapi/fastapi/releases/tag/0.143.2</id>
-    <title>[fastapi/fastapi] 0.143.2</title>
-    <updated>2026-10-15T13:34:12+00:00</updated>
-    <link href="https://github.com/fastapi/fastapi/releases/tag/0.143.2"/>
-    <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
-  </entry>
   <entry>
     <id>https://github.com/vercel/next.js/releases/tag/v16.4.2</id>
     <title>[vercel/next.js] v16.4.2</title>
@@ -354,5 +340,19 @@
     <updated>2026-10-22T08:47:31+00:00</updated>
     <link href="https://github.com/astral-sh/setup-uv/releases/tag/v10.3.2"/>
     <summary>Set up your GitHub Actions workflow with a specific version of https://docs.astral.sh/uv/</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/oven-sh/bun/releases/tag/bun-v1.4.4</id>
+    <title>[oven-sh/bun] Bun v1.4.4</title>
+    <updated>2026-10-22T10:11:55+00:00</updated>
+    <link href="https://github.com/oven-sh/bun/releases/tag/bun-v1.4.4"/>
+    <summary>Incredibly fast JavaScript runtime, bundler, test runner, and package manager – all in one</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.23</id>
+    <title>[vercel/next.js] v16.5.0-canary.23</title>
+    <updated>2026-10-22T11:48:29+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.23"/>
+    <summary>The React Framework</summary>
   </entry>
 </feed>
