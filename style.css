@@ -883,13 +883,17 @@ body {
   font-family: var(--font-serif);
   font-size: clamp(1.15rem, 1.6vw, 1.45rem);
   font-weight: 600;
-  line-height: 2.1;
+  line-height: 1.95;
   color: #f1f5f9;
   letter-spacing: 2px;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-  word-break: break-all;
+  word-break: keep-all;
 }
 
+.haiku-phrase {
+  display: inline-block;
+  white-space: nowrap;
+}
 
 .past-haiku-block {
   padding: clamp(12px, 1.5vw, 18px);
@@ -945,18 +949,18 @@ body {
   border-radius: var(--radius-sm);
 }
 
-/* SNSシェアボタン */
+/* SNSシェアボタン（アイコン専用・省スペース設計） */
 .btn-haiku-share {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 9999px;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
   text-decoration: none;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 0;
 }
 
 .btn-haiku-share svg {

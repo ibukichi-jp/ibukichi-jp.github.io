@@ -439,7 +439,13 @@ function updateHaikuShareLinks(haikuText, badgeLabel = '最新の一句') {
   const blueskyShareBtn = document.getElementById('haikuShareBluesky');
 
   if (latestEl) {
-    latestEl.textContent = haikuText;
+    // 5・7・5 のスペース区切りを改行に変換して美しく表示
+    const phrases = haikuText.trim().split(/[\s　]+/);
+    if (phrases.length > 1) {
+      latestEl.innerHTML = phrases.map(p => `<span class="haiku-phrase">${p}</span>`).join('<br>');
+    } else {
+      latestEl.textContent = haikuText;
+    }
   }
   if (badgeEl) {
     badgeEl.textContent = badgeLabel;
