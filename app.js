@@ -688,17 +688,63 @@ function initMobileSectionSlider() {
   const nextBtn = document.getElementById('cardSlideNextBtn');
   const dots = document.querySelectorAll('#sliderDotsContainer .slider-dot');
   const slides = document.querySelectorAll('.dashboard-slide-item');
+  const toastEl = document.getElementById('sliderToastAlert');
   if (!track || slides.length === 0) return;
 
   const STORAGE_KEY = 'dashboard_active_slide';
   let currentIdx = 0;
+  let toastTimeout = null;
+  let lastToastTime = 0;
+
+  // 最後のカードを超えて進もうとした際のトースト通知
+  function showEndOfCardsAlert() {
+    const now = Date.now();
+    if (now - lastToastTime < 700) {
+      if (toastEl && toastEl.classList.contains('show')) {
+        toastEl.classList.remove('shake');
+        void toastEl.offsetWidth; // リフロー発生でアニメーション再開
+        toastEl.classList.add('shake');
+      }
+      return;
+    }
+    lastToastTime = now;
+
+    // 最後のカード（今日の一句）に微細なバウンス効果を付与
+    const lastSlide = slides[slides.length - 1];
+    if (lastSlide) {
+      lastSlide.classList.remove('slide-bounce-end');
+      void lastSlide.offsetWidth;
+      lastSlide.classList.add('slide-bounce-end');
+      setTimeout(() => lastSlide.classList.remove('slide-bounce-end'), 400);
+    }
+
+    // トースト通知を表示
+    if (toastEl) {
+      toastEl.classList.remove('shake');
+      void toastEl.offsetWidth;
+      toastEl.classList.add('show', 'shake');
+
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toastEl.classList.remove('show', 'shake');
+      }, 2200);
+    }
+  }
 
   function updateControls(index) {
     currentIdx = index;
 
-    // 前後矢印ボタンの有効/無効切り替え
+    // 前矢印ボタンの有効/無効切り替え
     if (prevBtn) prevBtn.disabled = index === 0;
-    if (nextBtn) nextBtn.disabled = index === slides.length - 1;
+
+    // 次矢印ボタン: 終端でもクリック可能にして「ページはもうないよ」アラートを発火
+    if (nextBtn) {
+      nextBtn.disabled = false;
+      const isEnd = index === slides.length - 1;
+      nextBtn.classList.toggle('at-end', isEnd);
+      nextBtn.setAttribute('title', isEnd ? '最後のページです' : '次のセクションへ');
+      nextBtn.setAttribute('aria-label', isEnd ? '最後のページです' : '次のセクションへ');
+    }
 
     // ドットインジケーター更新
     dots.forEach((dot, i) => {
@@ -750,6 +796,8 @@ function initMobileSectionSlider() {
     nextBtn.addEventListener('click', () => {
       if (currentIdx < slides.length - 1) {
         scrollToSlide(currentIdx + 1);
+      } else {
+        showEndOfCardsAlert();
       }
     });
   }
@@ -782,7 +830,54 @@ function initMobileSectionSlider() {
       if (activeIndex === 2) {
         window.dispatchEvent(new Event('resize'));
       }
+
+      // ラバーバンドオーバースクロールによる終端検知
+      if (currentIdx === slides.length - 1 && scrollLeft > (track.scrollWidth - trackWidth + 15)) {
+        showEndOfCardsAlert();
+      }
     }, 60);
+  }, { passive: true });
+
+  // タッチスワイプで最後のカードを超えて進もうとした時の検知
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let isTouching = false;
+
+  track.addEventListener('touchstart', (e) => {
+    if (e.touches && e.touches.length > 0) {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      isTouching = true;
+    }
+  }, { passive: true });
+
+  track.addEventListener('touchmove', (e) => {
+    if (!isTouching || !e.touches || e.touches.length === 0) return;
+    if (currentIdx === slides.length - 1) {
+      const curX = e.touches[0].clientX;
+      const curY = e.touches[0].clientY;
+      const deltaX = touchStartX - curX; // 左スワイプ（次へ進もうとする動作）
+      const deltaY = Math.abs(curY - touchStartY);
+
+      // 横スワイプ意図（40px以上かつ縦移動より顕著）
+      if (deltaX > 40 && deltaX > deltaY * 1.2) {
+        showEndOfCardsAlert();
+      }
+    }
+  }, { passive: true });
+
+  track.addEventListener('touchend', () => {
+    isTouching = false;
+  }, { passive: true });
+  track.addEventListener('touchcancel', () => {
+    isTouching = false;
+  }, { passive: true });
+
+  // トラックパッド/マウスホイールによる終端検知
+  track.addEventListener('wheel', (e) => {
+    if (currentIdx === slides.length - 1 && e.deltaX > 25) {
+      showEndOfCardsAlert();
+    }
   }, { passive: true });
 
   // リロード・再訪問時のスライド位置復元
