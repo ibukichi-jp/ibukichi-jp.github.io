@@ -520,6 +520,18 @@ async function loadHaikuData() {
 // 愛犬たちとの日々（メモリアル & カウントアップ機能 / JST基準）
 // ==========================================================================
 
+// 日付定数 (月は0-indexed: 0=1月, 2=3月, 11=12月)
+const IBUKI_START = { year: 2021, month: 11, date: 9 };
+const IBUKI_END   = { year: 2025, month: 0,  date: 14 };
+const IROHA_START = { year: 2025, month: 2,  date: 10 };
+
+/**
+ * 2つの日付間の経過日数を計算（開始日当日を1日目として含む）
+ */
+function calculateDaysBetween(startUTC, endUTC) {
+  return Math.round((endUTC - startUTC) / (1000 * 60 * 60 * 24)) + 1;
+}
+
 /**
  * 2つの日付 (JST: year, month[0-11], date[1-31]) の差分を「何年何ヶ月何日」として計算
  */
@@ -555,42 +567,68 @@ function formatYMDText(ymd) {
 }
 
 /**
- * カウントダウンの初期化＆描画
+ * いぶきカードの描画（期間固定のメモリアルカード）
  */
-function initCountdown() {
-  updateCountdown();
-  // 1分ごとに更新（日付変更時にもJSTに追従）
-  setInterval(updateCountdown, 60000);
+function renderIbukiCard() {
+  const startUTC = Date.UTC(IBUKI_START.year, IBUKI_START.month, IBUKI_START.date);
+  const endUTC   = Date.UTC(IBUKI_END.year, IBUKI_END.month, IBUKI_END.date);
+  const totalDays = calculateDaysBetween(startUTC, endUTC);
+  const ymd = calculateYMD(IBUKI_START.year, IBUKI_START.month, IBUKI_START.date, IBUKI_END.year, IBUKI_END.month, IBUKI_END.date);
+
+  const rowEl = document.getElementById('cdIbukiRow');
+  const dateEl = document.getElementById('cdIbukiDate');
+  if (rowEl && dateEl) {
+    rowEl.innerHTML = `<span class="countdown-value text-info">${totalDays.toLocaleString()}</span><span class="countdown-unit">日間</span><span class="countdown-ymd text-secondary small fw-medium ms-1">(${formatYMDText(ymd)})</span>`;
+    dateEl.innerHTML = `<span class="countdown-badge cyan">2021/12/09 〜 2025/01/14</span>`;
+  }
 }
 
-function updateCountdown() {
+/**
+ * いろはカードの描画（現在進行形のカウントアップ）
+ */
+function renderIrohaCard() {
   const jst = getJSTNow();
+  const startUTC = Date.UTC(IROHA_START.year, IROHA_START.month, IROHA_START.date);
   const todayUTC = Date.UTC(jst.year, jst.month, jst.date);
+  const totalDays = calculateDaysBetween(startUTC, todayUTC);
+  const ymd = calculateYMD(IROHA_START.year, IROHA_START.month, IROHA_START.date, jst.year, jst.month, jst.date);
 
-  // 1. いぶきと暮らした日々 (2021年12月9日 〜 2025年1月14日 JST / メモリアル)
-  const ibukiStartUTC = Date.UTC(2021, 11, 9);
-  const ibukiEndUTC = Date.UTC(2025, 0, 14);
-  const ibukiTotalDays = Math.round((ibukiEndUTC - ibukiStartUTC) / (1000 * 60 * 60 * 24)) + 1; // 共に過ごした全日数 (1,133日間)
-  const ibukiYMD = calculateYMD(2021, 11, 9, 2025, 0, 14);
-  const cdIbukiRow = document.getElementById('cdIbukiRow');
-  const cdIbukiDate = document.getElementById('cdIbukiDate');
-
-  if (cdIbukiRow && cdIbukiDate) {
-    cdIbukiRow.innerHTML = `<span class="countdown-value text-info">${ibukiTotalDays.toLocaleString()}</span><span class="countdown-unit">日間</span><span class="countdown-ymd text-secondary small fw-medium ms-1">(${formatYMDText(ibukiYMD)})</span>`;
-    cdIbukiDate.innerHTML = `<span class="countdown-badge cyan">2021/12/09 〜 2025/01/14</span>`;
+  const rowEl = document.getElementById('cdIrohaRow');
+  const dateEl = document.getElementById('cdIrohaDate');
+  if (rowEl && dateEl) {
+    rowEl.innerHTML = `<span class="countdown-prefix">今日で</span><span class="countdown-value text-purple">${totalDays.toLocaleString()}</span><span class="countdown-unit">日目</span><span class="countdown-ymd text-secondary small fw-medium ms-1">(${formatYMDText(ymd)})</span>`;
+    dateEl.innerHTML = `<span class="countdown-badge purple">2025/03/10〜</span>`;
   }
+}
 
-  // 2. いろはと暮らし始めて (2025年3月10日 JST〜 / カウントアップ)
-  const irohaStartUTC = Date.UTC(2025, 2, 10);
-  const irohaDays = Math.round((todayUTC - irohaStartUTC) / (1000 * 60 * 60 * 24)) + 1; // 一緒に暮らし始めてからの日数 (当日を1日目としてカウント)
-  const irohaYMD = calculateYMD(2025, 2, 10, jst.year, jst.month, jst.date);
-  const cdIrohaRow = document.getElementById('cdIrohaRow');
-  const cdIrohaDate = document.getElementById('cdIrohaDate');
+/**
+ * 愛犬写真のフォールバック・画像読み込み処理
+ */
+function setupDogPhotos() {
+  document.querySelectorAll('.dog-photo-img').forEach(img => {
+    img.addEventListener('error', () => {
+      // .jpg が見つからない場合は .png を試行
+      if (!img.dataset.triedPng) {
+        img.dataset.triedPng = '1';
+        img.src = img.src.replace(/\.jpg$/, '.png');
+      } else {
+        // 画像が存在しない場合は非表示にし、背面の絵文字フォールバックを表示
+        img.style.display = 'none';
+      }
+    });
+  });
+}
 
-  if (cdIrohaRow && cdIrohaDate) {
-    cdIrohaRow.innerHTML = `<span class="countdown-prefix">今日で</span><span class="countdown-value text-purple">${irohaDays.toLocaleString()}</span><span class="countdown-unit">日目</span><span class="countdown-ymd text-secondary small fw-medium ms-1">(${formatYMDText(irohaYMD)})</span>`;
-    cdIrohaDate.innerHTML = `<span class="countdown-badge purple">2025/03/10〜</span>`;
-  }
+/**
+ * 愛犬たちとの日々セクションの初期化
+ */
+function initCountdown() {
+  renderIbukiCard();
+  renderIrohaCard();
+  setupDogPhotos();
+
+  // 日付変更に追従するため1分ごとにいろはカードを更新
+  setInterval(renderIrohaCard, 60000);
 }
 
 

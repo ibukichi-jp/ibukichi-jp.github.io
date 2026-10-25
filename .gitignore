@@ -13,3 +13,6 @@ __pycache__/
 # SBOM & scanning artifacts
 sbom.json
 grype-results.json
+
+# Windows / WSL metadata
+*:Zone.Identifier
