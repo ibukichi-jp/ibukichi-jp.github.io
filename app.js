@@ -690,6 +690,7 @@ function initMobileSectionSlider() {
   const slides = document.querySelectorAll('.dashboard-slide-item');
   if (!track || slides.length === 0) return;
 
+  const STORAGE_KEY = 'dashboard_active_slide';
   let currentIdx = 0;
 
   function updateControls(index) {
@@ -705,18 +706,33 @@ function initMobileSectionSlider() {
     });
   }
 
-  function scrollToSlide(index) {
+  function scrollToSlide(index, smooth = true) {
     if (index >= 0 && index < slides.length) {
       const targetSlide = slides[index];
       const left = targetSlide.offsetLeft - track.offsetLeft;
-      track.scrollTo({ left, behavior: 'smooth' });
+      if (!smooth) {
+        track.style.scrollBehavior = 'auto';
+        track.scrollLeft = left;
+        requestAnimationFrame(() => {
+          track.style.scrollBehavior = '';
+        });
+      } else {
+        track.scrollTo({ left, behavior: 'smooth' });
+      }
       updateControls(index);
+
+      // セッションストレージに現在のスライド位置を保存（リロード時に復元するため）
+      try {
+        sessionStorage.setItem(STORAGE_KEY, String(index));
+      } catch (e) {
+        // プライベートブラウジング等の例外対策
+      }
 
       // 体組成情報スライドに移動した場合、Chart.jsのリサイズを発火
       if (index === 2) {
         setTimeout(() => {
           window.dispatchEvent(new Event('resize'));
-        }, 350);
+        }, smooth ? 350 : 100);
       }
     }
   }
@@ -758,6 +774,10 @@ function initMobileSectionSlider() {
       );
       updateControls(activeIndex);
 
+      try {
+        sessionStorage.setItem(STORAGE_KEY, String(activeIndex));
+      } catch (e) {}
+
       // 体組成情報スライドに入った場合、チャートのキャンバスを再計算
       if (activeIndex === 2) {
         window.dispatchEvent(new Event('resize'));
@@ -765,8 +785,47 @@ function initMobileSectionSlider() {
     }, 60);
   }, { passive: true });
 
-  // 初期状態の設定
-  updateControls(0);
+  // リロード・再訪問時のスライド位置復元
+  let initialIdx = 0;
+  if (window.location.hash) {
+    const hashTarget = window.location.hash.replace('#', '');
+    const hashIdx = Array.from(slides).findIndex(s => s.id === hashTarget);
+    if (hashIdx !== -1) {
+      initialIdx = hashIdx;
+    }
+  }
+  if (initialIdx === 0) {
+    try {
+      const saved = sessionStorage.getItem(STORAGE_KEY);
+      if (saved !== null) {
+        const parsed = parseInt(saved, 10);
+        if (!isNaN(parsed) && parsed >= 0 && parsed < slides.length) {
+          initialIdx = parsed;
+        }
+      }
+    } catch (e) {}
+  }
+
+  if (initialIdx > 0) {
+    // 即時適用
+    scrollToSlide(initialIdx, false);
+
+    // DOM/CSSレイアウト計算完了時の位置ずれ防止
+    requestAnimationFrame(() => {
+      scrollToSlide(initialIdx, false);
+    });
+    setTimeout(() => {
+      scrollToSlide(initialIdx, false);
+    }, 50);
+
+    // 画像等ロード完了時にも念のため同期
+    window.addEventListener('load', () => {
+      scrollToSlide(initialIdx, false);
+    }, { once: true });
+  } else {
+    // 初期状態の設定
+    updateControls(0);
+  }
 }
 
 
