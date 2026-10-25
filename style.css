@@ -380,6 +380,7 @@ body {
 
 .countdown-card.card-ibuki::before { background: linear-gradient(90deg, #06b6d4, #3b82f6); }
 .countdown-card.card-iroha::before { background: linear-gradient(90deg, #8b5cf6, #ec4899); }
+.countdown-card.card-marriage::before { background: linear-gradient(90deg, #f43f5e, #fb7185); }
 
 .countdown-card:hover {
   background-color: var(--bg-card-hover);
@@ -466,6 +467,11 @@ body {
   box-shadow: 0 4px 14px rgba(139, 92, 246, 0.3);
 }
 
+.dog-photo-ring.ring-marriage {
+  background: linear-gradient(135deg, #f43f5e, #fda4af);
+  box-shadow: 0 4px 14px rgba(244, 63, 94, 0.35);
+}
+
 .countdown-card:hover .dog-photo-ring {
   transform: scale(1.08) rotate(3deg);
 }
@@ -476,6 +482,10 @@ body {
 
 .countdown-card.card-iroha:hover .dog-photo-ring {
   box-shadow: 0 6px 20px rgba(139, 92, 246, 0.55);
+}
+
+.countdown-card.card-marriage:hover .dog-photo-ring {
+  box-shadow: 0 6px 20px rgba(244, 63, 94, 0.6);
 }
 
 /* フォールバック絵文字（背面レイヤー） */
@@ -556,8 +566,18 @@ body {
   border: 1px solid rgba(139, 92, 246, 0.25);
 }
 
+.countdown-badge.rose {
+  background: rgba(244, 63, 94, 0.12);
+  color: #fb7185;
+  border: 1px solid rgba(244, 63, 94, 0.25);
+}
+
 .text-purple {
   color: #c084fc !important;
+}
+
+.text-rose {
+  color: #fb7185 !important;
 }
 
 /* ==========================================================================

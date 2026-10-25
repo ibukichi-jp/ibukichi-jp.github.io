@@ -520,10 +520,11 @@ async function loadHaikuData() {
 // 愛犬たちとの日々（メモリアル & カウントアップ機能 / JST基準）
 // ==========================================================================
 
-// 日付定数 (月は0-indexed: 0=1月, 2=3月, 11=12月)
-const IBUKI_START = { year: 2021, month: 11, date: 9 };
-const IBUKI_END   = { year: 2025, month: 0,  date: 14 };
-const IROHA_START = { year: 2025, month: 2,  date: 10 };
+// 日付定数 (月は0-indexed: 0=1月, 2=3月, 5=6月, 11=12月)
+const MARRIAGE_START = { year: 2014, month: 5,  date: 27 };
+const IBUKI_START    = { year: 2021, month: 11, date: 9 };
+const IBUKI_END      = { year: 2025, month: 0,  date: 14 };
+const IROHA_START    = { year: 2025, month: 2,  date: 10 };
 
 /**
  * 2つの日付間の経過日数を計算（開始日当日を1日目として含む）
@@ -567,6 +568,24 @@ function formatYMDText(ymd) {
 }
 
 /**
+ * 結婚してからカードの描画（現在進行形のカウントアップ）
+ */
+function renderMarriageCard() {
+  const jst = getJSTNow();
+  const startUTC = Date.UTC(MARRIAGE_START.year, MARRIAGE_START.month, MARRIAGE_START.date);
+  const todayUTC = Date.UTC(jst.year, jst.month, jst.date);
+  const totalDays = calculateDaysBetween(startUTC, todayUTC);
+  const ymd = calculateYMD(MARRIAGE_START.year, MARRIAGE_START.month, MARRIAGE_START.date, jst.year, jst.month, jst.date);
+
+  const rowEl = document.getElementById('cdMarriageRow');
+  const dateEl = document.getElementById('cdMarriageDate');
+  if (rowEl && dateEl) {
+    rowEl.innerHTML = `<span class="countdown-prefix">今日で</span><span class="countdown-value text-rose">${totalDays.toLocaleString()}</span><span class="countdown-unit">日目</span><span class="countdown-ymd text-secondary small fw-medium ms-1">(${formatYMDText(ymd)})</span>`;
+    dateEl.innerHTML = `<span class="countdown-badge rose">2014/06/27〜</span>`;
+  }
+}
+
+/**
  * いぶきカードの描画（期間固定のメモリアルカード）
  */
 function renderIbukiCard() {
@@ -602,7 +621,7 @@ function renderIrohaCard() {
 }
 
 /**
- * 愛犬写真のフォールバック・画像読み込み処理
+ * 写真のフォールバック・画像読み込み処理
  */
 function setupDogPhotos() {
   document.querySelectorAll('.dog-photo-img').forEach(img => {
@@ -620,15 +639,19 @@ function setupDogPhotos() {
 }
 
 /**
- * 愛犬たちとの日々セクションの初期化
+ * カウントダウン・カウントアップ・メモリアルセクションの初期化
  */
 function initCountdown() {
+  renderMarriageCard();
   renderIbukiCard();
   renderIrohaCard();
   setupDogPhotos();
 
-  // 日付変更に追従するため1分ごとにいろはカードを更新
-  setInterval(renderIrohaCard, 60000);
+  // 日付変更に追従するため1分ごとに結婚カードといろはカードを更新
+  setInterval(() => {
+    renderMarriageCard();
+    renderIrohaCard();
+  }, 60000);
 }
 
 
