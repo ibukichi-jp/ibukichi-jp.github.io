@@ -1357,4 +1357,136 @@ body {
   }
 }
 
+/* ==========================================================================
+   Mobile Section Slider & Navigation
+   ========================================================================== */
+.mobile-card-slider-wrapper {
+  width: 100%;
+}
+
+.dashboard-slider-track {
+  display: block;
+  width: 100%;
+}
+
+.dashboard-slide-item {
+  width: 100%;
+}
+
+@media (max-width: 767.98px) {
+  /* カードと矢印を横並びにするラッパー (カードの真横に矢印を配置) */
+  .mobile-card-slider-wrapper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+    gap: 6px;
+    margin-left: -4px;
+    margin-right: -4px;
+  }
+
+  /* カードの左右外側に並ぶ独立した横矢印ボタン */
+  .slider-side-arrow {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    margin-top: 96px; /* 見出しの下、カード中央の真横に合わせる */
+    border-radius: 50%;
+    background: rgba(18, 24, 38, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0;
+  }
+
+  .slider-side-arrow:active {
+    transform: scale(0.9);
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .slider-side-arrow:disabled {
+    opacity: 0.18;
+    cursor: not-allowed;
+    border-color: transparent;
+    box-shadow: none;
+  }
+
+  .slider-side-arrow.next-arrow:not(:disabled) {
+    border-color: rgba(56, 189, 248, 0.35);
+    color: #38bdf8;
+    animation: nudge-side-right 2.4s infinite ease-in-out;
+  }
+
+  @keyframes nudge-side-right {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(2.5px); }
+  }
+
+  /* 下部ドットインジケーター */
+  .slider-dots-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 6px;
+    margin-bottom: 24px;
+  }
+
+  .slider-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+  }
+
+  .slider-dot.active {
+    width: 20px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #38bdf8, #818cf8);
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+  }
+
+  /* 中央のカードスライダートラック (1カードがぴったり100%幅で収まり、次のカードは隠れる) */
+  .dashboard-slider-track {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+    align-items: flex-start;
+    margin: 0;
+    padding: 0;
+  }
+
+  .dashboard-slider-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .dashboard-slide-item {
+    flex: 0 0 100%;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    padding: 0 2px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+}
+
+
 

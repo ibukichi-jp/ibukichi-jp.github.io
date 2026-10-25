@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
   startDigitalClock();
   initCountdown();
   initEventListeners();
+  initMobileSectionSlider();
   loadTanitaData();
   loadHaikuData();
 });
@@ -671,6 +672,97 @@ function initCountdown() {
     renderIrohaCard();
   }, 60000);
 }
+
+// ==========================================================================
+// モバイル専用 セクションスライダー & 横矢印ナビゲーション連動
+// ==========================================================================
+function initMobileSectionSlider() {
+  const track = document.getElementById('dashboardSliderTrack');
+  const prevBtn = document.getElementById('cardSlidePrevBtn');
+  const nextBtn = document.getElementById('cardSlideNextBtn');
+  const dots = document.querySelectorAll('#sliderDotsContainer .slider-dot');
+  const slides = document.querySelectorAll('.dashboard-slide-item');
+  if (!track || slides.length === 0) return;
+
+  let currentIdx = 0;
+
+  function updateControls(index) {
+    currentIdx = index;
+
+    // 前後矢印ボタンの有効/無効切り替え
+    if (prevBtn) prevBtn.disabled = index === 0;
+    if (nextBtn) nextBtn.disabled = index === slides.length - 1;
+
+    // ドットインジケーター更新
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === index);
+    });
+  }
+
+  function scrollToSlide(index) {
+    if (index >= 0 && index < slides.length) {
+      const targetSlide = slides[index];
+      const left = targetSlide.offsetLeft - track.offsetLeft;
+      track.scrollTo({ left, behavior: 'smooth' });
+      updateControls(index);
+
+      // 体組成情報スライドに移動した場合、Chart.jsのリサイズを発火
+      if (index === 2) {
+        setTimeout(() => {
+          window.dispatchEvent(new Event('resize'));
+        }, 350);
+      }
+    }
+  }
+
+  // 矢印ボタンクリックイベント
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      if (currentIdx > 0) {
+        scrollToSlide(currentIdx - 1);
+      }
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      if (currentIdx < slides.length - 1) {
+        scrollToSlide(currentIdx + 1);
+      }
+    });
+  }
+
+  // ドットクリックでも該当セクションへジャンプ可能
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      scrollToSlide(i);
+    });
+  });
+
+  // スワイプスクロール時の自動追従
+  let scrollTimeout = null;
+  track.addEventListener('scroll', () => {
+    if (scrollTimeout) clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      const scrollLeft = track.scrollLeft;
+      const trackWidth = track.clientWidth || window.innerWidth;
+      const activeIndex = Math.min(
+        slides.length - 1,
+        Math.max(0, Math.round(scrollLeft / trackWidth))
+      );
+      updateControls(activeIndex);
+
+      // 体組成情報スライドに入った場合、チャートのキャンバスを再計算
+      if (activeIndex === 2) {
+        window.dispatchEvent(new Event('resize'));
+      }
+    }, 60);
+  }, { passive: true });
+
+  // 初期状態の設定
+  updateControls(0);
+}
+
 
 
 
