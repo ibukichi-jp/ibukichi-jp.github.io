@@ -6,6 +6,7 @@
 - **`marriage.jpg`** (または `marriage.png`): 「結婚してから」のカードに表示されます 💍
 - **`ibuki.jpg`** (または `ibuki.png`): 「いぶきと暮らした日数」のカードに表示されます 🐶
 - **`iroha.jpg`** (または `iroha.png`): 「いろはと暮らし始めて」のカードに表示されます 🐾
+- **`wankou.jpg`** (または `wankou.png`): 「ワン公と別れてから」のカードに表示されます 🐕
 
 ## 推奨仕様
 - **形式**: JPG, PNG, WebP

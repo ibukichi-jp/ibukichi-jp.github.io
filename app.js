@@ -520,11 +520,12 @@ async function loadHaikuData() {
 // 愛犬たちとの日々（メモリアル & カウントアップ機能 / JST基準）
 // ==========================================================================
 
-// 日付定数 (月は0-indexed: 0=1月, 2=3月, 5=6月, 11=12月)
-const MARRIAGE_START = { year: 2014, month: 5,  date: 27 };
-const IBUKI_START    = { year: 2021, month: 11, date: 9 };
-const IBUKI_END      = { year: 2025, month: 0,  date: 14 };
-const IROHA_START    = { year: 2025, month: 2,  date: 10 };
+// 日付定数 (月は0-indexed: 0=1月, 1=2月, 2=3月, 5=6月, 11=12月)
+const WANKOU_DEPARTED = { year: 2003, month: 1,  date: 11 };
+const MARRIAGE_START  = { year: 2014, month: 5,  date: 27 };
+const IBUKI_START     = { year: 2021, month: 11, date: 9 };
+const IBUKI_END       = { year: 2025, month: 0,  date: 14 };
+const IROHA_START     = { year: 2025, month: 2,  date: 10 };
 
 /**
  * 2つの日付間の経過日数を計算（開始日当日を1日目として含む）
@@ -586,6 +587,21 @@ function renderMarriageCard() {
 }
 
 /**
+ * ワン公と別れてからカードの描画（何年何ヶ月何日のみ表示）
+ */
+function renderWankouCard() {
+  const jst = getJSTNow();
+  const ymd = calculateYMD(WANKOU_DEPARTED.year, WANKOU_DEPARTED.month, WANKOU_DEPARTED.date, jst.year, jst.month, jst.date);
+
+  const rowEl = document.getElementById('cdWankouRow');
+  const dateEl = document.getElementById('cdWankouDate');
+  if (rowEl && dateEl) {
+    rowEl.innerHTML = `<span class="countdown-value countdown-value-ymd text-amber">${formatYMDText(ymd)}</span>`;
+    dateEl.innerHTML = `<span class="countdown-badge amber">2003/02/11〜</span>`;
+  }
+}
+
+/**
  * いぶきカードの描画（期間固定のメモリアルカード）
  */
 function renderIbukiCard() {
@@ -643,13 +659,15 @@ function setupDogPhotos() {
  */
 function initCountdown() {
   renderMarriageCard();
+  renderWankouCard();
   renderIbukiCard();
   renderIrohaCard();
   setupDogPhotos();
 
-  // 日付変更に追従するため1分ごとに結婚カードといろはカードを更新
+  // 日付変更に追従するため1分ごとに結婚カード・ワン公カードといろはカードを更新
   setInterval(() => {
     renderMarriageCard();
+    renderWankouCard();
     renderIrohaCard();
   }, 60000);
 }

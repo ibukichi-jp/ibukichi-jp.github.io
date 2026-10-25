@@ -378,6 +378,7 @@ body {
   transition: var(--transition-normal);
 }
 
+.countdown-card.card-wankou::before { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
 .countdown-card.card-ibuki::before { background: linear-gradient(90deg, #06b6d4, #3b82f6); }
 .countdown-card.card-iroha::before { background: linear-gradient(90deg, #8b5cf6, #ec4899); }
 .countdown-card.card-marriage::before { background: linear-gradient(90deg, #f43f5e, #fb7185); }
@@ -424,6 +425,11 @@ body {
   line-height: 1.1;
 }
 
+.countdown-value.countdown-value-ymd {
+  font-size: clamp(1.3rem, 1.7vw, 1.85rem);
+  letter-spacing: -0.5px;
+}
+
 .countdown-unit {
   font-size: 0.9rem;
   font-weight: 500;
@@ -457,6 +463,11 @@ body {
   overflow: hidden;
 }
 
+.dog-photo-ring.ring-wankou {
+  background: linear-gradient(135deg, #f59e0b, #fbbf24);
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+}
+
 .dog-photo-ring.ring-ibuki {
   background: linear-gradient(135deg, #06b6d4, #3b82f6);
   box-shadow: 0 4px 14px rgba(6, 182, 212, 0.3);
@@ -474,6 +485,10 @@ body {
 
 .countdown-card:hover .dog-photo-ring {
   transform: scale(1.08) rotate(3deg);
+}
+
+.countdown-card.card-wankou:hover .dog-photo-ring {
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.6);
 }
 
 .countdown-card.card-ibuki:hover .dog-photo-ring {
@@ -554,6 +569,12 @@ body {
   line-height: 1.35;
 }
 
+.countdown-badge.amber {
+  background: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.28);
+}
+
 .countdown-badge.cyan {
   background: rgba(6, 182, 212, 0.12);
   color: #38bdf8;
@@ -570,6 +591,10 @@ body {
   background: rgba(244, 63, 94, 0.12);
   color: #fb7185;
   border: 1px solid rgba(244, 63, 94, 0.25);
+}
+
+.text-amber {
+  color: #fbbf24 !important;
 }
 
 .text-purple {
@@ -1291,6 +1316,10 @@ body {
 
   .countdown-value {
     font-size: clamp(1.4rem, 5.5vw, 1.8rem);
+  }
+
+  .countdown-value.countdown-value-ymd {
+    font-size: clamp(1.15rem, 4.2vw, 1.5rem);
   }
 
   .countdown-badge {
