@@ -2,16 +2,9 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-10-27T23:43:11.188148+00:00</updated>
+  <updated>2026-10-28T04:59:54.330864+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
-  <entry>
-    <id>https://github.com/anchore/syft/releases/tag/v1.55.0</id>
-    <title>[anchore/syft] v1.55.0</title>
-    <updated>2026-10-19T19:01:46+00:00</updated>
-    <link href="https://github.com/anchore/syft/releases/tag/v1.55.0"/>
-    <summary>CLI tool and library for generating a Software Bill of Materials from container images and filesystems</summary>
-  </entry>
   <entry>
     <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.18</id>
     <title>[vercel/next.js] v16.5.0-canary.18</title>
@@ -340,5 +333,12 @@
     <updated>2026-10-27T00:48:11+00:00</updated>
     <link href="https://github.com/astral-sh/uv/releases/tag/0.13.6"/>
     <summary>An extremely fast Python package and project manager, written in Rust.</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.29</id>
+    <title>[vercel/next.js] v16.5.0-canary.29</title>
+    <updated>2026-10-27T23:47:05+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.29"/>
+    <summary>The React Framework</summary>
   </entry>
 </feed>
