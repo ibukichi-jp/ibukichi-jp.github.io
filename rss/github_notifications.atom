@@ -2,9 +2,37 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-10-31T02:10:51.837111+00:00</updated>
+  <updated>2026-10-31T09:27:16.116899+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
+  <entry>
+    <id>https://github.com/astral-sh/uv/releases/tag/0.13.2</id>
+    <title>[astral-sh/uv] 0.13.2</title>
+    <updated>2026-10-19T21:02:57+00:00</updated>
+    <link href="https://github.com/astral-sh/uv/releases/tag/0.13.2"/>
+    <summary>An extremely fast Python package and project manager, written in Rust.</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/fastapi/fastapi/releases/tag/0.150.0</id>
+    <title>[fastapi/fastapi] 0.150.0</title>
+    <updated>2026-10-19T22:39:53+00:00</updated>
+    <link href="https://github.com/fastapi/fastapi/releases/tag/0.150.0"/>
+    <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.19</id>
+    <title>[vercel/next.js] v16.5.0-canary.19</title>
+    <updated>2026-10-19T23:55:00+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.19"/>
+    <summary>The React Framework</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/astral-sh/uv/releases/tag/0.13.3</id>
+    <title>[astral-sh/uv] 0.13.3</title>
+    <updated>2026-10-20T01:15:37+00:00</updated>
+    <link href="https://github.com/astral-sh/uv/releases/tag/0.13.3"/>
+    <summary>An extremely fast Python package and project manager, written in Rust.</summary>
+  </entry>
   <entry>
     <id>https://github.com/fastapi/fastapi/releases/tag/0.151.0</id>
     <title>[fastapi/fastapi] 0.151.0</title>
@@ -307,38 +335,10 @@
     <summary>Set up your GitHub Actions workflow with a specific version of https://docs.astral.sh/uv/</summary>
   </entry>
   <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.30</id>
-    <title>[vercel/next.js] v16.5.0-canary.30</title>
-    <updated>2026-10-28T23:43:35+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.30"/>
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.31</id>
-    <title>[vercel/next.js] v16.5.0-canary.31</title>
-    <updated>2026-10-29T09:12:46+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.31"/>
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.32</id>
-    <title>[vercel/next.js] v16.5.0-canary.32</title>
-    <updated>2026-10-29T23:44:49+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.32"/>
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.33</id>
-    <title>[vercel/next.js] v16.5.0-canary.33</title>
-    <updated>2026-10-30T10:08:23+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.33"/>
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.34</id>
-    <title>[vercel/next.js] v16.5.0-canary.34</title>
-    <updated>2026-10-30T11:04:27+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.34"/>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.35</id>
+    <title>[vercel/next.js] v16.5.0-canary.35</title>
+    <updated>2026-10-31T08:01:30+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.35"/>
     <summary>The React Framework</summary>
   </entry>
 </feed>
