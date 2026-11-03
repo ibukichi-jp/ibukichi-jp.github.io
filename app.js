@@ -192,9 +192,9 @@ function renderDashboard(data) {
   if (latestAll.weight != null) {
     document.getElementById('kpiWeight').textContent = latestAll.weight.toFixed(1);
     const diff = latestAll.weight - targetWeight;
-    const diffText = Math.abs(diff) < 0.1
+    const diffText = diff < 0.1
       ? '達成 🎉'
-      : (diff > 0 ? `あと -${diff.toFixed(1)}kg` : `+${Math.abs(diff).toFixed(1)}kg`);
+      : `あと -${diff.toFixed(1)}kg`;
     document.getElementById('kpiWeightTarget').innerHTML =
       `<span class="target-badge cyan">目標: ${targetWeight.toFixed(1)}kg (${diffText})</span>`;
   }
@@ -425,10 +425,6 @@ function formatChartDate(dateStr, includeYear = false) {
   return datePart;
 }
 
-function roundTwo(num) {
-  return Math.round(num * 100) / 100;
-}
-
 // ==========================================================================
 // 俳句データの読み込み & SNSシェア機能（Twitter / Bluesky）
 // ==========================================================================
@@ -442,7 +438,14 @@ function updateHaikuShareLinks(haikuText, badgeLabel = '最新の一句') {
     // 5・7・5 のスペース区切りを改行に変換して美しく表示
     const phrases = haikuText.trim().split(/[\s　]+/);
     if (phrases.length > 1) {
-      latestEl.innerHTML = phrases.map(p => `<span class="haiku-phrase">${p}</span>`).join('<br>');
+      latestEl.replaceChildren();
+      phrases.forEach((p, i) => {
+        if (i > 0) latestEl.appendChild(document.createElement('br'));
+        const span = document.createElement('span');
+        span.className = 'haiku-phrase';
+        span.textContent = p;
+        latestEl.appendChild(span);
+      });
     } else {
       latestEl.textContent = haikuText;
     }
@@ -692,6 +695,8 @@ function initMobileSectionSlider() {
   if (!track || slides.length === 0) return;
 
   const STORAGE_KEY = 'dashboard_active_slide';
+  // 体組成情報スライドの位置（Chart.jsのリサイズ発火判定用）
+  const healthIdx = Array.from(slides).findIndex(s => s.id === 'slideHealth');
   let currentIdx = 0;
   let toastTimeout = null;
   let lastToastTime = 0;
@@ -775,7 +780,7 @@ function initMobileSectionSlider() {
       }
 
       // 体組成情報スライドに移動した場合、Chart.jsのリサイズを発火
-      if (index === 2) {
+      if (index === healthIdx) {
         setTimeout(() => {
           window.dispatchEvent(new Event('resize'));
         }, smooth ? 350 : 100);
@@ -827,7 +832,7 @@ function initMobileSectionSlider() {
       } catch (e) {}
 
       // 体組成情報スライドに入った場合、チャートのキャンバスを再計算
-      if (activeIndex === 2) {
+      if (activeIndex === healthIdx) {
         window.dispatchEvent(new Event('resize'));
       }
 
