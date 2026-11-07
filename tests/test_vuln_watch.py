@@ -1,4 +1,5 @@
 import json
+import re
 import sys
 from datetime import UTC, datetime, timedelta, timezone
 from pathlib import Path
@@ -31,10 +32,11 @@ def test_normalize_severity(raw, expected):
     assert vw.normalize_severity(raw) == expected
 
 
-def test_escape_md_keeps_version_ranges_and_neutralizes_tags():
-    assert vw.escape_md(">= 16.0.0, <= 16.4.0") == ">= 16.0.0, <= 16.4.0"
-    assert vw.escape_md("<img src=x onerror=alert(1)>") == "&lt;img src=x onerror=alert(1)>"
-    assert vw.escape_md("a | b\nc", table=True) == "a \\| b c"
+def test_escape_md_neutralizes_tags_and_table_pipes():
+    # バージョン範囲は表示上そのまま読める（Markdown 上は \> \< で文字として扱われる）
+    assert vw.escape_md(">= 16.0.0, <= 16.4.0") == "\\>= 16.0.0, \\<= 16.4.0"
+    assert vw.escape_md("<img src=x onerror=alert(1)>") == "\\<img src=x onerror=alert(1)\\>"
+    assert vw.escape_md("a | b\nc") == "a \\| b c"
 
 
 # ==========================================================================
@@ -426,3 +428,206 @@ def test_enrich_with_ai_uses_response_and_survives_failures(monkeypatch):
     md = vw.render_report([ok, failed], NOW, ["Next.js"])
     assert "🔴 未認証RCE" in md and "原文タイトル**: title GHSA-1" in md
     assert "AI による要約はありません" in md  # 失敗した分は公式情報の確認を促す
+
+
+# ==========================================================================
+# セキュリティ: 外部から来た文字列・URL の扱い
+# ==========================================================================
+def test_escape_md_blocks_markdown_injection():
+    """リンク・画像・見出し・区切り線をレポートに差し込めないテスト"""
+    escaped = vw.escape_md(
+        "ok ![x](https://t.example/p.png)\n\n## fake\n---\n[click](https://evil.example)"
+    )
+    assert "\n" not in escaped  # 1行になるので見出し・区切り線にならない
+    assert "](" not in escaped.replace("\\](", "")  # リンク・画像の書式が残らない
+    assert escaped.startswith("ok \\!\\[x\\](https\\[:\\]//t.example/p.png)")
+
+
+@pytest.mark.parametrize(
+    ("url", "expected"),
+    [
+        ("https://nodejs.org/en/blog/x", "https://nodejs.org/en/blog/x"),
+        ("javascript:alert(1)", ""),
+        ("data:text/html,<script>", ""),
+        ("https://evil.example/a>b", ""),
+        ("//no-scheme.example", ""),
+        ("", ""),
+    ],
+)
+def test_safe_url(url, expected):
+    assert vw.safe_url(url) == expected
+
+
+def test_ai_response_urls_are_removed():
+    parsed = vw.parse_ai_response(
+        '{"title_ja": "更新を", "summary_ja": "詳細は https://evil.example/x と www.evil.example を参照"}'
+    )
+    assert "evil" not in parsed["summary_ja"]
+
+
+def test_render_report_with_malicious_content():
+    v = vw.Vuln(
+        key="k",
+        tech="Next.js",
+        severity="high",
+        ident="CVE-2026-1",
+        title="T ![x](https://tracker.example/t.png)\n\n## 偽の見出し",
+        published="2026-11-07T00:00:00Z",
+        url="javascript:alert(1)",
+        title_ja="[公式パッチ](https://evil.example)",
+        summary_ja="軽微です。\n\n---\n\n### 🟢 安全",
+    )
+    md = vw.render_report([v], NOW, ["Next.js"])
+    body = md[md.index("## 詳細") :]
+    assert "javascript:" not in md and "- **公式情報**: —" in body
+    assert "](https://" not in body.replace("\\](", "")
+    assert "\n## 偽の見出し" not in md and "\n### 🟢 安全" not in md
+    assert "- **要約**: 軽微です。 --- ### 🟢 安全" in body  # 要約は箇条書きの中の1行
+
+
+def test_psf_cve_alias_must_be_well_formed():
+    assert (
+        vw.find_cve_alias({"aliases": ["CVE-2026-1/../../x", "BIT-1", "CVE-2026-12345"]})
+        == "CVE-2026-12345"
+    )
+    assert vw.find_cve_alias({"aliases": ["CVE-../../secret"]}) == ""
+
+
+def test_fetch_nodejs_skips_unexpected_links():
+    """フィードのリンクが nodejs.org 以外なら取得しに行かない"""
+    feed = """<rss><channel>
+    <item><title>Wednesday, October 21, 2026 Security Releases</title><link>https://evil.example/steal</link>
+    <pubDate>Wed, 21 Oct 2026 22:00:00 GMT</pubDate></item>
+    </channel></rss>"""
+    fetched = []
+
+    class FakeHttp:
+        def text(self, url):
+            fetched.append(url)
+            return feed
+
+        def json(self, url):
+            fetched.append(url)
+            return {}
+
+    assert vw.fetch_nodejs(FakeHttp(), {"name": "Node.js"}, set(), False) == []
+    assert "https://evil.example/steal" not in fetched
+
+
+def test_discord_mentions_are_disabled(tmp_path, monkeypatch):
+    report_dir = tmp_path / "vulnerabilities"
+    vw.write_json(
+        report_dir / "index.json",
+        {
+            "reports": [
+                {
+                    "date": "2026-11-08",
+                    "path": "2026/2026-11-08.md",
+                    "count": 1,
+                    "counts": {},
+                    "techs": ["@everyone"],
+                }
+            ]
+        },
+    )
+    monkeypatch.setattr(vw, "wait_for_url", lambda url, **kw: True)
+    posted = []
+
+    class Res:
+        ok, status_code = True, 204
+
+    monkeypatch.setattr(
+        vw.requests, "post", lambda url, json, timeout: posted.append(json) or Res()
+    )
+    vw.run_notify(
+        "2026/2026-11-08.md", report_dir=report_dir, webhook_url="https://discord.example/hook"
+    )
+    assert posted[0]["allowed_mentions"] == {"parse": []}
+
+
+def test_escape_md_defangs_bare_urls():
+    """文中の URL は自動リンクにならない無害化表記になる"""
+    assert vw.escape_md("see https://evil.example/x or www.evil.example") == (
+        "see https\\[:\\]//evil.example/x or www\\[.\\]evil.example"
+    )
+
+
+# ==========================================================================
+# 外部レビュー（Fable）で見つかった問題の回帰テスト
+# ==========================================================================
+@pytest.mark.parametrize(
+    "payload",
+    [
+        r"\[click\](https:\/\/evil.example/x)",  # バックスラッシュでエスケープを打ち消す
+        r'\[x\](//evil.example "Trusted link")',  # プロトコル相対 URL + title
+        r"a\| injected col \| x",  # 表の列の書き換え
+        "`code <b>` **bold** _it_ ~~del~~",  # コード・強調
+    ],
+)
+def test_escape_md_cannot_be_unescaped(payload):
+    """どんな記号の組み合わせでも、エスケープされていない [ ] | ` * _ ~ < > & ! が残らない"""
+    escaped = vw.escape_md(payload)
+    unescaped = re.findall(r"(?<!\\)(?:\\\\)*([\[\]|`*_~<>&!])", escaped)
+    assert unescaped == []
+
+
+def test_escape_md_removes_format_control_characters():
+    assert vw.escape_md("abc‮dcba​") == "abcdcba"
+
+
+def test_overflow_items_are_deferred_not_dropped(workspace, monkeypatch):
+    """上限を超えた分は既読にせず、次回のレポートに回る"""
+    tmp, feed, kwargs = workspace
+    vw.run_check(now=NOW, **kwargs)  # 初回
+    monkeypatch.setattr(vw, "MAX_NEW_PER_SOURCE", 2)
+    feed += [make(f"GHSA-{i}", published=f"2026-11-0{i}T00:00:00Z") for i in range(1, 6)]
+
+    _, first = vw.run_check(now=NOW, **kwargs)
+    _, second = vw.run_check(now=NOW, **kwargs)
+    _, third = vw.run_check(now=NOW, **kwargs)
+
+    def ids_in(report):  # 一覧表に出てくる ID（1行に2回出るので重複を除く）
+        table = (tmp / "vulnerabilities" / report).read_text(encoding="utf-8").split("## 詳細")[0]
+        return list(dict.fromkeys(re.findall(r"GHSA-\d", table)))
+
+    reported = [ids_in(r) for r in (first, second, third)]
+    assert reported == [
+        ["GHSA-5", "GHSA-4"],
+        ["GHSA-3", "GHSA-2"],
+        ["GHSA-1"],
+    ]  # 新しい順に全件掲載
+
+
+def test_psf_continues_when_cve_record_is_unavailable():
+    advisory = {
+        "id": "PSF-2026-99",
+        "aliases": ["CVE-2026-99999"],
+        "details": "x",
+        "published": "2026-11-01T00:00:00Z",
+    }
+
+    class FakeHttp:
+        def json(self, url):
+            if url == vw.PSF_LISTING_URL:
+                return [{"name": "PSF-2026-99.json"}]
+            if "cveawg" in url:
+                raise RuntimeError("404 Not Found")
+            return advisory
+
+    [v] = vw.fetch_psf(FakeHttp(), {"name": "Python"}, set(), False)
+    assert (v.key, v.ident, v.severity) == ("PSF-2026-99", "CVE-2026-99999", "unknown")
+
+
+@pytest.mark.parametrize(
+    ("value", "expected"),
+    [
+        ("Wed, 21 Oct 2026 22:00:00 GMT", "2026-10-21T22:00:00+00:00"),
+        ("Wed, 21 Oct 2026 22:00:00 -0000", "2026-10-21T22:00:00+00:00"),  # naive になる表記
+        ("", None),
+        (None, None),
+        ("not a date", None),
+    ],
+)
+def test_parse_rfc822_is_always_timezone_aware(value, expected):
+    dt = vw.parse_rfc822(value)
+    assert (dt.isoformat() if dt else None) == expected

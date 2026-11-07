@@ -66,7 +66,9 @@ GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)�
 
 - **AI の役割**: 脆弱性を探すのは公式データのみ。さくらのAI（`gpt-oss-120b`）は取得した公式情報をもとに、日本語のタイトルと要約を作るだけ（AI が失敗してもレポートは作成）
 - **レポート**: `vulnerabilities/YYYY/YYYY-MM-DD.md`（一覧表: 日時・技術・修正版・CVE・内容 ／ 詳細: 影響を受けるバージョン・AI要約・公式リンク）。新しい脆弱性がない日は作成しない
-- **閲覧ページ**: [`https://ibukichi-jp.github.io/vulnerabilities/`](https://ibukichi-jp.github.io/vulnerabilities/)（一覧）／ `?report=YYYY/YYYY-MM-DD` で各レポート。Markdown は DOMPurify で無害化して表示
+- **閲覧ページ**: [`https://ibukichi-jp.github.io/vulnerabilities/`](https://ibukichi-jp.github.io/vulnerabilities/)（一覧）／ `?report=YYYY/YYYY-MM-DD` で各レポート
+- **セキュリティ対策**: 公式情報や AI の応答に細工があっても、レポートにリンク・画像・見出しなどを差し込めないよう外部の文字列は1行のただの文字として書き出し（文中の URL は `https[:]//` 表記）、閲覧ページでは DOMPurify による無害化・画像等のタグの禁止・CSP・SRI で二重に防御。取得先は公式ドメインに限定し、Discord 通知のメンションは無効化
+- **注意**: 監視対象とレポートは公開されます。`.data/vuln_watchlist.toml` に本番環境の正確なバージョンなどは書かないでください
 - **重複防止**: 一度記録した脆弱性は [`.data/vuln_seen.json`](.data/vuln_seen.json) に残し、二度とレポートに載せない。監視対象に技術を追加した直後は、その技術の既存分を既読にするだけ（翌日以降に出たものから掲載）
 
 ---
@@ -103,7 +105,8 @@ GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)�
 │   └── update_manager.py             # 対話型パッケージ更新マネージャー
 ├── docs/                             # 開発用メモ・技術ドキュメント
 ├── vulnerabilities/
-│   ├── index.html                    # 脆弱性レポートの閲覧ページ（GitHub Pages）
+│   ├── index.html                    # 脆弱性レポートの閲覧ページ（GitHub Pages / CSP・SRI 付き）
+│   ├── viewer.js                     # 閲覧ページのロジック（Markdown の無害化表示）
 │   ├── index.json                    # レポートの一覧（CI が更新）
 │   └── YYYY/YYYY-MM-DD.md            # 日次の脆弱性レポート（新規がある日のみ）
 ├── rss/
