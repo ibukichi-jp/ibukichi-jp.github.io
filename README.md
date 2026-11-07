@@ -34,10 +34,22 @@ GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)�
 - **ライフステージ**: JST（日本標準時）基準で自動算出される、結婚してから（2014/06/27〜）の経過日数および「X年Yヶ月Z日」のリアルタイム表示カード。左側に写真スペース（光彩リング装飾・フォールバック対応）を配置
 - **愛犬たちとの日々**: JST基準で自動算出される、いぶきと暮らした日数（2021/12/09〜2025/01/14の1,133日間 [3年1ヶ月5日] のメモリアル）、いろはと暮らし始めてからのカウントアップ（2025/03/10〜）、ワン公と別れてからの経過年数（2003/02/11〜の「X年Yヶ月Z日」表示）の3連カード。写真アセット（光彩リング装飾・フォールバック対応）を左側に配置
 - **体組成情報可視化**: [`.data/tanita.json`](.data/tanita.json) に蓄積された過去全データを Chart.js でインタラクティブにグラフ化（体重・体脂肪率の2連グラフ）
-- **5大KPIカード**: 身長、体重（目標67.4kg）、体脂肪率（目標19.9%）、BMI（目標22.0）、最新測定日時を表示
+- **5大KPIカード**: 身長、体重（目標67.4kg = 身長と目標BMIから算出）、体脂肪率（目標19.9%）、BMI（目標22.0）、最新測定日時を表示
 - **期間絞り込み**: 年単位（初期値: 現在の年）のドロップダウンによる推移トレンドの即時フィルタリング
 - **今日の一句（AIが作成）**: 毎朝生成される最新の俳句と過去アーカイブの閲覧、Twitter (X) および Bluesky へのワンクリックシェア機能
-- **モバイル対応横スライドUI**: スマートフォン閲覧時には各セクションを左右スワイプまたはカード横の矢印アイコン（‹ ›）で直感的に切り替え可能（下部ドットインジケーター連動、PC時は通常の縦並び一覧表示）
+- **モバイル対応横スライドUI**: スマートフォン閲覧時には各セクションを左右スワイプまたはカード横の矢印アイコン（‹ ›）で直感的に切り替え可能（下部ドットインジケーター連動、PC時は通常の縦並び一覧表示）。ドットはセクションから自動生成されるため、セクションの追加・並べ替え時に手直しは不要
+
+#### ダッシュボードの変更ポイント
+| 変更したいこと | 編集する場所 |
+|---|---|
+| 記念日カードの追加・変更（ライフステージ / 愛犬） | [`js/anniversaries.js`](js/anniversaries.js) の `ANNIVERSARIES` に1行追加・変更 |
+| 体重・体脂肪率・BMI の目標値 | [`js/health.js`](js/health.js) の `HEALTH_CONFIG`（目標体重は身長と目標BMIから自動計算） |
+| Bluesky の表示件数・アカウント | [`js/bluesky.js`](js/bluesky.js) の `BLUESKY_HANDLE` / `BLUESKY_DISPLAY_COUNT` |
+| ブログの表示件数 | [`js/blog.js`](js/blog.js) の `BLOG_DISPLAY_COUNT`（取得件数は `.src/blog_feed.py` の `POST_COUNT`） |
+| セクションの追加・並べ替え | `index.html` の `.dashboard-slide-item` を追加・移動（スマホのドットは自動追従） |
+
+#### キャッシュ対策（自動）
+`index.html` が読み込む `style.css` と `js/*.js` の URL には、ファイル内容のハッシュ（`?v=<hash>`）が付きます。CSS / JS を変更して main に push すると、[`asset-version.yml`](.github/workflows/asset-version.yml) が [`.src/update_asset_versions.py`](.src/update_asset_versions.py) でハッシュを自動更新してコミットします（手で書き換える必要はありません）。ローカルで先に更新する場合は `python3 .src/update_asset_versions.py` を実行します。
 
 ---
 
@@ -53,6 +65,7 @@ GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)�
 │   └── tanita.json                   # 蓄積された体重・体脂肪率のヘルスデータ
 ├── .github/
 │   └── workflows/                    # 各種定期実行・CIワークフロー
+│       ├── asset-version.yml         # CSS/JS 変更時に index.html の ?v= を内容ハッシュで自動更新
 │       ├── daily.yml                 # 日次定期実行（タニタ同期・俳句生成・ブログ記事取得）
 │       ├── hourly.yml                # 毎時定期実行（RSS生成 & CI通知既読化）
 │       ├── lint.yml                  # コード静的解析・構文チェック（Ruff）
@@ -65,6 +78,7 @@ GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)�
 │   ├── rss_github_notifications.py   # Atomフィード生成スクリプト
 │   ├── security_auto_remediate.py    # 脆弱性検知時のAI要約 & 自動PR作成スクリプト
 │   ├── tanita_sync.py                # タニタデータ取得・保存スクリプト
+│   ├── update_asset_versions.py      # index.html の CSS/JS 参照に内容ハッシュを付与
 │   └── update_manager.py             # 対話型パッケージ更新マネージャー
 ├── docs/                             # 開発用メモ・技術ドキュメント
 ├── rss/
@@ -72,7 +86,16 @@ GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)�
 ├── .nojekyll                         # GitHub Pages用Jekyll無効化ファイル
 ├── index.html                        # GitHub Pages ダッシュボード本体
 ├── style.css                         # ダッシュボード用スタイルシート
-├── app.js                            # ダッシュボード用ロジック（Chart.js / データ連携）
+├── js/                               # ダッシュボード用ロジック（読み込み順は index.html の通り）
+│   ├── utils.js                      # 共通部品（DOM生成・URL検証・日本時間の日付処理）
+│   ├── clock.js                      # ヘッダーのデジタル時計
+│   ├── anniversaries.js              # 記念日カード（ライフステージ・愛犬）
+│   ├── health.js                     # 体組成 KPI・推移グラフ（Chart.js）・年の絞り込み
+│   ├── haiku.js                      # 今日の一句・アーカイブ・SNSシェア
+│   ├── bluesky.js                    # Bluesky の投稿
+│   ├── blog.js                       # ブログの記事
+│   ├── slider.js                     # スマホ用横スライダー（ドット自動生成）
+│   └── main.js                       # 初期化（エントリーポイント）
 ├── pyproject.toml                    # プロジェクト設定・依存パッケージ定義
 ├── uv.lock                           # uv ロックファイル
 ├── update_package.sh                 # 対話型パッケージ更新スクリプト

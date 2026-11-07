@@ -418,23 +418,6 @@ body {
   transition: opacity 0.2s ease;
 }
 
-@media (max-width: 575.98px) {
-  .dog-photo-ring {
-    width: 58px;
-    height: 58px;
-    padding: 2.5px;
-  }
-  .dog-photo-fallback,
-  .dog-photo-img {
-    inset: 2.5px;
-    width: calc(100% - 5px);
-    height: calc(100% - 5px);
-  }
-  .fallback-emoji {
-    font-size: 1.35rem;
-  }
-}
-
 .countdown-badge {
   display: inline-flex;
   align-items: center;
@@ -1250,12 +1233,6 @@ body {
   overflow: hidden;
 }
 
-@media (max-width: 575.98px) {
-  .blog-thumb-link {
-    width: 96px;
-  }
-}
-
 /* ==========================================================================
    Footer
    ========================================================================== */
@@ -1346,6 +1323,27 @@ body {
 
   .haiku-card .card-body {
     padding: 1rem !important;
+  }
+
+  .dog-photo-ring {
+    width: 58px;
+    height: 58px;
+    padding: 2.5px;
+  }
+
+  .dog-photo-fallback,
+  .dog-photo-img {
+    inset: 2.5px;
+    width: calc(100% - 5px);
+    height: calc(100% - 5px);
+  }
+
+  .fallback-emoji {
+    font-size: 1.35rem;
+  }
+
+  .blog-thumb-link {
+    width: 96px;
   }
 }
 
