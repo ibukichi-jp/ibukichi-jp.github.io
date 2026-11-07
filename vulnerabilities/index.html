@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ja" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>脆弱性レポート | ibukichi Dashboard</title>
+  <meta name="description" content="監視している技術（Node.js / Next.js / TypeScript / Python / Django）の脆弱性情報を、各プロジェクトの公式発表から毎日まとめたレポートです。">
+  <meta name="theme-color" content="#0f172a">
+  <link rel="icon" type="image/png" href="https://github.com/ibukichi-jp.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #090d16;
+      --bg-card: rgba(18, 24, 38, 0.78);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --accent: #38bdf8;
+      --radius-md: 14px;
+    }
+    body {
+      background: var(--bg-base);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh;
+    }
+    .page { max-width: 1100px; }
+    .page-tag {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; color: var(--accent);
+    }
+    .page-title { font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; font-weight: 800; }
+    .nav-link-sm { font-size: 0.85rem; color: var(--text-muted); text-decoration: none; }
+    .nav-link-sm:hover { color: var(--accent); text-decoration: underline; }
+    .panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: clamp(16px, 3vw, 28px);
+    }
+    .report-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+    .report-item a {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px;
+      padding: 12px 16px; border-radius: 10px; text-decoration: none; color: var(--text-main);
+      background: rgba(0, 0, 0, 0.2); border: 1px solid var(--border-subtle);
+    }
+    .report-item a:hover { border-color: rgba(56, 189, 248, 0.4); background: rgba(255, 255, 255, 0.04); }
+    .report-date { font-weight: 700; }
+    .report-meta { font-size: 0.82rem; color: var(--text-muted); }
+    .muted { color: var(--text-muted); }
+
+    /* Markdown 本文 */
+    .md h1 { font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem; }
+    .md h2 { font-size: 1.15rem; font-weight: 700; margin: 2rem 0 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border-subtle); }
+    .md h3 { font-size: 1rem; font-weight: 700; margin: 1.75rem 0 0.5rem; }
+    .md p, .md li { line-height: 1.75; color: #e2e8f0; }
+    .md a { color: var(--accent); overflow-wrap: anywhere; }
+    .md code { color: #f9a8d4; background: rgba(255, 255, 255, 0.06); padding: 0.1em 0.35em; border-radius: 4px; }
+    .md blockquote { border-left: 3px solid var(--border-subtle); padding-left: 1rem; color: var(--text-muted); font-size: 0.85rem; }
+    .md hr { border-color: var(--border-subtle); opacity: 1; }
+    .table-scroll { overflow-x: auto; margin-bottom: 1rem; }
+    .md table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .md th, .md td { border: 1px solid var(--border-subtle); padding: 6px 10px; vertical-align: top; }
+    .md th { background: rgba(255, 255, 255, 0.04); white-space: nowrap; }
+    .md td:nth-child(1), .md td:nth-child(4) { white-space: nowrap; }
+    @media (max-width: 767.98px) {
+      /* 狭い画面では列を押しつぶさず、表だけ横スクロールさせる */
+      .md table { min-width: 900px; }
+      .md td:nth-child(5) { min-width: 320px; }
+    }
+    @media (max-width: 575.98px) {
+      .page { padding-left: 16px; padding-right: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container page py-4">
+    <header class="mb-4">
+      <div class="page-tag">VULNERABILITY REPORTS</div>
+      <h1 class="page-title h3 mb-2">脆弱性レポート</h1>
+      <nav class="d-flex flex-wrap gap-3">
+        <a class="nav-link-sm" href="./">レポート一覧</a>
+        <a class="nav-link-sm" href="../">ダッシュボードへ戻る</a>
+      </nav>
+    </header>
+
+    <main class="panel" id="content" aria-live="polite">
+      <p class="muted mb-0">読み込み中...</p>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+  <script>
+    (function () {
+      const content = document.getElementById('content');
+      const MARKS = { critical: '🔴', high: '🟠', medium: '🟡', low: '⚪', unknown: '❔' };
+
+      function el(tag, className, text) {
+        const node = document.createElement(tag);
+        if (className) node.className = className;
+        if (text != null) node.textContent = text;
+        return node;
+      }
+
+      function showMessage(message) {
+        content.replaceChildren(el('p', 'muted mb-0', message));
+      }
+
+      function countsText(counts) {
+        return Object.entries(counts || {})
+          .map(([sev, n]) => `${MARKS[sev] || ''} ${n}`)
+          .join('  ');
+      }
+
+      function renderList(reports) {
+        if (reports.length === 0) {
+          showMessage('まだレポートはありません。新しい脆弱性が見つかった日にレポートが作成されます。');
+          return;
+        }
+        const list = el('ul', 'report-list');
+        reports.forEach(r => {
+          const a = el('a');
+          a.href = `?report=${encodeURIComponent(r.path.replace(/\.md$/, ''))}`;
+          a.append(
+            el('span', 'report-date', r.date.replaceAll('-', '/')),
+            el('span', 'report-meta', `新規 ${r.count}件  ${countsText(r.counts)}`),
+            el('span', 'report-meta', (r.techs || []).join(', ')),
+          );
+          const li = el('li', 'report-item');
+          li.appendChild(a);
+          list.appendChild(li);
+        });
+        content.replaceChildren(list);
+        document.title = '脆弱性レポート | ibukichi Dashboard';
+      }
+
+      async function renderReport(entry) {
+        const res = await fetch(entry.path, { cache: 'no-cache' });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const markdown = await res.text();
+
+        // Markdown → HTML → 無害化（公式情報の文章を含むため必ずサニタイズする）
+        const safeHtml = DOMPurify.sanitize(marked.parse(markdown, { gfm: true }));
+        const body = el('article', 'md');
+        body.innerHTML = safeHtml;
+
+        body.querySelectorAll('a[href]').forEach(a => {
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+        });
+        body.querySelectorAll('table').forEach(table => {
+          const wrap = el('div', 'table-scroll');
+          table.replaceWith(wrap);
+          wrap.appendChild(table);
+        });
+
+        content.replaceChildren(body);
+        document.title = `脆弱性レポート ${entry.date.replaceAll('-', '/')} | ibukichi Dashboard`;
+      }
+
+      async function init() {
+        let reports;
+        try {
+          const res = await fetch('index.json', { cache: 'no-cache' });
+          reports = res.ok ? ((await res.json()).reports || []) : [];
+        } catch (e) {
+          reports = [];
+        }
+
+        const requested = new URLSearchParams(location.search).get('report');
+        if (!requested) {
+          renderList(reports);
+          return;
+        }
+        // index.json に載っているレポートだけを表示する（任意のパスは読み込まない）
+        const entry = reports.find(r => r.path === `${requested}.md`);
+        if (!entry) {
+          showMessage('指定されたレポートが見つかりません。公開直後の場合は、少し待ってから再読み込みしてください。');
+          return;
+        }
+        try {
+          await renderReport(entry);
+        } catch (e) {
+          showMessage('レポートを読み込めませんでした。');
+        }
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>

@@ -12,7 +12,9 @@ GitHub Actions と Python (`uv`) を活用した、個人用自動化・統合�
 - **タニタ体組成データ自動同期 (`.src/tanita_sync.py`)**: 体組成計で計測した直近データを取得し、[`.data/tanita.json`](.data/tanita.json) にマージして蓄積
 - **さくらのAI 俳句生成器 (`.src/haiku_generator.py`)**: さくらのクラウド 高火力AIサービス（OpenAI互換API / `gpt-oss-120b`）を利用し、日付と季節に合わせた俳句を生成して [`.data/haiku.log`](.data/haiku.log) に蓄積
 - **ブログ記事の取得 (`.src/blog_feed.py`)**: ブログ（[blog.ibukichi.jp](https://blog.ibukichi.jp/)）の Atom フィードから最新を含む直近3件の記事（タイトル・URL・投稿日・抜粋・サムネイル）を取得して [`.data/blog.json`](.data/blog.json) に保存。取得時刻などは書き出さないため、記事が増えた・変わった日だけ差分が発生。取得失敗時は既存データを保持
-- **日次データ自動コミット**: 更新された体組成データ・俳句ログ・ブログ記事データを1回のコミットで安全にプッシュ
+- **脆弱性ウォッチ (`.src/vuln_watch.py`)**: 監視している技術の脆弱性情報を各プロジェクトの公式発表から取得し、新しく出たものがあれば日次レポート（[`vulnerabilities/`](vulnerabilities/)）を作成（詳しくは下記「5. 脆弱性ウォッチ」）
+- **日次データ自動コミット**: 更新された体組成データ・俳句ログ・ブログ記事データ・脆弱性レポートを1回のコミットで安全にプッシュ
+- **脆弱性レポートの Discord 通知**: レポートを作成した日だけ、GitHub Pages への反映を待ってからレポートの URL を Discord に通知
 
 ### 2. 毎時定期バッチ (`.github/workflows/hourly.yml`)
 毎時0分に起動し、通知の収集から既読化までを一括処理します。
@@ -51,6 +53,22 @@ GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)�
 #### キャッシュ対策（自動）
 `index.html` が読み込む `style.css` と `js/*.js` の URL には、ファイル内容のハッシュ（`?v=<hash>`）が付きます。CSS / JS を変更して main に push すると、[`asset-version.yml`](.github/workflows/asset-version.yml) が [`.src/update_asset_versions.py`](.src/update_asset_versions.py) でハッシュを自動更新してコミットします（手で書き換える必要はありません）。ローカルで先に更新する場合は `python3 .src/update_asset_versions.py` を実行します。
 
+### 5. 脆弱性ウォッチ（`.src/vuln_watch.py` / [`vulnerabilities/`](vulnerabilities/)）
+指定した技術の脆弱性情報を、**各プロジェクト自身の公式発表**から毎日（日次バッチ）取得し、新しく出たものを Markdown のレポートにまとめます。
+- **監視対象**: [`.data/vuln_watchlist.toml`](.data/vuln_watchlist.toml) で設定（現在: Node.js / Next.js / TypeScript / Python / Django）。レポートに載せる深刻度の下限 `min_severity` もここで変更できます
+
+| 技術 | 取得元（公式の一次情報） | 深刻度・バージョンの取得元 |
+|---|---|---|
+| Node.js | 公式フィード `nodejs.org/en/feed/vulnerability.xml`（リリース予告を含む） | Node.js Security WG の CVE 一覧 / 予告記事の本文 |
+| Next.js / TypeScript | GitHub Advisory Database（npm の `next` / `typescript`） | 各 Advisory |
+| Python（CPython） | PSF 公式アドバイザリ（`psf/advisory-database`） | PSF が登録した CVE レコード（cve.org） |
+| Django | 公式ブログ RSS のセキュリティリリース記事 | 記事本文（`severity "moderate"` など） |
+
+- **AI の役割**: 脆弱性を探すのは公式データのみ。さくらのAI（`gpt-oss-120b`）は取得した公式情報をもとに、日本語のタイトルと要約を作るだけ（AI が失敗してもレポートは作成）
+- **レポート**: `vulnerabilities/YYYY/YYYY-MM-DD.md`（一覧表: 日時・技術・修正版・CVE・内容 ／ 詳細: 影響を受けるバージョン・AI要約・公式リンク）。新しい脆弱性がない日は作成しない
+- **閲覧ページ**: [`https://ibukichi-jp.github.io/vulnerabilities/`](https://ibukichi-jp.github.io/vulnerabilities/)（一覧）／ `?report=YYYY/YYYY-MM-DD` で各レポート。Markdown は DOMPurify で無害化して表示
+- **重複防止**: 一度記録した脆弱性は [`.data/vuln_seen.json`](.data/vuln_seen.json) に残し、二度とレポートに載せない。監視対象に技術を追加した直後は、その技術の既存分を既読にするだけ（翌日以降に出たものから掲載）
+
 ---
 
 ## 📁 ディレクトリ構成
@@ -61,12 +79,14 @@ GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)�
 │   └── images/                       # 写真アセット（結婚写真・いぶき・いろは・ワン公）
 ├── .data/
 │   ├── blog.json                     # ブログの直近記事データ（3件）
+│   ├── vuln_seen.json                # 脆弱性ウォッチの既読記録（重複レポート防止）
+│   ├── vuln_watchlist.toml           # 脆弱性ウォッチの監視対象・深刻度の下限
 │   ├── haiku.log                     # 生成された俳句の履歴データ
 │   └── tanita.json                   # 蓄積された体重・体脂肪率のヘルスデータ
 ├── .github/
 │   └── workflows/                    # 各種定期実行・CIワークフロー
 │       ├── asset-version.yml         # CSS/JS 変更時に index.html の ?v= を内容ハッシュで自動更新
-│       ├── daily.yml                 # 日次定期実行（タニタ同期・俳句生成・ブログ記事取得）
+│       ├── daily.yml                 # 日次定期実行（タニタ同期・俳句生成・ブログ記事取得・脆弱性ウォッチ）
 │       ├── hourly.yml                # 毎時定期実行（RSS生成 & CI通知既読化）
 │       ├── lint.yml                  # コード静的解析・構文チェック（Ruff）
 │       ├── test.yml                  # 単体テスト自動実行（pytest）
@@ -78,9 +98,14 @@ GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)�
 │   ├── rss_github_notifications.py   # Atomフィード生成スクリプト
 │   ├── security_auto_remediate.py    # 脆弱性検知時のAI要約 & 自動PR作成スクリプト
 │   ├── tanita_sync.py                # タニタデータ取得・保存スクリプト
+│   ├── vuln_watch.py                 # 脆弱性ウォッチ（公式情報の取得・レポート作成・Discord通知）
 │   ├── update_asset_versions.py      # index.html の CSS/JS 参照に内容ハッシュを付与
 │   └── update_manager.py             # 対話型パッケージ更新マネージャー
 ├── docs/                             # 開発用メモ・技術ドキュメント
+├── vulnerabilities/
+│   ├── index.html                    # 脆弱性レポートの閲覧ページ（GitHub Pages）
+│   ├── index.json                    # レポートの一覧（CI が更新）
+│   └── YYYY/YYYY-MM-DD.md            # 日次の脆弱性レポート（新規がある日のみ）
 ├── rss/
 │   └── github_notifications.atom     # 生成されたAtomフィード
 ├── .nojekyll                         # GitHub Pages用Jekyll無効化ファイル
@@ -160,7 +185,7 @@ GitHub Actions の実行には、以下の Secrets の設定が必要です。
 | `TOKEN_FOR_WRITE` | 成果物（`haiku.log` や Atom フィード）をリポジトリへ Push するためのトークン |
 | `GIT_USER_NAME` | 自動コミット用 Git ユーザー名 |
 | `GIT_EMAIL` | 自動コミット用 Git メールアドレス |
-| `DISCORD_URL_GITHUB` | セキュリティスキャン失敗時の Discord Webhook URL |
+| `DISCORD_URL_GITHUB` | Discord Webhook URL（各バッチの失敗通知・セキュリティスキャン・脆弱性レポートの作成通知） |
 
 ---
 

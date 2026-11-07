@@ -1,4 +1,4 @@
-name: Daily Runner (Tanita, Haiku, Blog)
+name: Daily Runner (Tanita, Haiku, Blog, Vulnerabilities)
 
 on:
   workflow_dispatch:
@@ -52,6 +52,15 @@ jobs:
         run: |
           uv run ./.src/blog_feed.py
 
+      - name: Check vulnerabilities of watched technologies
+        id: vuln
+        continue-on-error: true
+        env:
+          SAKURA_API_KEY: ${{ secrets.SAKURA_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          uv run ./.src/vuln_watch.py check
+
       - name: Commit and push daily data
         id: commit_push
         continue-on-error: true
@@ -61,13 +70,24 @@ jobs:
         run: |
           git config user.name "${GIT_USER_NAME}"
           git config user.email "${GIT_EMAIL}"
-          git add .data/tanita.json .data/haiku.log .data/blog.json
+          git add .data/tanita.json .data/haiku.log .data/blog.json .data/vuln_seen.json vulnerabilities
           if git diff --staged --quiet; then
             echo "No changes in daily data. Skipping commit."
           else
-            git commit -m "Update daily health, haiku & blog data by CI."
+            git commit -m "Update daily health, haiku, blog & vulnerability data by CI."
+            git pull --rebase origin main
             git push https://x-access-token:${{ secrets.TOKEN_FOR_WRITE }}@github.com/${{ github.actor }}/${{ github.actor }}.github.io.git main
           fi
+
+      - name: Notify vulnerability report to Discord
+        id: vuln_notify
+        if: steps.vuln.outputs.report != '' && steps.commit_push.outcome == 'success'
+        continue-on-error: true
+        env:
+          DISCORD_URL_GITHUB: ${{ secrets.DISCORD_URL_GITHUB }}
+          REPORT: ${{ steps.vuln.outputs.report }}
+        run: |
+          uv run ./.src/vuln_watch.py notify --report "$REPORT"
 
       - name: Report and Summary
         if: always()
@@ -78,10 +98,12 @@ jobs:
           echo "| 🏋️ タニタ体組成同期 | ${{ steps.tanita.outcome == 'success' && '✅ 成功' || '❌ 失敗' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| 🌸 さくらのAI俳句生成 | ${{ steps.haiku.outcome == 'success' && '✅ 成功' || '❌ 失敗' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| 📝 ブログ記事取得 | ${{ steps.blog.outcome == 'success' && '✅ 成功' || '❌ 失敗' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🛡️ 脆弱性チェック | ${{ steps.vuln.outcome == 'success' && '✅ 成功' || '❌ 失敗' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| 💾 日次データコミット | ${{ steps.commit_push.outcome == 'success' && '✅ 成功' || '❌ 失敗' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 📣 脆弱性レポート通知 | ${{ steps.vuln.outputs.report == '' && '— レポートなし' || (steps.vuln_notify.outcome == 'success' && '✅ 成功' || '❌ 失敗') }} |" >> $GITHUB_STEP_SUMMARY
 
       - name: Notify Discord on Failure
-        if: always() && (steps.tanita.outcome == 'failure' || steps.haiku.outcome == 'failure' || steps.blog.outcome == 'failure' || steps.commit_push.outcome == 'failure')
+        if: always() && (steps.tanita.outcome == 'failure' || steps.haiku.outcome == 'failure' || steps.blog.outcome == 'failure' || steps.vuln.outcome == 'failure' || steps.commit_push.outcome == 'failure' || steps.vuln_notify.outcome == 'failure')
         env:
           DISCORD_URL_GITHUB: ${{ secrets.DISCORD_URL_GITHUB }}
         run: |
@@ -92,6 +114,8 @@ jobs:
           if '${{ steps.tanita.outcome }}' == 'failure': failures.append('🏋️ タニタ体組成同期')
           if '${{ steps.haiku.outcome }}' == 'failure': failures.append('🌸 さくらのAI俳句生成')
           if '${{ steps.blog.outcome }}' == 'failure': failures.append('📝 ブログ記事取得')
+          if '${{ steps.vuln.outcome }}' == 'failure': failures.append('🛡️ 脆弱性チェック')
+          if '${{ steps.vuln_notify.outcome }}' == 'failure': failures.append('📣 脆弱性レポート通知')
           if '${{ steps.commit_push.outcome }}' == 'failure': failures.append('💾 日次データコミット')
 
           failures_text = '\n'.join([f'- {f}' for f in failures])
@@ -108,7 +132,7 @@ jobs:
           "
 
       - name: Fail workflow if any step failed
-        if: always() && (steps.tanita.outcome == 'failure' || steps.haiku.outcome == 'failure' || steps.blog.outcome == 'failure' || steps.commit_push.outcome == 'failure')
+        if: always() && (steps.tanita.outcome == 'failure' || steps.haiku.outcome == 'failure' || steps.blog.outcome == 'failure' || steps.vuln.outcome == 'failure' || steps.commit_push.outcome == 'failure' || steps.vuln_notify.outcome == 'failure')
         run: |
           echo "❌ 1つ以上のステップでエラーが発生したため、ワークフローを失敗（Error）として終了します。"
           exit 1

@@ -1,0 +1,33 @@
+# 脆弱性ウォッチの監視対象（.src/vuln_watch.py が毎日読み込む）
+#
+# 各技術の「そのプロジェクト自身の公式発表」から脆弱性情報を取得する。
+# 新しい技術を追加したときは、その技術の既存の脆弱性は既読として記録され、
+# 追加した翌日以降に出たものからレポートに載る。
+
+# この深刻度以上をレポートに載せる（low / medium / high / critical）
+# 深刻度が分からないものは、見逃しを防ぐため常に載せる
+min_severity = "low"
+
+[[targets]]
+name = "Node.js"
+source = "nodejs"            # 公式フィード nodejs.org/en/feed/vulnerability.xml（予告を含む）
+
+[[targets]]
+name = "Next.js"
+source = "github_advisory"   # Vercel が GitHub で直接公開している Advisory
+ecosystem = "npm"
+package = "next"
+
+[[targets]]
+name = "TypeScript"
+source = "github_advisory"
+ecosystem = "npm"
+package = "typescript"
+
+[[targets]]
+name = "Python"
+source = "psf"               # PSF 公式アドバイザリ + PSF が登録した CVE レコード
+
+[[targets]]
+name = "Django"
+source = "django"            # Django 公式ブログ（セキュリティリリースの記事）
