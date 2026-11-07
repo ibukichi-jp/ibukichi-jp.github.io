@@ -2,37 +2,9 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-11-07T06:56:20.213404+00:00</updated>
+  <updated>2026-11-07T13:52:13.391732+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
-  <entry>
-    <id>https://github.com/react/react/releases/tag/v19.3.1</id>
-    <title>[react/react] 19.3.1 (October 14th, 2026)</title>
-    <updated>2026-10-14T17:12:48+00:00</updated>
-    <link href="https://github.com/react/react/releases/tag/v19.3.1"/>
-    <summary>The library for web and native user interfaces.</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/react/react/releases/tag/v19.0.9</id>
-    <title>[react/react] 19.0.9 (October 14th, 2026)</title>
-    <updated>2026-10-14T17:14:14+00:00</updated>
-    <link href="https://github.com/react/react/releases/tag/v19.0.9"/>
-    <summary>The library for web and native user interfaces.</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/react/react/releases/tag/v19.1.10</id>
-    <title>[react/react] 19.1.10 (October 14th, 2026)</title>
-    <updated>2026-10-14T17:29:56+00:00</updated>
-    <link href="https://github.com/react/react/releases/tag/v19.1.10"/>
-    <summary>The library for web and native user interfaces.</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/react/react/releases/tag/v19.2.9</id>
-    <title>[react/react] 19.2.9 (October 14th, 2026)</title>
-    <updated>2026-10-14T17:26:20+00:00</updated>
-    <link href="https://github.com/react/react/releases/tag/v19.2.9"/>
-    <summary>The library for web and native user interfaces.</summary>
-  </entry>
   <entry>
     <id>https://github.com/vercel/next.js/releases/tag/v15.5.28</id>
     <title>[vercel/next.js] v15.5.28</title>
@@ -55,34 +27,6 @@
     <summary>The React Framework</summary>
   </entry>
   <entry>
-    <id>https://github.com/anchore/syft/releases/tag/v1.55.0</id>
-    <title>[anchore/syft] v1.55.0</title>
-    <updated>2026-10-19T19:01:46+00:00</updated>
-    <link href="https://github.com/anchore/syft/releases/tag/v1.55.0"/>
-    <summary>CLI tool and library for generating a Software Bill of Materials from container images and filesystems</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/anchore/grype/releases/tag/v0.121.0</id>
-    <title>[anchore/grype] v0.121.0</title>
-    <updated>2026-10-19T20:33:16+00:00</updated>
-    <link href="https://github.com/anchore/grype/releases/tag/v0.121.0"/>
-    <summary>A vulnerability scanner for container images and filesystems</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/fastapi/fastapi/releases/tag/0.153.0</id>
-    <title>[fastapi/fastapi] 0.153.0</title>
-    <updated>2026-10-20T13:49:40+00:00</updated>
-    <link href="https://github.com/fastapi/fastapi/releases/tag/0.153.0"/>
-    <summary>FastAPI framework, high performance, easy to learn, fast to code, ready for production</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/microsoft/TypeScript/releases/tag/v7.1-beta</id>
-    <title>[microsoft/TypeScript] TypeScript 7.1 Beta</title>
-    <updated>2026-10-20T17:38:44+00:00</updated>
-    <link href="https://github.com/microsoft/TypeScript/releases/tag/v7.1-beta"/>
-    <summary>TypeScript is a superset of JavaScript that compiles to clean JavaScript output.</summary>
-  </entry>
-  <entry>
     <id>https://github.com/vercel/next.js/releases/tag/v16.4.3</id>
     <title>[vercel/next.js] v16.4.3</title>
     <updated>2026-10-23T13:32:53+00:00</updated>
@@ -97,31 +41,10 @@
     <summary>The React Framework</summary>
   </entry>
   <entry>
-    <id>https://github.com/anchore/syft/releases/tag/v1.56.0</id>
-    <title>[anchore/syft] v1.56.0</title>
-    <updated>2026-11-02T16:54:02+00:00</updated>
-    <link href="https://github.com/anchore/syft/releases/tag/v1.56.0"/>
-    <summary>CLI tool and library for generating a Software Bill of Materials from container images and filesystems</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/anchore/grype/releases/tag/v0.121.1</id>
-    <title>[anchore/grype] v0.121.1</title>
-    <updated>2026-11-02T17:30:21+00:00</updated>
-    <link href="https://github.com/anchore/grype/releases/tag/v0.121.1"/>
-    <summary>A vulnerability scanner for container images and filesystems</summary>
-  </entry>
-  <entry>
     <id>https://github.com/vercel/next.js/releases/tag/v15.5.29</id>
     <title>[vercel/next.js] v15.5.29</title>
     <updated>2026-11-03T18:38:51+00:00</updated>
     <link href="https://github.com/vercel/next.js/releases/tag/v15.5.29"/>
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.4.5</id>
-    <title>[vercel/next.js] v16.4.5</title>
-    <updated>2026-11-03T18:39:02+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.4.5"/>
     <summary>The React Framework</summary>
   </entry>
   <entry>
@@ -144,12 +67,5 @@
     <updated>2026-11-05T21:23:16+00:00</updated>
     <link href="https://github.com/anchore/grype/releases/tag/v0.121.2"/>
     <summary>A vulnerability scanner for container images and filesystems</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/microsoft/TypeScript/releases/tag/vscode-typescript/v1.0.2</id>
-    <title>[microsoft/TypeScript] vscode-typescript/v1.0.2</title>
-    <updated>2026-11-06T16:43:47+00:00</updated>
-    <link href="https://github.com/microsoft/TypeScript/releases/tag/vscode-typescript/v1.0.2"/>
-    <summary>TypeScript is a superset of JavaScript that compiles to clean JavaScript output.</summary>
   </entry>
 </feed>
