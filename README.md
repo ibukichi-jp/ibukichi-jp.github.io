@@ -53,6 +53,13 @@ GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)�
 | Bluesky の表示件数・アカウント | [`js/bluesky.js`](js/bluesky.js) の `BLUESKY_HANDLE` / `BLUESKY_DISPLAY_COUNT` |
 | セクションの追加・並べ替え | `index.html` の `.dashboard-slide-item` を追加・移動（スマホのドットは自動追従） |
 
+#### 外部ライブラリ（`assets/vendor/`）
+Bootstrap と Chart.js は CDN を使わず、npm パッケージのファイルをそのまま `assets/vendor/<名前>-<バージョン>/` に置いて配信しています。`index.html` の `integrity` 属性で、ファイルが意図せず変わっていないかをブラウザが確かめます。
+バージョンを上げるときは、次の手順で入れ替えます。
+1. npm のパッケージ（`https://registry.npmjs.org/<名前>/<バージョン>` の `dist.tarball`）を取得し、`dist.integrity` と一致することを確かめる
+2. 必要なファイルを新しいバージョンのフォルダに置き、古いフォルダを削除する
+3. `index.html` のパスと `integrity`（`openssl dgst -sha384 -binary <ファイル> | openssl base64 -A` の値に `sha384-` を付けたもの）を書き換え、`python3 .src/update_asset_versions.py` を実行する
+
 #### キャッシュ対策（自動）
 `index.html` が読み込む `style.css` と `js/*.js` の URL には、ファイル内容のハッシュ（`?v=<hash>`）が付きます。CSS / JS を変更して main に push すると、[`asset-version.yml`](.github/workflows/asset-version.yml) が [`.src/update_asset_versions.py`](.src/update_asset_versions.py) でハッシュを自動更新してコミットします（手で書き換える必要はありません）。ローカルで先に更新する場合は `python3 .src/update_asset_versions.py` を実行します。
 
@@ -63,7 +70,8 @@ GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)�
 ```plaintext
 .
 ├── assets/
-│   └── images/                       # 写真アセット（結婚写真・いぶき・いろは・ワン公）
+│   ├── images/                       # 写真アセット（結婚写真・いぶき・いろは・ワン公）
+│   └── vendor/                       # 外部ライブラリ（Bootstrap 5.3.3・Chart.js 4.4.1。CDN は使わずここから配信）
 ├── .data/
 │   └── tanita.json                   # 蓄積された体重・体脂肪率のヘルスデータ
 ├── .github/
