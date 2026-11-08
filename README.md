@@ -17,11 +17,7 @@ GitHub Actions と Python (`uv`) を活用した、個人用自動化・統合�
 | `notify` | なし | `sync` が失敗したときだけ動き、Discord に通知（失敗したことと実行ログの URL のみ） |
 
 - **タニタ体組成データ自動同期 (`.src/tanita_sync.py`)**: 体組成計で計測した直近データを取得し、[`.data/tanita.json`](.data/tanita.json) にマージして蓄積
-- **さくらのAI 俳句生成器 (`.src/haiku_generator.py`)**: さくらのクラウド 高火力AIサービス（OpenAI互換API / `gpt-oss-120b`）を利用し、日付と季節に合わせた俳句を生成して [`.data/haiku.log`](.data/haiku.log) に蓄積
-- **ブログ記事の取得 (`.src/blog_feed.py`)**: ブログ（[blog.ibukichi.jp](https://blog.ibukichi.jp/)）の Atom フィードから最新を含む直近3件の記事（タイトル・URL・投稿日・抜粋・サムネイル）を取得して [`.data/blog.json`](.data/blog.json) に保存。取得時刻などは書き出さないため、記事が増えた・変わった日だけ差分が発生。取得失敗時は既存データを保持
-- **脆弱性ウォッチ (`.src/vuln_watch.py`)**: 監視している技術の脆弱性情報を各プロジェクトの公式発表から取得し、新しく出たものがあれば日次レポート（[`vulnerabilities/`](vulnerabilities/)）を作成（詳しくは下記「5. 脆弱性ウォッチ」）
-- **日次データ自動コミット**: 更新された体組成データ・俳句ログ・ブログ記事データ・脆弱性レポートを1回のコミットで安全にプッシュ
-- **脆弱性レポートの Discord 通知**: レポートを作成した日だけ、GitHub Pages への反映を待ってからレポートの URL を Discord に通知
+- **日次データ自動コミット**: 更新された体組成データを安全にプッシュ
 
 ### 2. 毎時定期バッチ (`.github/workflows/hourly.yml`)
 毎時0分に起動し、通知の収集から既読化までを一括処理します。
@@ -39,7 +35,6 @@ GitHub Actions と Python (`uv`) を活用した、個人用自動化・統合�
 GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)）で公開されるリアルタイムダッシュボードです。Bootstrap 5によるレスポンシブなダークテーマデザインを採用しています。
 - **ヘッダー**: GitHubプロフィールへのアバターリンク、リアルタイム秒刻みデジタル時計
 - **Blueskyの投稿**: Bluesky 公開API（`public.api.bsky.app` / 認証不要）から [@bsky.ibukichi.jp](https://bsky.app/profile/bsky.ibukichi.jp) の直近3件の自分の投稿（返信・リポストを除く。引用リポストは表示）を取得して表示。リンク・メンション・ハッシュタグ、画像・動画サムネイル・リンクカード・引用投稿に対応。カード内の @ハンドル からプロフィールへ移動可能
-- **ブログの記事**: [`.data/blog.json`](.data/blog.json)（日次CIで更新）を読み込み、直近3件の記事のサムネイル・投稿日・タイトル（記事へのリンク）・抜粋を表示
 - **ライフステージ**: JST（日本標準時）基準で自動算出される、結婚してから（2014/06/27〜）の経過日数および「X年Yヶ月Z日」のリアルタイム表示カード。左側に写真スペース（光彩リング装飾・フォールバック対応）を配置
 - **愛犬たちとの日々**: JST基準で自動算出される、いぶきと暮らした日数（2021/12/09〜2025/01/14の1,133日間 [3年1ヶ月5日] のメモリアル）、いろはと暮らし始めてからのカウントアップ（2025/03/10〜）、ワン公と別れてからの経過年数（2003/02/11〜の「X年Yヶ月Z日」表示）の3連カード。写真アセット（光彩リング装飾・フォールバック対応）を左側に配置
 - **体組成情報可視化**: [`.data/tanita.json`](.data/tanita.json) に蓄積された過去全データを Chart.js でインタラクティブにグラフ化（体重・体脂肪率の2連グラフ）
@@ -53,7 +48,6 @@ GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)�
 | 記念日カードの追加・変更（ライフステージ / 愛犬） | [`js/anniversaries.js`](js/anniversaries.js) の `ANNIVERSARIES` に1行追加・変更 |
 | 体重・体脂肪率・BMI の目標値 | [`js/health.js`](js/health.js) の `HEALTH_CONFIG`（目標体重は身長と目標BMIから自動計算） |
 | Bluesky の表示件数・アカウント | [`js/bluesky.js`](js/bluesky.js) の `BLUESKY_HANDLE` / `BLUESKY_DISPLAY_COUNT` |
-| ブログの表示件数 | [`js/blog.js`](js/blog.js) の `BLOG_DISPLAY_COUNT`（取得件数は `.src/blog_feed.py` の `POST_COUNT`） |
 | セクションの追加・並べ替え | `index.html` の `.dashboard-slide-item` を追加・移動（スマホのドットは自動追従） |
 
 #### キャッシュ対策（自動）
@@ -68,21 +62,16 @@ GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)�
 ├── assets/
 │   └── images/                       # 写真アセット（結婚写真・いぶき・いろは・ワン公）
 ├── .data/
-│   ├── blog.json                     # ブログの直近記事データ（3件）
-│   ├── vuln_seen.json                # 脆弱性ウォッチの既読記録（重複レポート防止）
-│   ├── vuln_watchlist.toml           # 脆弱性ウォッチの監視対象・深刻度の下限
-│   ├── haiku.log                     # 生成された俳句の履歴データ
 │   └── tanita.json                   # 蓄積された体重・体脂肪率のヘルスデータ
 ├── .github/
 │   └── workflows/                    # 各種定期実行・CIワークフロー
 │       ├── asset-version.yml         # CSS/JS 変更時に index.html の ?v= を内容ハッシュで自動更新
-│       ├── daily.yml                 # 日次定期実行（タニタ同期・俳句生成・ブログ記事取得・脆弱性ウォッチ）
+│       ├── daily.yml                 # 日次定期実行（タニタ同期）
 │       ├── hourly.yml                # 毎時定期実行（RSS生成 & CI通知既読化）
 │       ├── lint.yml                  # コード静的解析・構文チェック（Ruff）
 │       ├── test.yml                  # 単体テスト自動実行（pytest）
 │       └── security-scan.yml         # Syft / Grype スキャン & AI自動修正PR
 ├── .src/
-│   ├── blog_feed.py                  # ブログ直近記事取得スクリプト
 │   ├── change_github_notifications_to_read.py # CI通知既読化スクリプト
 │   ├── rss_github_notifications.py   # Atomフィード生成スクリプト
 │   ├── security_auto_remediate.py    # 脆弱性検知時のAI要約 & 自動PR作成スクリプト
@@ -101,7 +90,6 @@ GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)�
 │   ├── anniversaries.js              # 記念日カード（ライフステージ・愛犬）
 │   ├── health.js                     # 体組成 KPI・推移グラフ（Chart.js）・年の絞り込み
 │   ├── bluesky.js                    # Bluesky の投稿
-│   ├── blog.js                       # ブログの記事
 │   ├── slider.js                     # スマホ用横スライダー（ドット自動生成）
 │   └── main.js                       # 初期化（エントリーポイント）
 ├── pyproject.toml                    # プロジェクト設定・依存パッケージ定義

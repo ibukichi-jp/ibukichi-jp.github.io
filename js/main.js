@@ -11,7 +11,6 @@
   'initMobileSectionSlider',
   'initHealth',
   'initBluesky',
-  'initBlog',
 ].forEach(name => {
   try {
     const init = window[name];
