@@ -23,7 +23,7 @@ jobs:
         uses: astral-sh/setup-uv@v7
         with:
           version: "latest"
-          enable-cache: true
+          enable-cache: false # 書き込み権限・秘密を持つジョブなので、キャッシュ汚染の経路を作らない
 
       - name: Setup dependencies
         run: uv sync --frozen --no-dev

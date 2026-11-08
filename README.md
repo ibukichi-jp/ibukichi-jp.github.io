@@ -8,7 +8,14 @@ GitHub Actions と Python (`uv`) を活用した、個人用自動化・統合�
 ## 🚀 主な機能
 
 ### 1. 日次定期バッチ (`.github/workflows/daily.yml`)
-毎日定刻（JST 9:00）に起動し、以下の処理を順次実行してデータを自動コミットします。
+毎日定刻（JST 9:00）に起動し、以下の処理を実行してデータを自動コミットします。
+タニタの同期スクリプトは標準ライブラリだけで動くため、書き込み権限のあるジョブでも PyPI の依存パッケージ（外部のコード）を一切動かしません。
+
+| ジョブ | 権限 | 内容 |
+|---|---|---|
+| `sync` | 書き込み | タニタのデータを取得して `.data/tanita.json` を更新し、変更があればコミットして push。タニタの秘密は取得のステップだけ、push 用の `GITHUB_TOKEN` は `gh auth setup-git` 経由で push のステップだけに渡す（URL・設定ファイルには書かない） |
+| `notify` | なし | `sync` が失敗したときだけ動き、Discord に通知（失敗したことと実行ログの URL のみ） |
+
 - **タニタ体組成データ自動同期 (`.src/tanita_sync.py`)**: 体組成計で計測した直近データを取得し、[`.data/tanita.json`](.data/tanita.json) にマージして蓄積
 - **さくらのAI 俳句生成器 (`.src/haiku_generator.py`)**: さくらのクラウド 高火力AIサービス（OpenAI互換API / `gpt-oss-120b`）を利用し、日付と季節に合わせた俳句を生成して [`.data/haiku.log`](.data/haiku.log) に蓄積
 - **ブログ記事の取得 (`.src/blog_feed.py`)**: ブログ（[blog.ibukichi.jp](https://blog.ibukichi.jp/)）の Atom フィードから最新を含む直近3件の記事（タイトル・URL・投稿日・抜粋・サムネイル）を取得して [`.data/blog.json`](.data/blog.json) に保存。取得時刻などは書き出さないため、記事が増えた・変わった日だけ差分が発生。取得失敗時は既存データを保持
@@ -185,7 +192,7 @@ GitHub Actions の実行には、以下の Secrets の設定が必要です。
 | `TANITA_REFRESH_TOKEN` | タニタ Health Planet API リフレッシュトークン |
 | `SAKURA_API_KEY` | さくらのAI APIキー |
 | `PERSONAL_GITHUB_TOKEN` | GitHub API 操作用パーソナルアクセストークン |
-| `TOKEN_FOR_WRITE` | 成果物（`haiku.log` や Atom フィード）をリポジトリへ Push するためのトークン |
+| `TOKEN_FOR_WRITE` | 毎時バッチ・アセットのバージョン更新の push 用に指定されているトークン（日次バッチは `GITHUB_TOKEN` で push するため使用しない） |
 | `GIT_USER_NAME` | 自動コミット用 Git ユーザー名 |
 | `GIT_EMAIL` | 自動コミット用 Git メールアドレス |
 | `DISCORD_URL_GITHUB` | Discord Webhook URL（各バッチの失敗通知・セキュリティスキャン・脆弱性レポートの作成通知） |

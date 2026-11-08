@@ -1,10 +1,16 @@
+"""タニタ Health Planet API から体組成データを取得し、.data/tanita.json に蓄積する。
+
+外部パッケージを使わず標準ライブラリだけで動く（CI では python3 -I で実行し、
+PyPI の依存パッケージを一切読み込まない）。
+"""
+
 import json
 import os
 import sys
+import urllib.parse
+import urllib.request
 from datetime import datetime, timedelta, timezone
-from typing import Final
-
-import requests
+from typing import Any, Final
 
 TANITA_CLIENT_ID_ENV: Final[str] = "TANITA_CLIENT_ID"
 TANITA_CLIENT_SECRET_ENV: Final[str] = "TANITA_CLIENT_SECRET"
@@ -14,6 +20,20 @@ TANITA_TOKEN_URL: Final[str] = "https://www.healthplanet.jp/oauth/token"
 TANITA_DATA_URL: Final[str] = "https://www.healthplanet.jp/status/innerscan.json"
 DEFAULT_HEIGHT_CM: Final[float] = 175.0
 TANITA_DATA_PATH: Final[str] = ".data/tanita.json"
+REQUEST_TIMEOUT: Final[int] = 30  # 秒
+USER_AGENT: Final[str] = "ibukichi-jp-tanita-sync"
+
+
+def request_json(url: str, form: dict[str, str] | None = None) -> Any:
+    """URL に GET（form を渡した場合はフォーム形式で POST）し、JSON を返す。
+
+    HTTP エラー（4xx/5xx）は urllib.error.HTTPError として送出される。
+    """
+    data = urllib.parse.urlencode(form).encode("ascii") if form is not None else None
+    req = urllib.request.Request(url, data=data, headers={"User-Agent": USER_AGENT})
+    with urllib.request.urlopen(req, timeout=REQUEST_TIMEOUT) as res:
+        charset = res.headers.get_content_charset() or "utf-8"
+        return json.loads(res.read().decode(charset))
 
 
 def get_required_env(name: str) -> str:
@@ -38,9 +58,11 @@ def get_tanita_access_token() -> str:
         "refresh_token": refresh_token,
     }
 
-    response = requests.post(TANITA_TOKEN_URL, data=payload)
-    response.raise_for_status()
-    return response.json().get("access_token", "")
+    token = request_json(TANITA_TOKEN_URL, form=payload).get("access_token")
+    if not token:
+        # 応答の中身には秘密が含まれうるので、ログには出さない
+        raise RuntimeError("アクセストークンを取得できませんでした。")
+    return token
 
 
 def fetch_tanita_raw_data(days: int = 2) -> list[dict]:
@@ -58,9 +80,7 @@ def fetch_tanita_raw_data(days: int = 2) -> list[dict]:
         "tag": "6021,6022",
     }
 
-    response = requests.get(TANITA_DATA_URL, params=params)
-    response.raise_for_status()
-    json_data = response.json()
+    json_data = request_json(f"{TANITA_DATA_URL}?{urllib.parse.urlencode(params)}")
     return json_data.get("data", [])
 
 

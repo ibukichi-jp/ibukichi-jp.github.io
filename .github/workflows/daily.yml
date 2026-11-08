@@ -1,4 +1,4 @@
-name: Daily Runner (Tanita, Haiku, Blog, Vulnerabilities)
+name: Daily Runner (Tanita)
 
 on:
   workflow_dispatch:
@@ -6,141 +6,69 @@ on:
     # 毎日 JST 9:00 (UTC 0:00)
     - cron: '0 0 * * *'
 
-# push は TOKEN_FOR_WRITE（PAT）で行うため、GITHUB_TOKEN は読み取り権限だけにする
-permissions:
-  contents: read
+# 権限はジョブごとに必要な分だけ付ける
+permissions: {}
 
-# 手動実行と定期実行が重なって、同じ日のレポートやコミットが衝突しないようにする
+# 手動実行と定期実行が重なって、コミットが衝突しないようにする
 concurrency:
   group: daily-runner
   cancel-in-progress: false
 
 jobs:
-  daily:
+  sync:
+    name: Sync Tanita data
+    # main 以外のブランチから手動実行しても、main へは書き込まない
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
-          fetch-depth: 1
-          # GITHUB_TOKEN を .git/config に残さない（後続のステップや依存パッケージから読めないように）
-          persist-credentials: false
+          persist-credentials: false # トークンを .git/config に残さない
 
-      - name: Install uv
-        uses: astral-sh/setup-uv@v7
-        with:
-          version: "latest"
-          enable-cache: true
-
-      - name: Setup dependencies
-        run: uv sync --frozen --no-dev
-
-      - name: Run Tanita Sync
-        id: tanita
-        continue-on-error: true
+      # 標準ライブラリだけで動くスクリプトなので、uv や PyPI の依存パッケージは使わない
+      # （書き込み権限のあるジョブで、外部のコードを動かさない）
+      - name: Sync body composition data
         env:
           TANITA_CLIENT_ID: ${{ secrets.TANITA_CLIENT_ID }}
           TANITA_CLIENT_SECRET: ${{ secrets.TANITA_CLIENT_SECRET }}
           TANITA_REFRESH_TOKEN: ${{ secrets.TANITA_REFRESH_TOKEN }}
-        run: |
-          uv run ./.src/tanita_sync.py
+        run: python3 -I ./.src/tanita_sync.py
 
-      - name: Generate Haiku
-        id: haiku
-        continue-on-error: true
+      - name: Commit and push
         env:
-          SAKURA_API_KEY: ${{ secrets.SAKURA_API_KEY }}
+          GIT_USER_NAME: ${{ secrets.GIT_USER_NAME }}
+          GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
+          GH_TOKEN: ${{ github.token }} # gh が実行時に読む。URL・コマンドライン・設定ファイルには書かない
         run: |
-          uv run ./.src/haiku_generator.py
-
-      - name: Fetch latest blog posts
-        id: blog
-        continue-on-error: true
-        run: |
-          uv run ./.src/blog_feed.py
-
-      - name: Check vulnerabilities of watched technologies
-        id: vuln
-        continue-on-error: true
-        env:
-          SAKURA_API_KEY: ${{ secrets.SAKURA_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          uv run ./.src/vuln_watch.py check
-
-      - name: Commit and push daily data
-        id: commit_push
-        continue-on-error: true
-        env:
-          GIT_USER_NAME: "${{ secrets.GIT_USER_NAME }}"
-          GIT_EMAIL: "${{ secrets.GIT_EMAIL }}"
-        run: |
-          git config user.name "${GIT_USER_NAME}"
-          git config user.email "${GIT_EMAIL}"
-          git add .data/tanita.json .data/haiku.log .data/blog.json .data/vuln_seen.json vulnerabilities
+          git config user.name "$GIT_USER_NAME"
+          git config user.email "$GIT_EMAIL"
+          git add .data/tanita.json
           if git diff --staged --quiet; then
             echo "No changes in daily data. Skipping commit."
-          else
-            git commit -m "Update daily health, haiku, blog & vulnerability data by CI."
-            git pull --rebase origin main
-            git push https://x-access-token:${{ secrets.TOKEN_FOR_WRITE }}@github.com/${{ github.actor }}/${{ github.actor }}.github.io.git main
+            exit 0
           fi
+          git commit -m "Update daily health data by CI."
+          gh auth setup-git
+          git pull --rebase origin main || { git rebase --abort; exit 1; }
+          git push origin HEAD:main
 
-      - name: Notify vulnerability report to Discord
-        id: vuln_notify
-        if: steps.vuln.outputs.report != '' && steps.commit_push.outcome == 'success'
-        continue-on-error: true
+  notify:
+    name: Notify on failure
+    needs: sync
+    # 失敗したときだけ動く（詳細は実行ログで確認する）
+    if: ${{ always() && (needs.sync.result == 'failure' || needs.sync.result == 'cancelled') }}
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Notify Discord and fail the workflow
         env:
           DISCORD_URL_GITHUB: ${{ secrets.DISCORD_URL_GITHUB }}
-          REPORT: ${{ steps.vuln.outputs.report }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          uv run ./.src/vuln_watch.py notify --report "$REPORT"
-
-      - name: Report and Summary
-        if: always()
-        run: |
-          echo "## 📊 Daily Runner 実行サマリー" >> $GITHUB_STEP_SUMMARY
-          echo "| 処理名 | ステータス |" >> $GITHUB_STEP_SUMMARY
-          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
-          echo "| 🏋️ タニタ体組成同期 | ${{ steps.tanita.outcome == 'success' && '✅ 成功' || '❌ 失敗' }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| 🌸 さくらのAI俳句生成 | ${{ steps.haiku.outcome == 'success' && '✅ 成功' || '❌ 失敗' }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| 📝 ブログ記事取得 | ${{ steps.blog.outcome == 'success' && '✅ 成功' || '❌ 失敗' }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| 🛡️ 脆弱性チェック | ${{ steps.vuln.outcome == 'success' && '✅ 成功' || '❌ 失敗' }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| 💾 日次データコミット | ${{ steps.commit_push.outcome == 'success' && '✅ 成功' || '❌ 失敗' }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| 📣 脆弱性レポート通知 | ${{ steps.vuln.outputs.report == '' && '— レポートなし' || (steps.vuln_notify.outcome == 'success' && '✅ 成功' || '❌ 失敗') }} |" >> $GITHUB_STEP_SUMMARY
-
-      - name: Notify Discord on Failure
-        if: always() && (steps.tanita.outcome == 'failure' || steps.haiku.outcome == 'failure' || steps.blog.outcome == 'failure' || steps.vuln.outcome == 'failure' || steps.commit_push.outcome == 'failure' || steps.vuln_notify.outcome == 'failure')
-        env:
-          DISCORD_URL_GITHUB: ${{ secrets.DISCORD_URL_GITHUB }}
-        run: |
-          python3 -c "
-          import os, json, urllib.request
-
-          failures = []
-          if '${{ steps.tanita.outcome }}' == 'failure': failures.append('🏋️ タニタ体組成同期')
-          if '${{ steps.haiku.outcome }}' == 'failure': failures.append('🌸 さくらのAI俳句生成')
-          if '${{ steps.blog.outcome }}' == 'failure': failures.append('📝 ブログ記事取得')
-          if '${{ steps.vuln.outcome }}' == 'failure': failures.append('🛡️ 脆弱性チェック')
-          if '${{ steps.vuln_notify.outcome }}' == 'failure': failures.append('📣 脆弱性レポート通知')
-          if '${{ steps.commit_push.outcome }}' == 'failure': failures.append('💾 日次データコミット')
-
-          failures_text = '\n'.join([f'- {f}' for f in failures])
-          content = f'⚠️ **Daily Runner (日次処理) でエラーが発生しました**\n{failures_text}\n\n詳細ログ: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
-
-          webhook_url = os.environ.get('DISCORD_URL_GITHUB')
-          if webhook_url:
-              req = urllib.request.Request(
-                  webhook_url,
-                  data=json.dumps({'username': 'GitHub Actions', 'content': content}).encode('utf-8'),
-                  headers={'Content-Type': 'application/json', 'User-Agent': 'GitHub-Actions'}
-              )
-              urllib.request.urlopen(req)
-          "
-
-      - name: Fail workflow if any step failed
-        if: always() && (steps.tanita.outcome == 'failure' || steps.haiku.outcome == 'failure' || steps.blog.outcome == 'failure' || steps.vuln.outcome == 'failure' || steps.commit_push.outcome == 'failure' || steps.vuln_notify.outcome == 'failure')
-        run: |
-          echo "❌ 1つ以上のステップでエラーが発生したため、ワークフローを失敗（Error）として終了します。"
+          jq -n --arg url "$RUN_URL" \
+            '{content: "⚠️ Daily Runner（日次処理）が失敗しました\n詳細: \($url)", allowed_mentions: {parse: []}}' \
+            | curl -fsS --max-time 30 -H "Content-Type: application/json" --data-binary @- "$DISCORD_URL_GITHUB" \
+            || echo "Discord への通知に失敗しました"
           exit 1

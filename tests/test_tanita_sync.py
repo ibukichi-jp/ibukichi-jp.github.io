@@ -45,3 +45,79 @@ def test_update_tanita_data_store(tmp_path):
     with open(test_file, encoding="utf-8") as f:
         saved_json = json.load(f)
     assert len(saved_json["records"]) == 2
+
+
+# ==========================================================================
+# 通信部分（標準ライブラリの urllib）と、外部パッケージを使わないことの確認
+# ==========================================================================
+import ast  # noqa: E402
+import io  # noqa: E402
+import urllib.parse  # noqa: E402
+from unittest.mock import patch  # noqa: E402
+
+import tanita_sync  # noqa: E402
+
+
+class FakeResponse(io.BytesIO):
+    def __init__(self, payload):
+        super().__init__(json.dumps(payload).encode("utf-8"))
+        self.headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
+
+
+def test_fetch_uses_form_post_for_token_and_get_with_params(monkeypatch):
+    monkeypatch.setenv("TANITA_CLIENT_ID", "cid")
+    monkeypatch.setenv("TANITA_CLIENT_SECRET", "secret")
+    monkeypatch.setenv("TANITA_REFRESH_TOKEN", "refresh")
+    calls = []
+
+    def fake_urlopen(req, timeout):
+        calls.append((req, timeout))
+        if req.full_url == tanita_sync.TANITA_TOKEN_URL:
+            return FakeResponse({"access_token": "token-123"})
+        return FakeResponse({"data": [{"date": "202611080700", "tag": "6021", "keydata": "68.0"}]})
+
+    with patch("tanita_sync.urllib.request.urlopen", fake_urlopen):
+        data = tanita_sync.fetch_tanita_raw_data(days=2)
+
+    assert data == [{"date": "202611080700", "tag": "6021", "keydata": "68.0"}]
+    token_req, token_timeout = calls[0]
+    assert token_req.get_method() == "POST" and token_timeout == tanita_sync.REQUEST_TIMEOUT
+    form = urllib.parse.parse_qs(token_req.data.decode())
+    assert form["grant_type"] == ["refresh_token"] and form["refresh_token"] == ["refresh"]
+
+    data_req, _ = calls[1]
+    assert data_req.get_method() == "GET"
+    query = urllib.parse.parse_qs(urllib.parse.urlsplit(data_req.full_url).query)
+    assert query["access_token"] == ["token-123"] and query["tag"] == ["6021,6022"]
+
+
+def test_tanita_sync_uses_only_standard_library():
+    """CI では python3 -I で依存パッケージなしに実行するため、標準ライブラリ以外を import しない"""
+    source = (Path(__file__).parent.parent / ".src" / "tanita_sync.py").read_text(encoding="utf-8")
+    modules = set()
+    for node in ast.walk(ast.parse(source)):
+        if isinstance(node, ast.Import):
+            modules |= {a.name.split(".")[0] for a in node.names}
+        elif isinstance(node, ast.ImportFrom) and node.module:
+            modules.add(node.module.split(".")[0])
+    assert modules <= set(sys.stdlib_module_names), modules - set(sys.stdlib_module_names)
+
+
+def test_missing_access_token_is_an_error(monkeypatch):
+    """トークンが返ってこなければ、データ取得に進まずエラーにする（成功扱いで終わらない）"""
+    monkeypatch.setenv("TANITA_CLIENT_ID", "cid")
+    monkeypatch.setenv("TANITA_CLIENT_SECRET", "secret")
+    monkeypatch.setenv("TANITA_REFRESH_TOKEN", "refresh")
+    calls = []
+
+    def fake_urlopen(req, timeout):
+        calls.append(req.full_url)
+        return FakeResponse({"error": "invalid_grant"})
+
+    with patch("tanita_sync.urllib.request.urlopen", fake_urlopen):
+        try:
+            tanita_sync.fetch_tanita_raw_data()
+            raise AssertionError("例外が出るべき")
+        except RuntimeError as e:
+            assert "アクセストークン" in str(e) and "invalid_grant" not in str(e)
+    assert calls == [tanita_sync.TANITA_TOKEN_URL]  # データ取得には進まない
