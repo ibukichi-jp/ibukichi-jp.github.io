@@ -9,56 +9,54 @@ on:
     - cron: '0 0 * * *'
   workflow_dispatch:
 
-permissions:
-  contents: write
-  pull-requests: write
+# 権限はジョブごとに必要な分だけ付ける
+permissions: {}
 
 jobs:
   scan:
+    name: Scan dependencies
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: read
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
-          fetch-depth: 0
+          persist-credentials: false # トークンを .git/config に残さない
 
-      - name: Install uv
-        uses: astral-sh/setup-uv@v7
-        with:
-          version: "latest"
-          enable-cache: false # 書き込み権限・秘密を持つジョブなので、キャッシュ汚染の経路を作らない
-
-      - name: Setup dependencies
-        run: uv sync --frozen --no-dev
-
+      # Syft は uv.lock を直接読めるので、uv や依存パッケージのインストールはしない
       - name: Generate SBOM with Syft
-        uses: anchore/sbom-action@v0
+        uses: anchore/sbom-action@66cbf4bc1f1c0d2edc94016e65bc221b6bb0ad6c # v0.24.3
         with:
           path: .
           format: cyclonedx-json
           output-file: sbom.json
           upload-artifact: false
 
-      - name: Install Grype
-        run: |
-          curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sudo sh -s -- -b /usr/local/bin
-
+      # 深刻度 High 以上の脆弱性が見つかったら、このステップ（ジョブ）を失敗させる
+      # （Medium 以下は実行ログに表示されるだけで、失敗にはしない）
       - name: Scan SBOM with Grype
-        run: |
-          echo "=== Grype Vulnerability Scan Report ==="
-          grype sbom:sbom.json -o table || true
-          grype sbom:sbom.json -o json > grype-results.json
+        uses: anchore/scan-action@27805bf3b4e84b4a5c980df22ed233c00390a439 # v7.4.2
+        with:
+          sbom: sbom.json
+          fail-build: true
+          severity-cutoff: high
+          output-format: table # 結果は実行ログに表示される
 
-      - name: AI Vulnerability Analysis & Auto-Remediation PR
+  notify:
+    name: Notify on failure
+    needs: scan
+    # 失敗したときだけ動く（詳細は実行ログで確認する）
+    if: ${{ always() && (needs.scan.result == 'failure' || needs.scan.result == 'cancelled') }}
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Notify Discord and fail the workflow
         env:
-          SAKURA_API_KEY: ${{ secrets.SAKURA_API_KEY }}
           DISCORD_URL_GITHUB: ${{ secrets.DISCORD_URL_GITHUB }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TOKEN_FOR_WRITE: ${{ secrets.TOKEN_FOR_WRITE }}
-          GIT_USER_NAME: "${{ secrets.GIT_USER_NAME }}"
-          GIT_EMAIL: "${{ secrets.GIT_EMAIL }}"
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          git config --global user.name "${GIT_USER_NAME}"
-          git config --global user.email "${GIT_EMAIL}"
-          uv run ./.src/security_auto_remediate.py
+          jq -n --arg url "$RUN_URL" \
+            '{content: "⚠️ Security Scan が失敗しました（脆弱性が見つかった可能性があります）\n詳細: \($url)", allowed_mentions: {parse: []}}' \
+            | curl -fsS --max-time 30 -H "Content-Type: application/json" --data-binary @- "$DISCORD_URL_GITHUB" \
+            || echo "Discord への通知に失敗しました"
+          exit 1

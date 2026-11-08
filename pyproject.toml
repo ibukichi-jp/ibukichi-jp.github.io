@@ -4,9 +4,7 @@ version = "0.1.0"
 description = "Personal dashboard and automated CI workflows for ibukichi-jp"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = [
-    "openai>=3.33.0",
-]
+dependencies = []
 
 [dependency-groups]
 dev = [
