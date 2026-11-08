@@ -37,38 +37,21 @@ jobs:
         run: python3 -I ./.src/tanita_sync.py
 
       - name: Commit and push
-        env:
-          GIT_USER_NAME: ${{ secrets.GIT_USER_NAME }}
-          GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
-          GH_TOKEN: ${{ github.token }} # gh が実行時に読む。URL・コマンドライン・設定ファイルには書かない
-        run: |
-          git config user.name "$GIT_USER_NAME"
-          git config user.email "$GIT_EMAIL"
-          git add .data/tanita.json
-          if git diff --staged --quiet; then
-            echo "No changes in daily data. Skipping commit."
-            exit 0
-          fi
-          git commit -m "Update daily health data by CI."
-          gh auth setup-git
-          git pull --rebase origin main || { git rebase --abort; exit 1; }
-          git push origin HEAD:main
+        uses: ./.github/actions/commit-and-push
+        with:
+          paths: .data/tanita.json
+          message: Update daily health data by CI.
+          git-user-name: ${{ secrets.GIT_USER_NAME }}
+          git-email: ${{ secrets.GIT_EMAIL }}
+          github-token: ${{ github.token }}
 
   notify:
-    name: Notify on failure
     needs: sync
-    # 失敗したときだけ動く（詳細は実行ログで確認する）
+    # 失敗したときだけ動く
     if: ${{ always() && (needs.sync.result == 'failure' || needs.sync.result == 'cancelled') }}
-    runs-on: ubuntu-latest
     permissions: {}
-    steps:
-      - name: Notify Discord and fail the workflow
-        env:
-          DISCORD_URL_GITHUB: ${{ secrets.DISCORD_URL_GITHUB }}
-          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: |
-          jq -n --arg url "$RUN_URL" \
-            '{content: "⚠️ Daily Runner（日次処理）が失敗しました\n詳細: \($url)", allowed_mentions: {parse: []}}' \
-            | curl -fsS --max-time 30 -H "Content-Type: application/json" --data-binary @- "$DISCORD_URL_GITHUB" \
-            || echo "Discord への通知に失敗しました"
-          exit 1
+    uses: ./.github/workflows/notify-failure.yml
+    with:
+      title: Daily Runner（日次処理）
+    secrets:
+      DISCORD_URL_GITHUB: ${{ secrets.DISCORD_URL_GITHUB }}

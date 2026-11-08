@@ -23,13 +23,18 @@ GitHub Actions と Python (`uv`) を活用した、個人用自動化・統合�
 毎時0分に起動し、通知の収集から既読化までを一括処理します。
 - **GitHub リリース通知の RSS/Atom フィード化 (`.src/rss_github_notifications.py`)**: 未読通知から `Release` 種別を抽出して [`rss/github_notifications.atom`](rss/github_notifications.atom) を生成・自動コミット
 - **GitHub CI通知の自動既読化 (`.src/change_github_notifications_to_read.py`)**: 成功したCI実行完了通知（`ci_activity`）を自動的に既読化
+- **失敗時の通知**: どれかの処理が失敗したら、Discord に通知（失敗したことと実行ログの URL のみ）。RSS の生成や push に失敗しても、通知の既読化は実行する
 
-### 3. セキュリティスキャン (`.github/workflows/security-scan.yml`)
-- **Syft**: `uv.lock` などの依存関係から SBOM（Software Bill of Materials）を生成
-- **Grype**: SBOM から脆弱性（CVE）をスキャン。深刻度 High 以上の脆弱性が見つかるとワークフローを失敗させる（Medium 以下も含め、結果は実行ログに表示）
-- **Discord 通知**: スキャンが失敗したときに、実行ログの URL を Discord に通知
+### 3. push・Pull Request 時のチェック (`.github/workflows/push-check.yml`)
+main への push と Pull Request のときに、Ruff（lint・フォーマット）と pytest を実行します（Discord には通知しません）。
+本番用の Python ライブラリはなく、`uv.lock` にあるのは開発用（pytest・Ruff）だけです。依存パッケージの脆弱性は、GitHub の Dependabot alerts で見張っています。
 
-### 4. GitHub Pages ダッシュボード (`index.html`)
+### 4. アセットのバージョン更新 (`.github/workflows/asset-version.yml`)
+`index.html`・`style.css`・`js/` を変更して main に push したときに起動します。
+- **キャッシュ対策 (`.src/update_asset_versions.py`)**: `index.html` が読み込む `style.css` と `js/*.js` の URL に付けた `?v=<hash>` を、ファイル内容のハッシュに更新して自動コミット（詳しくは下の「キャッシュ対策（自動）」）
+- **失敗時の通知**: 失敗したら、Discord に通知（失敗したことと実行ログの URL のみ）
+
+### 5. GitHub Pages ダッシュボード (`index.html`)
 GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)）で公開されるリアルタイムダッシュボードです。Bootstrap 5によるレスポンシブなダークテーマデザインを採用しています。
 - **ヘッダー**: GitHubプロフィールへのアバターリンク、リアルタイム秒刻みデジタル時計
 - **Blueskyの投稿**: Bluesky 公開API（`public.api.bsky.app` / 認証不要）から [@bsky.ibukichi.jp](https://bsky.app/profile/bsky.ibukichi.jp) の直近3件の自分の投稿（返信・リポストを除く。引用リポストは表示）を取得して表示。リンク・メンション・ハッシュタグ、画像・動画サムネイル・リンクカード・引用投稿に対応。カード内の @ハンドル からプロフィールへ移動可能
@@ -62,13 +67,14 @@ GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)�
 ├── .data/
 │   └── tanita.json                   # 蓄積された体重・体脂肪率のヘルスデータ
 ├── .github/
+│   ├── actions/
+│   │   └── commit-and-push/          # 変更をコミットして GITHUB_TOKEN で push する共通部品
 │   └── workflows/                    # 各種定期実行・CIワークフロー
 │       ├── asset-version.yml         # CSS/JS 変更時に index.html の ?v= を内容ハッシュで自動更新
 │       ├── daily.yml                 # 日次定期実行（タニタ同期）
 │       ├── hourly.yml                # 毎時定期実行（RSS生成 & CI通知既読化）
-│       ├── lint.yml                  # コード静的解析・構文チェック（Ruff）
-│       ├── test.yml                  # 単体テスト自動実行（pytest）
-│       └── security-scan.yml         # Syft / Grype による脆弱性スキャン
+│       ├── notify-failure.yml        # 失敗時の Discord 通知（各ワークフローから呼び出す共通部品）
+│       └── push-check.yml            # push・PR 時のチェック（Ruff・pytest）
 ├── .src/
 │   ├── change_github_notifications_to_read.py # CI通知既読化スクリプト
 │   ├── rss_github_notifications.py   # Atomフィード生成スクリプト
@@ -149,10 +155,9 @@ GitHub Actions の実行には、以下の Secrets の設定が必要です。
 | `TANITA_CLIENT_SECRET` | タニタ Health Planet API クライアントシークレット |
 | `TANITA_REFRESH_TOKEN` | タニタ Health Planet API リフレッシュトークン |
 | `PERSONAL_GITHUB_TOKEN` | GitHub API 操作用パーソナルアクセストークン |
-| `TOKEN_FOR_WRITE` | 毎時バッチ・アセットのバージョン更新の push 用に指定されているトークン（日次バッチは `GITHUB_TOKEN` で push するため使用しない） |
 | `GIT_USER_NAME` | 自動コミット用 Git ユーザー名 |
 | `GIT_EMAIL` | 自動コミット用 Git メールアドレス |
-| `DISCORD_URL_GITHUB` | Discord Webhook URL（各バッチの失敗通知・セキュリティスキャン） |
+| `DISCORD_URL_GITHUB` | Discord Webhook URL（各ワークフローの失敗通知） |
 
 ---
 

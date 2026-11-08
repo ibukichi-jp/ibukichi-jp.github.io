@@ -1,7 +1,7 @@
 name: Asset Version (Cache Busting)
 
 # CSS / JS が変わったら、index.html の ?v= をファイル内容のハッシュに自動更新する。
-# 自分の更新コミットで再実行されても、ハッシュが同じなら何もしないのでループしない。
+# GITHUB_TOKEN による push では push イベントのワークフローが起動しないので、ループしない。
 on:
   push:
     branches: ["main"]
@@ -11,8 +11,8 @@ on:
       - "js/**"
   workflow_dispatch:
 
-permissions:
-  contents: write
+# 権限はジョブごとに必要な分だけ付ける
+permissions: {}
 
 concurrency:
   group: asset-version
@@ -20,29 +20,36 @@ concurrency:
 
 jobs:
   stamp:
+    name: Stamp asset versions
+    # main 以外のブランチから手動実行しても、main へは書き込まない
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
-          fetch-depth: 1
+          persist-credentials: false # トークンを .git/config に残さない
 
+      # 標準ライブラリだけで動くスクリプト
       - name: Update asset versions
-        run: python3 ./.src/update_asset_versions.py index.html
+        run: python3 -I ./.src/update_asset_versions.py index.html
 
       - name: Commit and push
-        env:
-          GIT_USER_NAME: "${{ secrets.GIT_USER_NAME }}"
-          GIT_EMAIL: "${{ secrets.GIT_EMAIL }}"
-        run: |
-          git config user.name "${GIT_USER_NAME}"
-          git config user.email "${GIT_EMAIL}"
-          git add index.html
-          if git diff --staged --quiet; then
-            echo "Asset versions are up to date. Skipping commit."
-          else
-            git commit -m "Update asset versions by CI."
-            git pull --rebase origin main
-            git push https://x-access-token:${{ secrets.TOKEN_FOR_WRITE }}@github.com/${{ github.repository }}.git main
-          fi
+        uses: ./.github/actions/commit-and-push
+        with:
+          paths: index.html
+          message: Update asset versions by CI.
+          git-user-name: ${{ secrets.GIT_USER_NAME }}
+          git-email: ${{ secrets.GIT_EMAIL }}
+          github-token: ${{ github.token }}
+
+  notify:
+    needs: stamp
+    if: ${{ always() && (needs.stamp.result == 'failure' || needs.stamp.result == 'cancelled') }}
+    permissions: {}
+    uses: ./.github/workflows/notify-failure.yml
+    with:
+      title: Asset Version（アセットのバージョン更新）
+    secrets:
+      DISCORD_URL_GITHUB: ${{ secrets.DISCORD_URL_GITHUB }}

@@ -1,0 +1,48 @@
+name: Push Check (Lint & Test)
+
+# push と Pull Request のときに、コードをチェックする。
+# 依存パッケージの脆弱性は、GitHub の Dependabot alerts で見張っている。
+# 結果は GitHub の画面で確認する（Discord には通知しない）。
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+# 読み取りだけ
+permissions:
+  contents: read
+
+jobs:
+  lint-and-test:
+    name: Ruff & Pytest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false # トークンを .git/config に残さない
+
+      # uv 本体は、チェックサム（アクションに同梱、または Astral の公開情報）で確かめてからインストールされる
+      - name: Install uv
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          enable-cache: true
+
+      # uv.lock が pyproject.toml と合っていなければ、ここで失敗する
+      - name: Install dependencies
+        id: sync
+        run: uv sync --locked --dev
+
+      # 依存のインストールに失敗したら、チェックは実行しない（失敗の原因をはっきりさせるため）。
+      # インストールできていれば、1つのチェックが失敗しても残りも実行して、結果をまとめて見られるようにする
+      - name: Ruff lint
+        run: uv run ruff check .
+
+      - name: Ruff format check
+        if: ${{ !cancelled() && steps.sync.outcome == 'success' }}
+        run: uv run ruff format --check .
+
+      - name: Pytest
+        if: ${{ !cancelled() && steps.sync.outcome == 'success' }}
+        run: uv run pytest -v

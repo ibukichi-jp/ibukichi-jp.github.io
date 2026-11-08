@@ -1,0 +1,35 @@
+name: Notify Failure
+
+# 他のワークフローから呼び出して、失敗したことを Discord に通知する（再利用可能なワークフロー）。
+# 送るのは「失敗した」ことと実行ログの URL だけ（詳細は実行ログで確認する）。
+on:
+  workflow_call:
+    inputs:
+      title:
+        description: "通知に表示するワークフローの名前"
+        required: true
+        type: string
+    secrets:
+      DISCORD_URL_GITHUB:
+        required: true
+
+permissions: {}
+
+jobs:
+  notify:
+    name: Notify Discord
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Notify Discord and fail the workflow
+        env:
+          DISCORD_URL_GITHUB: ${{ secrets.DISCORD_URL_GITHUB }}
+          TITLE: ${{ inputs.title }}
+          # 再利用可能なワークフローでは、github コンテキストは呼び出し元の実行を指す
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          jq -n --arg title "$TITLE" --arg url "$RUN_URL" \
+            '{content: "⚠️ \($title) が失敗しました\n詳細: \($url)", allowed_mentions: {parse: []}}' \
+            | curl -fsS --max-time 30 -H "Content-Type: application/json" --data-binary @- "$DISCORD_URL_GITHUB" \
+            || echo "Discord への通知に失敗しました"
+          exit 1

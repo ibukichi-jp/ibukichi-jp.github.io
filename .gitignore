@@ -10,8 +10,5 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 
-# SBOM & scanning artifacts
-sbom.json
-
 # Windows / WSL metadata
 *:Zone.Identifier

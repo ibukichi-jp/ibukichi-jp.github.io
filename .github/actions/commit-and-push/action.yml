@@ -1,0 +1,46 @@
+name: Commit and push
+description: >-
+  指定したファイルに変更があればコミットし、GITHUB_TOKEN で main に push する。
+  呼び出し元のジョブには contents: write が必要。checkout は persist-credentials: false で行い、
+  トークンは push の直前に gh auth setup-git で git に渡す（URL・コマンドライン・設定ファイルには書かない）。
+inputs:
+  paths:
+    description: "git add するパス（空白区切り）"
+    required: true
+  message:
+    description: "コミットメッセージ"
+    required: true
+  git-user-name:
+    description: "コミットの作成者名"
+    required: true
+  git-email:
+    description: "コミットの作成者メールアドレス"
+    required: true
+  github-token:
+    description: "push に使うトークン（通常は github.token）"
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Commit and push
+      shell: bash
+      env:
+        PATHS: ${{ inputs.paths }}
+        MESSAGE: ${{ inputs.message }}
+        GIT_USER_NAME: ${{ inputs.git-user-name }}
+        GIT_EMAIL: ${{ inputs.git-email }}
+        GH_TOKEN: ${{ inputs.github-token }} # gh が実行時に読む
+      run: |
+        set -euo pipefail
+        git config user.name "$GIT_USER_NAME"
+        git config user.email "$GIT_EMAIL"
+        read -ra paths <<< "$PATHS"
+        git add -- "${paths[@]}"
+        if git diff --staged --quiet; then
+          echo "No changes. Skipping commit."
+          exit 0
+        fi
+        git commit -m "$MESSAGE"
+        gh auth setup-git
+        git pull --rebase origin main || { git rebase --abort; exit 1; }
+        git push origin HEAD:main
