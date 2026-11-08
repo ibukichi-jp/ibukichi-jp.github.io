@@ -3,7 +3,6 @@ from pathlib import Path
 from unittest.mock import patch
 
 import pytest
-import requests
 
 sys.path.insert(0, str(Path(__file__).parent.parent / ".src"))
 
@@ -22,37 +21,41 @@ def test_set_request_headers():
     assert headers["X-GitHub-Api-Version"] == "2022-11-28"
 
 
-@patch("requests.get")
-def test_call_github_api_by_get_success(mock_get):
-    """GETリクエストが200のときに正常なResponseを返すテスト"""
-    mock_response = requests.Response()
-    mock_response.status_code = 200
-    mock_get.return_value = mock_response
+@patch("change_github_notifications_to_read.github_request")
+def test_call_github_api_by_get_success(mock_request):
+    """GETリクエストが200のときに本文を返すテスト"""
+    mock_request.return_value = (200, b"[]")
 
-    res = call_github_api_by_get("https://api.github.com/notifications", "token", 10)
-    assert res.status_code == 200
+    body = call_github_api_by_get("https://api.github.com/notifications", "token", 10)
+    assert body == b"[]"
+    assert mock_request.call_args.args[2] == "GET"
 
 
-@patch("requests.get")
-def test_call_github_api_by_get_error(mock_get):
+@patch("change_github_notifications_to_read.github_request")
+def test_call_github_api_by_get_error(mock_request):
     """GETリクエストがエラー（例: 401 Unauthorized）のときにRuntimeErrorをスローするテスト"""
-    mock_response = requests.Response()
-    mock_response.status_code = 401
-    mock_get.return_value = mock_response
+    mock_request.return_value = (401, b"Bad credentials")
 
-    with pytest.raises(RuntimeError, match="GitHub API Error: GET:"):
+    with pytest.raises(RuntimeError, match="GitHub API Error: GET:.*401"):
         call_github_api_by_get("https://api.github.com/notifications", "token", 10)
 
 
-@patch("requests.patch")
-def test_call_github_api_by_patch_success(mock_patch):
+@patch("change_github_notifications_to_read.github_request")
+def test_call_github_api_by_patch_success(mock_request):
     """PATCHリクエストが205 Reset Contentのときに正常終了するテスト"""
-    mock_response = requests.Response()
-    mock_response.status_code = 205
-    mock_patch.return_value = mock_response
+    mock_request.return_value = (205, b"")
 
-    res = call_github_api_by_patch("https://api.github.com/notifications/threads/1", "token", 10)
-    assert res.status_code == 205
+    call_github_api_by_patch("https://api.github.com/notifications/threads/1", "token", 10)
+    assert mock_request.call_args.args[2] == "PATCH"
+
+
+@patch("change_github_notifications_to_read.github_request")
+def test_call_github_api_by_patch_error(mock_request):
+    """PATCHリクエストが205以外のときにRuntimeErrorをスローするテスト"""
+    mock_request.return_value = (404, b"Not Found")
+
+    with pytest.raises(RuntimeError, match="GitHub API Error: PATCH:"):
+        call_github_api_by_patch("https://api.github.com/notifications/threads/1", "token", 10)
 
 
 def test_notification_filtering_logic():

@@ -1,34 +1,30 @@
 import os
+import sys
+from pathlib import Path
 
-import requests
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from github_api import decode_json, github_headers, github_request  # noqa: E402
 
 
 def set_request_headers(token: str) -> dict[str, str]:
-    return {
-        "Authorization": f"Bearer {token}",
-        "Accept": "application/vnd.github+json",
-        "X-GitHub-Api-Version": "2022-11-28",
-    }
+    return github_headers(token)
 
 
-def call_github_api_by_get(url: str, token: str, timeout: int) -> requests.Response:
-    headers = set_request_headers(token)
-    response = requests.get(url, headers=headers, timeout=timeout)
-    if response.status_code != 200:
-        raise RuntimeError(
-            f"GitHub API Error: GET:{url} - {response.status_code} - {response.text}"
-        )
-    return response
+def call_github_api_by_get(url: str, token: str, timeout: int) -> bytes:
+    status, body = github_request(url, set_request_headers(token), "GET", timeout)
+    if status != 200:
+        text = body.decode("utf-8", errors="replace")
+        raise RuntimeError(f"GitHub API Error: GET:{url} - {status} - {text}")
+    return body
 
 
-def call_github_api_by_patch(url: str, token: str, timeout: int) -> requests.Response:
-    headers = set_request_headers(token)
-    response = requests.patch(url, headers=headers, timeout=timeout)
-    if response.status_code != 205:
-        raise RuntimeError(
-            f"GitHub API Error: PATCH:{url} - {response.status_code} - {response.text}"
-        )
-    return response
+def call_github_api_by_patch(url: str, token: str, timeout: int) -> bytes:
+    status, body = github_request(url, set_request_headers(token), "PATCH", timeout)
+    if status != 205:
+        text = body.decode("utf-8", errors="replace")
+        raise RuntimeError(f"GitHub API Error: PATCH:{url} - {status} - {text}")
+    return body
 
 
 if __name__ == "__main__":
@@ -37,8 +33,7 @@ if __name__ == "__main__":
         raise ValueError("環境変数 GITHUB_TOKEN が設定されていません。")
 
     api_url = "https://api.github.com/notifications"
-    response = call_github_api_by_get(api_url, token, 10)
-    notifications = response.json()
+    notifications = decode_json(call_github_api_by_get(api_url, token, 10))
 
     marked_count = 0
     for notification in notifications:
