@@ -1,7 +1,7 @@
 # ibukichi-jp.github.io
 
 GitHub Actions と Python (`uv`) を活用した、個人用自動化・統合ダッシュボードプラットフォームです。  
-愛犬たち（いぶき・いろは）との日々の記録、体組成情報の推移グラフ、さくらの高火力AIによる日々の俳句生成、GitHub通知のRSS(Atom)フィード化、CI通知の自動既読化などを自動運用しています。
+愛犬たち（いぶき・いろは）との日々の記録、体組成情報の推移グラフ、GitHub通知のRSS(Atom)フィード化、CI通知の自動既読化などを自動運用しています。
 
 ---
 
@@ -45,7 +45,6 @@ GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)�
 - **体組成情報可視化**: [`.data/tanita.json`](.data/tanita.json) に蓄積された過去全データを Chart.js でインタラクティブにグラフ化（体重・体脂肪率の2連グラフ）
 - **5大KPIカード**: 身長、体重（目標67.4kg = 身長と目標BMIから算出）、体脂肪率（目標19.9%）、BMI（目標22.0）、最新測定日時を表示
 - **期間絞り込み**: 年単位（初期値: 現在の年）のドロップダウンによる推移トレンドの即時フィルタリング
-- **今日の一句（AIが作成）**: 毎朝生成される最新の俳句と過去アーカイブの閲覧、Twitter (X) および Bluesky へのワンクリックシェア機能
 - **モバイル対応横スライドUI**: スマートフォン閲覧時には各セクションを左右スワイプまたはカード横の矢印アイコン（‹ ›）で直感的に切り替え可能（下部ドットインジケーター連動、PC時は通常の縦並び一覧表示）。ドットはセクションから自動生成されるため、セクションの追加・並べ替え時に手直しは不要
 
 #### ダッシュボードの変更ポイント
@@ -103,7 +102,6 @@ GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)�
 ├── .src/
 │   ├── blog_feed.py                  # ブログ直近記事取得スクリプト
 │   ├── change_github_notifications_to_read.py # CI通知既読化スクリプト
-│   ├── haiku_generator.py            # AI俳句生成スクリプト
 │   ├── rss_github_notifications.py   # Atomフィード生成スクリプト
 │   ├── security_auto_remediate.py    # 脆弱性検知時のAI要約 & 自動PR作成スクリプト
 │   ├── tanita_sync.py                # タニタデータ取得・保存スクリプト
@@ -126,7 +124,6 @@ GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)�
 │   ├── clock.js                      # ヘッダーのデジタル時計
 │   ├── anniversaries.js              # 記念日カード（ライフステージ・愛犬）
 │   ├── health.js                     # 体組成 KPI・推移グラフ（Chart.js）・年の絞り込み
-│   ├── haiku.js                      # 今日の一句・アーカイブ・SNSシェア
 │   ├── bluesky.js                    # Bluesky の投稿
 │   ├── blog.js                       # ブログの記事
 │   ├── slider.js                     # スマホ用横スライダー（ドット自動生成）

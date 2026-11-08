@@ -10,7 +10,6 @@
   'initAnniversaries',
   'initMobileSectionSlider',
   'initHealth',
-  'initHaiku',
   'initBluesky',
   'initBlog',
 ].forEach(name => {
