@@ -9,15 +9,16 @@ GitHub Actions と Python (`uv`) を活用した、個人用自動化・統合�
 
 ### 1. 日次定期バッチ (`.github/workflows/daily.yml`)
 毎日定刻（JST 9:00）に起動し、以下の処理を実行してデータを自動コミットします。
-タニタの同期スクリプトは標準ライブラリだけで動くため、書き込み権限のあるジョブでも PyPI の依存パッケージ（外部のコード）を一切動かしません。
+タニタの同期とブログ記事の取得のスクリプトは標準ライブラリだけで動くため、書き込み権限のあるジョブでも PyPI の依存パッケージ（外部のコード）を一切動かしません。
 
 | ジョブ | 権限 | 内容 |
 |---|---|---|
-| `sync` | 書き込み | タニタのデータを取得して `.data/tanita.json` を更新し、変更があればコミットして push。タニタの秘密は取得のステップだけ、push 用の `GITHUB_TOKEN` は `gh auth setup-git` 経由で push のステップだけに渡す（URL・設定ファイルには書かない） |
+| `sync` | 書き込み | タニタのデータを取得して `.data/tanita.json` を、ブログの記事を取得して `.data/blog.json` を更新し、変更があればコミットして push。タニタの秘密はタニタの取得のステップだけ、push 用の `GITHUB_TOKEN` は `gh auth setup-git` 経由で push のステップだけに渡す（URL・設定ファイルには書かない） |
 | `notify` | なし | `sync` が失敗したときだけ動き、Discord に通知（失敗したことと実行ログの URL のみ） |
 
 - **タニタ体組成データ自動同期 (`.src/tanita_sync.py`)**: 体組成計で計測した直近データを取得し、[`.data/tanita.json`](.data/tanita.json) にマージして蓄積
-- **日次データ自動コミット**: 更新された体組成データを安全にプッシュ
+- **ブログ記事の取得 (`.src/blog_feed.py`)**: ブログ（[blog.ibukichi.jp](https://blog.ibukichi.jp/)）の Atom フィードから最新を含む直近3件の記事（タイトル・URL・投稿日・抜粋・サムネイル）を取得して [`.data/blog.json`](.data/blog.json) に保存。標準ライブラリだけで動く。記事の URL はブログの https、サムネイルは Blogger の画像サーバーの https だけを使う。取得時刻などは書き出さないため、記事が増えた・変わった日だけ差分が発生。取得失敗時は既存データを保持
+- **日次データ自動コミット**: 更新された体組成データとブログ記事データを安全にプッシュ（どちらかの処理が失敗しても、もう一方は実行してコミットする）
 
 ### 2. 毎時定期バッチ (`.github/workflows/hourly.yml`)
 毎時0分に起動し、通知の収集から既読化までを一括処理します。
@@ -37,6 +38,7 @@ main への push と Pull Request のときに、Ruff（lint・フォーマッ�
 ### 5. GitHub Pages ダッシュボード (`index.html`)
 GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)）で公開されるリアルタイムダッシュボードです。Bootstrap 5によるレスポンシブなダークテーマデザインを採用しています。
 - **ヘッダー**: GitHubプロフィールへのアバターリンク、リアルタイム秒刻みデジタル時計
+- **ブログの記事**: [`.data/blog.json`](.data/blog.json)（日次CIで更新）を読み込み、直近3件の記事のサムネイル・投稿日・タイトル（記事へのリンク）・抜粋を表示
 - **Blueskyの投稿**: Bluesky 公開API（`public.api.bsky.app` / 認証不要）から [@bsky.ibukichi.jp](https://bsky.app/profile/bsky.ibukichi.jp) の直近3件の自分の投稿（返信・リポストを除く。引用リポストは表示）を取得して表示。リンク・メンション・ハッシュタグ、画像・動画サムネイル・リンクカード・引用投稿に対応。カード内の @ハンドル からプロフィールへ移動可能
 - **ライフステージ**: JST（日本標準時）基準で自動算出される、結婚してから（2014/06/27〜）の経過日数および「X年Yヶ月Z日」のリアルタイム表示カード。左側に写真スペース（光彩リング装飾・フォールバック対応）を配置
 - **愛犬たちとの日々**: JST基準で自動算出される、いぶきと暮らした日数（2021/12/09〜2025/01/14の1,133日間 [3年1ヶ月5日] のメモリアル）、いろはと暮らし始めてからのカウントアップ（2025/03/10〜）、ワン公と別れてからの経過年数（2003/02/11〜の「X年Yヶ月Z日」表示）の3連カード。写真アセット（光彩リング装飾・フォールバック対応）を左側に配置
@@ -51,6 +53,7 @@ GitHub Pages（[`https://ibukichi-jp.github.io`](https://ibukichi-jp.github.io)�
 | 記念日カードの追加・変更（ライフステージ / 愛犬） | [`js/anniversaries.js`](js/anniversaries.js) の `ANNIVERSARIES` に1行追加・変更 |
 | 体重・体脂肪率・BMI の目標値 | [`js/health.js`](js/health.js) の `HEALTH_CONFIG`（目標体重は身長と目標BMIから自動計算） |
 | Bluesky の表示件数・アカウント | [`js/bluesky.js`](js/bluesky.js) の `BLUESKY_HANDLE` / `BLUESKY_DISPLAY_COUNT` |
+| ブログの表示件数 | [`js/blog.js`](js/blog.js) の `BLOG_DISPLAY_COUNT`（取得件数は `.src/blog_feed.py` の `POST_COUNT`） |
 | セクションの追加・並べ替え | `index.html` の `.dashboard-slide-item` を追加・移動（スマホのドットは自動追従） |
 
 #### 外部ライブラリ（`assets/vendor/`）
@@ -73,17 +76,19 @@ Bootstrap と Chart.js は CDN を使わず、npm パッケージのファイル
 │   ├── images/                       # 写真アセット（結婚写真・いぶき・いろは・ワン公）
 │   └── vendor/                       # 外部ライブラリ（Bootstrap 5.3.3・Chart.js 4.4.1。CDN は使わずここから配信）
 ├── .data/
+│   ├── blog.json                     # ブログの直近記事データ（3件）
 │   └── tanita.json                   # 蓄積された体重・体脂肪率のヘルスデータ
 ├── .github/
 │   ├── actions/
 │   │   └── commit-and-push/          # 変更をコミットして GITHUB_TOKEN で push する共通部品
 │   └── workflows/                    # 各種定期実行・CIワークフロー
 │       ├── asset-version.yml         # CSS/JS 変更時に index.html の ?v= を内容ハッシュで自動更新
-│       ├── daily.yml                 # 日次定期実行（タニタ同期）
+│       ├── daily.yml                 # 日次定期実行（タニタ同期・ブログ記事取得）
 │       ├── hourly.yml                # 毎時定期実行（RSS生成 & CI通知既読化）
 │       ├── notify-failure.yml        # 失敗時の Discord 通知（各ワークフローから呼び出す共通部品）
 │       └── push-check.yml            # push・PR 時のチェック（Ruff・pytest）
 ├── .src/
+│   ├── blog_feed.py                  # ブログ直近記事取得スクリプト
 │   ├── change_github_notifications_to_read.py # CI通知既読化スクリプト
 │   ├── rss_github_notifications.py   # Atomフィード生成スクリプト
 │   ├── tanita_sync.py                # タニタデータ取得・保存スクリプト
@@ -101,6 +106,7 @@ Bootstrap と Chart.js は CDN を使わず、npm パッケージのファイル
 │   ├── anniversaries.js              # 記念日カード（ライフステージ・愛犬）
 │   ├── health.js                     # 体組成 KPI・推移グラフ（Chart.js）・年の絞り込み
 │   ├── bluesky.js                    # Bluesky の投稿
+│   ├── blog.js                       # ブログの記事
 │   ├── slider.js                     # スマホ用横スライダー（ドット自動生成）
 │   └── main.js                       # 初期化（エントリーポイント）
 ├── pyproject.toml                    # プロジェクト設定・依存パッケージ定義

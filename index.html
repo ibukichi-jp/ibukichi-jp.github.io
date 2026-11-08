@@ -67,7 +67,7 @@
   <!-- ライブラリは npm パッケージのファイルをそのまま assets/vendor に置いて配信する（CDN は使わない）。integrity で、ファイルが意図せず変わっていないかを確かめる -->
   <link href="assets/vendor/bootstrap-5.3.3/bootstrap.min.css?v=3c8f27e600" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH">
   <!-- カスタムスタイル（?v= は CI がファイル内容のハッシュで自動更新） -->
-  <link rel="stylesheet" href="style.css?v=2e2fe1fbf8">
+  <link rel="stylesheet" href="style.css?v=b6926f13ae">
   <!-- Chart.js -->
   <script src="assets/vendor/chart.js-4.4.1/chart.umd.js?v=74401d738d" integrity="sha384-dug+JxfBvklEQdJ4AYuBBAIScUz0bVN73xpy273gcAwHjb3qI0fXmuYNaNfdyYJG"></script>
 </head>
@@ -131,6 +131,20 @@
 
         <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3" id="blueskyFeedList" aria-live="polite">
           <div class="col"><div class="bsky-post-card bsky-skeleton"></div></div>
+        </div>
+        </section>
+
+        <!-- 0-2. ブログの記事 セクション -->
+        <section class="dashboard-slide-item mb-4 pb-2" id="slideBlog" aria-labelledby="blogSectionTitle">
+        <div class="mb-3">
+          <div class="section-tag">BLOG</div>
+          <h2 id="blogSectionTitle" class="section-title h5 mb-0">ブログの記事</h2>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3" id="blogPostList" aria-live="polite">
+          <div class="col">
+            <div class="blog-post-card"><div class="blog-skeleton"></div></div>
+          </div>
         </div>
         </section>
 
@@ -350,7 +364,8 @@
   <script defer src="js/anniversaries.js?v=a978563f11"></script>
   <script defer src="js/health.js?v=cbcc08b7c6"></script>
   <script defer src="js/bluesky.js?v=90eaf36dfa"></script>
+  <script defer src="js/blog.js?v=b8ff5e0177"></script>
   <script defer src="js/slider.js?v=1e4d19f27a"></script>
-  <script defer src="js/main.js?v=a4bb856424"></script>
+  <script defer src="js/main.js?v=7ace988468"></script>
 </body>
 </html>

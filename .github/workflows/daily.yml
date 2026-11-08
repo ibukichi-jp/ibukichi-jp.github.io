@@ -1,4 +1,4 @@
-name: Daily Runner (Tanita)
+name: Daily Runner (Tanita & Blog)
 
 on:
   workflow_dispatch:
@@ -16,10 +16,12 @@ concurrency:
 
 jobs:
   sync:
-    name: Sync Tanita data
+    name: Sync Tanita data and blog posts
     # main 以外のブランチから手動実行しても、main へは書き込まない
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    # 通信が止まったままになっても、既定の 6 時間まで待たない
+    timeout-minutes: 10
     permissions:
       contents: write
     steps:
@@ -27,7 +29,7 @@ jobs:
         with:
           persist-credentials: false # トークンを .git/config に残さない
 
-      # 標準ライブラリだけで動くスクリプトなので、uv や PyPI の依存パッケージは使わない
+      # どちらも標準ライブラリだけで動くスクリプトなので、uv や PyPI の依存パッケージは使わない
       # （書き込み権限のあるジョブで、外部のコードを動かさない）
       - name: Sync body composition data
         env:
@@ -36,18 +38,26 @@ jobs:
           TANITA_REFRESH_TOKEN: ${{ secrets.TANITA_REFRESH_TOKEN }}
         run: python3 -I ./.src/tanita_sync.py
 
+      # タニタの同期に失敗しても、ブログ記事の取得は行う（シークレットは渡さない）
+      - name: Fetch latest blog posts
+        if: ${{ !cancelled() }}
+        run: python3 -I ./.src/blog_feed.py
+
+      # どちらかが失敗しても、成功した方のデータはコミットする
+      # （失敗したスクリプトは既存のファイルを書き換えないので、変更が出るのは成功した方だけ）
       - name: Commit and push
+        if: ${{ !cancelled() }}
         uses: ./.github/actions/commit-and-push
         with:
-          paths: .data/tanita.json
-          message: Update daily health data by CI.
+          paths: .data/tanita.json .data/blog.json
+          message: Update daily data by CI.
           git-user-name: ${{ secrets.GIT_USER_NAME }}
           git-email: ${{ secrets.GIT_EMAIL }}
           github-token: ${{ github.token }}
 
   notify:
     needs: sync
-    # 失敗したときだけ動く
+    # 失敗したときだけ動く（どの処理が失敗したかは実行ログで確認する）
     if: ${{ always() && (needs.sync.result == 'failure' || needs.sync.result == 'cancelled') }}
     permissions: {}
     uses: ./.github/workflows/notify-failure.yml
