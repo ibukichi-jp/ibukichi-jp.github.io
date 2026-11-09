@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-11-09T09:29:05.654882+00:00</updated>
+  <updated>2026-11-09T20:33:43.587980+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate" />
   <entry>
     <id>https://github.com/vercel/next.js/releases/tag/v15.5.28</id>
@@ -65,6 +65,27 @@
     <title>[vercel/next.js] v16.5.0-canary.45</title>
     <updated>2026-11-08T23:47:35+00:00</updated>
     <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.45" />
+    <summary>The React Framework</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/anchore/syft/releases/tag/v1.57.1</id>
+    <title>[anchore/syft] v1.57.1</title>
+    <updated>2026-11-09T14:40:04+00:00</updated>
+    <link href="https://github.com/anchore/syft/releases/tag/v1.57.1" />
+    <summary>CLI tool and library for generating a Software Bill of Materials from container images and filesystems</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/anchore/grype/releases/tag/v0.121.3</id>
+    <title>[anchore/grype] v0.121.3</title>
+    <updated>2026-11-09T15:17:49+00:00</updated>
+    <link href="https://github.com/anchore/grype/releases/tag/v0.121.3" />
+    <summary>A vulnerability scanner for container images and filesystems</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.4.6</id>
+    <title>[vercel/next.js] v16.4.6</title>
+    <updated>2026-11-09T20:27:39+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.4.6" />
     <summary>The React Framework</summary>
   </entry>
 </feed>
