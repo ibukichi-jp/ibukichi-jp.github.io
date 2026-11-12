@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-11-12T00:19:55.919416+00:00</updated>
+  <updated>2026-11-12T08:05:25.907859+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate" />
   <entry>
     <id>https://github.com/vercel/next.js/releases/tag/v15.5.28</id>
