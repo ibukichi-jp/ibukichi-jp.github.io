@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-11-16T20:10:10.818754+00:00</updated>
+  <updated>2026-11-17T03:34:08.081404+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate" />
   <entry>
     <id>https://github.com/vercel/next.js/releases/tag/v15.5.28</id>
@@ -115,5 +115,19 @@
     <updated>2026-11-16T20:06:04+00:00</updated>
     <link href="https://github.com/anchore/syft/releases/tag/v1.57.2" />
     <summary>CLI tool and library for generating a Software Bill of Materials from container images and filesystems</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/anchore/grype/releases/tag/v0.122.0</id>
+    <title>[anchore/grype] v0.122.0</title>
+    <updated>2026-11-16T20:42:25+00:00</updated>
+    <link href="https://github.com/anchore/grype/releases/tag/v0.122.0" />
+    <summary>A vulnerability scanner for container images and filesystems</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.53</id>
+    <title>[vercel/next.js] v16.5.0-canary.53</title>
+    <updated>2026-11-16T23:44:42+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.53" />
+    <summary>The React Framework</summary>
   </entry>
 </feed>
