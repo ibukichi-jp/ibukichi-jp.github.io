@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-11-17T21:40:05.790782+00:00</updated>
+  <updated>2026-11-18T03:29:31.866221+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate" />
   <entry>
     <id>https://github.com/vercel/next.js/releases/tag/v15.5.28</id>
@@ -115,5 +115,12 @@
     <updated>2026-11-16T20:42:25+00:00</updated>
     <link href="https://github.com/anchore/grype/releases/tag/v0.122.0" />
     <summary>A vulnerability scanner for container images and filesystems</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.54</id>
+    <title>[vercel/next.js] v16.5.0-canary.54</title>
+    <updated>2026-11-17T23:46:56+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.54" />
+    <summary>The React Framework</summary>
   </entry>
 </feed>
