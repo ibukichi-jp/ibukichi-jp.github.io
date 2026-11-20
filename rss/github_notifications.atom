@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-11-20T02:54:25.245565+00:00</updated>
+  <updated>2026-11-20T11:10:02.909554+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate" />
   <entry>
     <id>https://github.com/vercel/next.js/releases/tag/v15.5.28</id>
@@ -149,6 +149,13 @@
     <title>[vercel/next.js] v16.5.0-canary.57</title>
     <updated>2026-11-19T23:46:24+00:00</updated>
     <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.57" />
+    <summary>The React Framework</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.58</id>
+    <title>[vercel/next.js] v16.5.0-canary.58</title>
+    <updated>2026-11-20T08:36:16+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.58" />
     <summary>The React Framework</summary>
   </entry>
 </feed>
