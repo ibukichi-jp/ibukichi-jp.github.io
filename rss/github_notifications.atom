@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-11-20T11:10:02.909554+00:00</updated>
+  <updated>2026-11-20T19:50:35.161046+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate" />
   <entry>
     <id>https://github.com/vercel/next.js/releases/tag/v15.5.28</id>
@@ -157,5 +157,12 @@
     <updated>2026-11-20T08:36:16+00:00</updated>
     <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.58" />
     <summary>The React Framework</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/astral-sh/setup-uv/releases/tag/v10.4.0</id>
+    <title>[astral-sh/setup-uv] v10.4.0 🌈 New input `require-checksums` and bug fixing</title>
+    <updated>2026-11-20T14:06:41+00:00</updated>
+    <link href="https://github.com/astral-sh/setup-uv/releases/tag/v10.4.0" />
+    <summary>Set up your GitHub Actions workflow with a specific version of https://docs.astral.sh/uv/</summary>
   </entry>
 </feed>
