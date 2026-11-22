@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-11-22T05:07:25.872350+00:00</updated>
+  <updated>2026-11-22T11:03:41.701130+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate" />
   <entry>
     <id>https://github.com/vercel/next.js/releases/tag/v15.5.28</id>
@@ -82,27 +82,6 @@
     <summary>The React Framework</summary>
   </entry>
   <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.50</id>
-    <title>[vercel/next.js] v16.5.0-canary.50</title>
-    <updated>2026-11-14T08:37:12+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.50" />
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.51</id>
-    <title>[vercel/next.js] v16.5.0-canary.51</title>
-    <updated>2026-11-14T23:43:59+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.51" />
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.52</id>
-    <title>[vercel/next.js] v16.5.0-canary.52</title>
-    <updated>2026-11-15T23:49:47+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.52" />
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
     <id>https://github.com/anchore/syft/releases/tag/v1.57.2</id>
     <title>[anchore/syft] v1.57.2</title>
     <updated>2026-11-16T20:06:04+00:00</updated>
@@ -117,101 +96,10 @@
     <summary>A vulnerability scanner for container images and filesystems</summary>
   </entry>
   <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.54</id>
-    <title>[vercel/next.js] v16.5.0-canary.54</title>
-    <updated>2026-11-17T23:46:56+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.54" />
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
     <id>https://github.com/anchore/grype/releases/tag/v0.122.1</id>
     <title>[anchore/grype] v0.122.1</title>
     <updated>2026-11-18T14:14:42+00:00</updated>
     <link href="https://github.com/anchore/grype/releases/tag/v0.122.1" />
     <summary>A vulnerability scanner for container images and filesystems</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.55</id>
-    <title>[vercel/next.js] v16.5.0-canary.55</title>
-    <updated>2026-11-18T23:46:16+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.55" />
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.56</id>
-    <title>[vercel/next.js] v16.5.0-canary.56</title>
-    <updated>2026-11-19T16:14:48+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.56" />
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.57</id>
-    <title>[vercel/next.js] v16.5.0-canary.57</title>
-    <updated>2026-11-19T23:46:24+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.57" />
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.58</id>
-    <title>[vercel/next.js] v16.5.0-canary.58</title>
-    <updated>2026-11-20T08:36:16+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.58" />
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/astral-sh/setup-uv/releases/tag/v10.4.0</id>
-    <title>[astral-sh/setup-uv] v10.4.0 🌈 New input `require-checksums` and bug fixing</title>
-    <updated>2026-11-20T14:06:41+00:00</updated>
-    <link href="https://github.com/astral-sh/setup-uv/releases/tag/v10.4.0" />
-    <summary>Set up your GitHub Actions workflow with a specific version of https://docs.astral.sh/uv/</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.59</id>
-    <title>[vercel/next.js] v16.5.0-canary.59</title>
-    <updated>2026-11-20T23:42:34+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.59" />
-    <summary>The React Framework</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/php/php-src/releases/tag/php-8.2.36</id>
-    <title>[php/php-src] PHP 8.2.36</title>
-    <updated>2026-11-21T01:59:59+00:00</updated>
-    <link href="https://github.com/php/php-src/releases/tag/php-8.2.36" />
-    <summary>The PHP Interpreter</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/php/php-src/releases/tag/php-8.3.37</id>
-    <title>[php/php-src] PHP 8.3.37</title>
-    <updated>2026-11-21T02:00:25+00:00</updated>
-    <link href="https://github.com/php/php-src/releases/tag/php-8.3.37" />
-    <summary>The PHP Interpreter</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/php/php-src/releases/tag/php-8.4.28</id>
-    <title>[php/php-src] PHP 8.4.28</title>
-    <updated>2026-11-21T02:00:49+00:00</updated>
-    <link href="https://github.com/php/php-src/releases/tag/php-8.4.28" />
-    <summary>The PHP Interpreter</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/php/php-src/releases/tag/php-8.5.13</id>
-    <title>[php/php-src] PHP 8.5.13</title>
-    <updated>2026-11-21T02:01:12+00:00</updated>
-    <link href="https://github.com/php/php-src/releases/tag/php-8.5.13" />
-    <summary>The PHP Interpreter</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/php/php-src/releases/tag/php-8.6.0</id>
-    <title>[php/php-src] PHP 8.6.0</title>
-    <updated>2026-11-21T02:02:13+00:00</updated>
-    <link href="https://github.com/php/php-src/releases/tag/php-8.6.0" />
-    <summary>The PHP Interpreter</summary>
-  </entry>
-  <entry>
-    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.60</id>
-    <title>[vercel/next.js] v16.5.0-canary.60</title>
-    <updated>2026-11-21T23:44:02+00:00</updated>
-    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.60" />
-    <summary>The React Framework</summary>
   </entry>
 </feed>
