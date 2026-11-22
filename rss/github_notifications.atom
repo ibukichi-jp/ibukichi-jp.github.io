@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-11-21T01:15:13.994605+00:00</updated>
+  <updated>2026-11-22T04:51:50.163091+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate" />
   <entry>
     <id>https://github.com/vercel/next.js/releases/tag/v15.5.28</id>
@@ -170,6 +170,48 @@
     <title>[vercel/next.js] v16.5.0-canary.59</title>
     <updated>2026-11-20T23:42:34+00:00</updated>
     <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.59" />
+    <summary>The React Framework</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/php/php-src/releases/tag/php-8.2.36</id>
+    <title>[php/php-src] PHP 8.2.36</title>
+    <updated>2026-11-21T01:59:59+00:00</updated>
+    <link href="https://github.com/php/php-src/releases/tag/php-8.2.36" />
+    <summary>The PHP Interpreter</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/php/php-src/releases/tag/php-8.3.37</id>
+    <title>[php/php-src] PHP 8.3.37</title>
+    <updated>2026-11-21T02:00:25+00:00</updated>
+    <link href="https://github.com/php/php-src/releases/tag/php-8.3.37" />
+    <summary>The PHP Interpreter</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/php/php-src/releases/tag/php-8.4.28</id>
+    <title>[php/php-src] PHP 8.4.28</title>
+    <updated>2026-11-21T02:00:49+00:00</updated>
+    <link href="https://github.com/php/php-src/releases/tag/php-8.4.28" />
+    <summary>The PHP Interpreter</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/php/php-src/releases/tag/php-8.5.13</id>
+    <title>[php/php-src] PHP 8.5.13</title>
+    <updated>2026-11-21T02:01:12+00:00</updated>
+    <link href="https://github.com/php/php-src/releases/tag/php-8.5.13" />
+    <summary>The PHP Interpreter</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/php/php-src/releases/tag/php-8.6.0</id>
+    <title>[php/php-src] PHP 8.6.0</title>
+    <updated>2026-11-21T02:02:13+00:00</updated>
+    <link href="https://github.com/php/php-src/releases/tag/php-8.6.0" />
+    <summary>The PHP Interpreter</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.60</id>
+    <title>[vercel/next.js] v16.5.0-canary.60</title>
+    <updated>2026-11-21T23:44:02+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.60" />
     <summary>The React Framework</summary>
   </entry>
 </feed>
