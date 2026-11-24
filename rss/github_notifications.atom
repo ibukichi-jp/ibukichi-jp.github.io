@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-11-23T21:02:32.153424+00:00</updated>
+  <updated>2026-11-24T05:48:46.974631+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate" />
   <entry>
     <id>https://github.com/vercel/next.js/releases/tag/v15.5.28</id>
@@ -107,6 +107,27 @@
     <title>[vercel/next.js] v16.5.0-canary.61</title>
     <updated>2026-11-22T23:43:16+00:00</updated>
     <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.61" />
+    <summary>The React Framework</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/anchore/scan-action/releases/tag/v7.4.3</id>
+    <title>[anchore/scan-action] v7.4.3</title>
+    <updated>2026-11-23T21:58:24+00:00</updated>
+    <link href="https://github.com/anchore/scan-action/releases/tag/v7.4.3" />
+    <summary>Anchore container analysis and scan provided as a GitHub Action</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/anchore/sbom-action/releases/tag/v0.24.4</id>
+    <title>[anchore/sbom-action] v0.24.4</title>
+    <updated>2026-11-23T22:34:56+00:00</updated>
+    <link href="https://github.com/anchore/sbom-action/releases/tag/v0.24.4" />
+    <summary>GitHub Action for creating software bill of materials using Syft.</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.62</id>
+    <title>[vercel/next.js] v16.5.0-canary.62</title>
+    <updated>2026-11-23T23:47:43+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.62" />
     <summary>The React Framework</summary>
   </entry>
 </feed>
