@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://github.com/notifications</id>
   <title>Tracking GitHub notifications</title>
-  <updated>2026-11-26T04:49:01.517761+00:00</updated>
+  <updated>2026-11-26T14:52:26.760055+00:00</updated>
   <link href="https://github.com/notifications" rel="alternate" />
   <entry>
     <id>https://github.com/vercel/next.js/releases/tag/v15.5.28</id>
@@ -136,5 +136,40 @@
     <updated>2026-11-24T21:16:09+00:00</updated>
     <link href="https://github.com/astral-sh/uv/releases/tag/0.13.10" />
     <summary>An extremely fast Python package and project manager, written in Rust.</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.63</id>
+    <title>[vercel/next.js] v16.5.0-canary.63</title>
+    <updated>2026-11-26T10:26:15+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.63" />
+    <summary>The React Framework</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.64</id>
+    <title>[vercel/next.js] v16.5.0-canary.64</title>
+    <updated>2026-11-26T10:26:34+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.64" />
+    <summary>The React Framework</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.65</id>
+    <title>[vercel/next.js] v16.5.0-canary.65</title>
+    <updated>2026-11-26T10:26:50+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.65" />
+    <summary>The React Framework</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.66</id>
+    <title>[vercel/next.js] v16.5.0-canary.66</title>
+    <updated>2026-11-26T10:27:08+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.66" />
+    <summary>The React Framework</summary>
+  </entry>
+  <entry>
+    <id>https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.67</id>
+    <title>[vercel/next.js] v16.5.0-canary.67</title>
+    <updated>2026-11-26T10:27:22+00:00</updated>
+    <link href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.67" />
+    <summary>The React Framework</summary>
   </entry>
 </feed>
